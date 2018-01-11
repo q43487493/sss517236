@@ -116,6 +116,7 @@ getdata() ; //讀取試算表
 
 //LineBot處理文字訊息的函式
 bot.on('message', function(event) {
+	getdata();
    var myReply='';
    if (event.message.type === 'text') {
       myReply=processText(event.message.text);
@@ -186,7 +187,7 @@ function processText(myMsg){
 		}     	   
     }   
    else if (myMsg==='目前家中人數')	   
-       myResult='目前家中有' + people +'人\n使用者總身分:' + user_id.join(',') ;   
+       myResult='目前家中有' + people +'人\n使用者總' + user_id.join(',') ;   
    else if (myMsg==='連線狀況')
 	  if (!deviceIsConnected())
          myResult='裝置未連接！';
@@ -254,9 +255,8 @@ boardReady(myBoardVars, true, function (board) {
    rfid.read();     
    rfid.on("enter",function(_uid){
    rfid._uid = _uid;
-   
-   if (add ===  '新增' ){
-     getdata();	   
+   getdata();
+   if (add ===  '新增' ){	   
 	   var f = (card_uid.length);	  		  
 		 for (var j = 1; j <= f-1; j++) {
 		   if (card_uid[j] === rfid._uid  ){
