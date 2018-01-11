@@ -27,7 +27,9 @@ var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';
 
 
 var myBoardVars={device: '8QwwV'}; //Webduino的device id
+var myBoardVarss={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;
+var myBoard2;
 var people = 0 ;               //家庭人數 
 var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
@@ -116,8 +118,6 @@ getdata(); //讀取試算表
 
 //LineBot處理文字訊息的函式
 bot.on('message', function(event) {
-	getdata();
-	getdata();
    var myReply='';
    if (event.message.type === 'text') {
       myReply=processText(event.message.text);
@@ -224,19 +224,19 @@ function setIoT(fromMsg){
    }
    
    else if (fromMsg==='開燈'){    
-         if (!deviceIsConnected())
+         if (!deviceIsConnected2())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已開啟!';
-		 kk.on();		 	            
+		 relay2.on();		 	            
         }     
    }
    else if (fromMsg==='關燈'){    
-         if (!deviceIsConnected())
+         if (!deviceIsConnected2())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已關閉!';
-		 kk.off();		 	            
+		 relay2.off();		 	            
         }     
    }    
    return returnResult;
@@ -256,7 +256,6 @@ boardReady(myBoardVars, true, function (board) {
    rfid.read();     
    rfid.on("enter",function(_uid){
    rfid._uid = _uid;
-   getdata();
    if (add ===  '新增' ){	   
 	   var f = (card_uid.length);	  		  
 		 for (var j = 1; j <= f-1; j++) {
@@ -295,7 +294,7 @@ boardReady(myBoardVars, true, function (board) {
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
 				}
-			 //appendMyRow(); 	//上傳資料
+			 appendMyRow(); 	//上傳資料
 			 relay.on();
 	         setTimeout(function () {                   
 	         relay.off();
@@ -312,6 +311,14 @@ boardReady(myBoardVars, true, function (board) {
 });  
    });
    
+boardReady(myBoardVarss, true, function (board) {
+   myBoard2=board;
+   board.systemReset();
+   board.samplingInterval = 50;
+   relay2 = getRelay(board, 5);
+   relay2.off();
+}); 
+ 
  
 //設定蜂鳴器音樂函示
 function buzzer_music(m) {
@@ -350,7 +357,14 @@ function deviceIsConnected(){
    else
       return myBoard.isConnected;
 }
-
+function deviceIsConnected2(){
+   if (myBoard2===undefined)
+      return false;
+   else if (myBoard2.isConnected===undefined)
+      return false;
+   else
+      return myBoard2.isConnected;
+}
 
 const app = express();
 const linebotParser = bot.parser();
