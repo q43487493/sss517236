@@ -37,7 +37,7 @@ var add = '' ;       //新增用
 var admin = 0 ;     //管理員
 
 
-getdata() ; //讀取試算表
+getdata(); //讀取試算表
 //appendMyRow();  //上傳試算表
 //讀取試算表的函式
   function getdata() {
@@ -117,6 +117,7 @@ getdata() ; //讀取試算表
 //LineBot處理文字訊息的函式
 bot.on('message', function(event) {
 	getdata();
+	getdata();
    var myReply='';
    if (event.message.type === 'text') {
       myReply=processText(event.message.text);
@@ -131,7 +132,7 @@ bot.on('message', function(event) {
  
 
 function processText(myMsg){
-   getdata();
+
    var myResult=setIoT(myMsg);  
    var txt_p =  myMsg.indexOf(':') + 1;   
    var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
