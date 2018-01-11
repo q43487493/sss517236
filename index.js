@@ -64,7 +64,7 @@ getdata() ; //讀取試算表
 } 
  
  
-//取得試算表的函式
+//上傳試算表的函式
  function appendMyRow() {
    var request = {
       auth: oauth2Client,
@@ -130,6 +130,7 @@ bot.on('message', function(event) {
  
 
 function processText(myMsg){
+   getdata();
    var myResult=setIoT(myMsg);  
    var txt_p =  myMsg.indexOf(':') + 1;   
    var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
@@ -184,8 +185,8 @@ function processText(myMsg){
 	     user_id_t ='';  			
 		}     	   
     }   
-   else if (myMsg==='目前家中人數')
-      myResult='目前家中有' + people +'人\n使用者總身分:' + user_id.join(',') ;
+   else if (myMsg==='目前家中人數')	   
+       myResult='目前家中有' + people +'人\n使用者總身分:' + user_id.join(',') ;   
    else if (myMsg==='連線狀況')
 	  if (!deviceIsConnected())
          myResult='裝置未連接！';
@@ -254,7 +255,8 @@ boardReady(myBoardVars, true, function (board) {
    rfid.on("enter",function(_uid){
    rfid._uid = _uid;
    
-   if (add ===  '新增' ){	   	   	   
+   if (add ===  '新增' ){
+     getdata();	   
 	   var f = (card_uid.length);	  		  
 		 for (var j = 1; j <= f-1; j++) {
 		   if (card_uid[j] === rfid._uid  ){
@@ -292,7 +294,7 @@ boardReady(myBoardVars, true, function (board) {
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
 				}
-			 appendMyRow(); 	
+			 //appendMyRow(); 	//上傳資料
 			 relay.on();
 	         setTimeout(function () {                   
 	         relay.off();
