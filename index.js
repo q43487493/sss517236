@@ -271,7 +271,7 @@ boardReady(myBoardVars, true, function (board) {
 	     card_uid.splice(0,0,rfid._uid);
 	     door.splice(0,0,'在家中');
 		 people = people + 1
-	     bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
+	     bot.push('U79964e56665caa1f44bb589160964c84', user_id_t +'/新增成功!');
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
 	     user_id_t ='';	
          add = '';	
