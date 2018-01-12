@@ -56,10 +56,10 @@ getdata() ; //讀取試算表
     }   	 
    else {	   
      var f = (data.length);	 
-         card_uid = data[f-5];  //0
-         user_id =  data[f-4];	//1
-		 door = data[f-3];      //2
-	     people = data[f-2][0];	//3,1
+         card_uid = data[f-6];  //0
+         user_id =  data[f-5];	//1
+		 door = data[f-4];      //2
+	     people = data[f-3][0];	//3,1
          console.log('資料庫已取得完畢！');
         } 
   });
