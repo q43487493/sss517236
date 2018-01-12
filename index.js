@@ -174,7 +174,7 @@ function processText(myMsg){
                  card_uid.splice(j, 1);
                  user_id.splice(j, 1);
 				 door.splice(j, 1);				 
-                 myResult= '刪除成功!\n目前使用者身分有:' + user_id.join(','); 	                				 			    
+                 myResult= '刪除成功!'; 	                				 			    
 		        }
 			 user_id_t ='';
 			 appendMyRow();
