@@ -139,7 +139,7 @@ function processText(myMsg){
    else if (txt_c ==='新增門禁卡' && admin === 1234 ){	  	  
       user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
 	  var f = (user_id.length);	  		  
-		 for (var j = 1; j <= f-1; j++) {
+		 for (var j = 0; j <= f-2; j++) {
 		   if (user_id[j] === user_id_t  ){
 		     myResult = '此身分已有，請換別的稱呼';
 		     user_id_t ='';	
@@ -162,7 +162,7 @@ function processText(myMsg){
   else if (txt_c ==='刪除門禁卡' && admin === 1234){	  	  
       user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
 	  var f = (user_id.length);	  		  
-		 for (var j = 1; j <= f-1; j++) {
+		 for (var j = 0; j <= f-2; j++) {
 		   if (user_id[j] === user_id_t  ){           
                if (f === 1)
                  myResult= '只剩' + user_id.join('')  +'，無法刪除!';
@@ -258,7 +258,7 @@ boardReady(myBoardVars, true, function (board) {
    if (add ===  '新增' ){
      getdata();	   
 	   var f = (card_uid.length);	  		  
-		 for (var j = 1; j <= f-1; j++) {
+		 for (var j = 0; j <= f-2; j++) {
 		   if (card_uid[j] === rfid._uid  ){
 		     bot.push('U79964e56665caa1f44bb589160964c84', '此門禁卡已存在!');	
 		     user_id_t ='';	
@@ -282,7 +282,7 @@ boardReady(myBoardVars, true, function (board) {
  //判斷卡號與對應身分及目前動作	
   else{   
      var f = (card_uid.length);	  		  
-		 for (var j = 1; j <= f-1; j++) {
+		 for (var j = 0; j <= f-2; j++) {
 		   if (card_uid[j] === rfid._uid  ){
 		       if (door[j] === '在家中'){
 	              people = people -1 		 
