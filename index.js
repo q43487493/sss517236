@@ -27,7 +27,9 @@ var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';
 
 
 var myBoardVars={device: '8QwwV'}; //Webduino的device id
+var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;
+var myBoard2;
 var people = 0 ;               //家庭人數 
 var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
@@ -221,19 +223,19 @@ function setIoT(fromMsg){
    }
    
    else if (fromMsg==='開燈'){    
-         if (!deviceIsConnected())
+         if (!deviceIsConnected2())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已開啟!';
-		 kk.on();		 	            
+		 relay2.on();		 	            
         }     
    }
    else if (fromMsg==='關燈'){    
-         if (!deviceIsConnected())
+         if (!deviceIsConnected2())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已關閉!';
-		 kk.off();		 	            
+		 relay2.off();		 	            
         }     
    }    
    return returnResult;
@@ -309,6 +311,13 @@ boardReady(myBoardVars, true, function (board) {
 });  
    });
    
+boardReady(myBoardVars2, true, function (board) {
+   myBoard2=board;
+   board.systemReset();
+   board.samplingInterval = 50;
+   relay2 = getRelay(board, 5);
+   relay2.off();
+}); 
  
 //設定蜂鳴器音樂函示
 function buzzer_music(m) {
@@ -347,7 +356,14 @@ function deviceIsConnected(){
    else
       return myBoard.isConnected;
 }
-
+function deviceIsConnected2(){
+   if (myBoard2===undefined)
+      return false;
+   else if (myBoard.isConnected===undefined)
+      return false;
+   else
+      return myBoard.isConnected;
+}
 
 const app = express();
 const linebotParser = bot.parser();
