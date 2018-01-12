@@ -57,7 +57,7 @@ getdata() ; //讀取試算表
          card_uid = data[f-5];  //0
          user_id =  data[f-4];	//1
 		 door = data[f-3];      //2
-	     people = data[f-2][1];	//3,1
+	     people = data[f-2][0];	//3,1
          console.log('資料庫已取得完畢！');
         } 
   });
@@ -77,8 +77,8 @@ getdata() ; //讀取試算表
         card_uid,      //第一列  [第一欄,第二欄,.... ]
         user_id,      //第二列  
 		door,
-        ['總人數',people],	
-		['時間',new Date()],
+        [people,'總人數'],	
+		[new Date(),'時間'],
 		[],
 	   ]                         
      }
