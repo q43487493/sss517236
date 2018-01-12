@@ -27,9 +27,7 @@ var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';
 
 
 var myBoardVars={device: '8QwwV'}; //Webduino的device id
-var myBoardVarss={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;
-var myBoard2;
 var people = 0 ;               //家庭人數 
 var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
@@ -39,7 +37,7 @@ var add = '' ;       //新增用
 var admin = 0 ;     //管理員
 
 
-getdata(); //讀取試算表
+getdata() ; //讀取試算表
 //appendMyRow();  //上傳試算表
 //讀取試算表的函式
   function getdata() {
@@ -81,7 +79,7 @@ getdata(); //讀取試算表
 		door,
         ['總人數',people],	
 		['時間',new Date()],
-		
+		[],
 	   ]                         
      }
    };
@@ -132,7 +130,7 @@ bot.on('message', function(event) {
  
 
 function processText(myMsg){
-
+   getdata();
    var myResult=setIoT(myMsg);  
    var txt_p =  myMsg.indexOf(':') + 1;   
    var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
@@ -141,7 +139,7 @@ function processText(myMsg){
    else if (txt_c ==='新增門禁卡' && admin === 1234 ){	  	  
       user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
 	  var f = (user_id.length);	  		  
-		 for (var j = 0; j <= f-2; j++) {
+		 for (var j = 1; j <= f-1; j++) {
 		   if (user_id[j] === user_id_t  ){
 		     myResult = '此身分已有，請換別的稱呼';
 		     user_id_t ='';	
@@ -164,7 +162,7 @@ function processText(myMsg){
   else if (txt_c ==='刪除門禁卡' && admin === 1234){	  	  
       user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
 	  var f = (user_id.length);	  		  
-		 for (var j = 0; j <= f-2; j++) {
+		 for (var j = 1; j <= f-1; j++) {
 		   if (user_id[j] === user_id_t  ){           
                if (f === 1)
                  myResult= '只剩' + user_id.join('')  +'，無法刪除!';
@@ -224,19 +222,19 @@ function setIoT(fromMsg){
    }
    
    else if (fromMsg==='開燈'){    
-         if (!deviceIsConnected2())
+         if (!deviceIsConnected())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已開啟!';
-		 relay2.on();		 	            
+		 kk.on();		 	            
         }     
    }
    else if (fromMsg==='關燈'){    
-         if (!deviceIsConnected2())
+         if (!deviceIsConnected())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已關閉!';
-		 relay2.off();		 	            
+		 kk.off();		 	            
         }     
    }    
    return returnResult;
@@ -256,9 +254,11 @@ boardReady(myBoardVars, true, function (board) {
    rfid.read();     
    rfid.on("enter",function(_uid){
    rfid._uid = _uid;
-   if (add ===  '新增' ){	   
+   
+   if (add ===  '新增' ){
+     getdata();	   
 	   var f = (card_uid.length);	  		  
-		 for (var j = 0; j <= f-2; j++) {
+		 for (var j = 1; j <= f-1; j++) {
 		   if (card_uid[j] === rfid._uid  ){
 		     bot.push('U79964e56665caa1f44bb589160964c84', '此門禁卡已存在!');	
 		     user_id_t ='';	
@@ -271,7 +271,7 @@ boardReady(myBoardVars, true, function (board) {
 	     card_uid.splice(0,0,rfid._uid);
 	     door.splice(0,0,'在家中');
 		 people = people + 1
-	     bot.push('U79964e56665caa1f44bb589160964c84', user_id_t +'/新增成功!');
+	     bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
 	     user_id_t ='';	
          add = '';	
@@ -282,7 +282,7 @@ boardReady(myBoardVars, true, function (board) {
  //判斷卡號與對應身分及目前動作	
   else{   
      var f = (card_uid.length);	  		  
-		 for (var j = 0; j <= f-2; j++) {
+		 for (var j = 1; j <= f-1; j++) {
 		   if (card_uid[j] === rfid._uid  ){
 		       if (door[j] === '在家中'){
 	              people = people -1 		 
@@ -294,7 +294,7 @@ boardReady(myBoardVars, true, function (board) {
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
 				}
-			 appendMyRow(); 	//上傳資料
+			 //appendMyRow(); 	//上傳資料
 			 relay.on();
 	         setTimeout(function () {                   
 	         relay.off();
@@ -311,14 +311,6 @@ boardReady(myBoardVars, true, function (board) {
 });  
    });
    
-boardReady(myBoardVarss, true, function (board) {
-   myBoard2=board;
-   board.systemReset();
-   board.samplingInterval = 50;
-   relay2 = getRelay(board, 5);
-   relay2.off();
-}); 
- 
  
 //設定蜂鳴器音樂函示
 function buzzer_music(m) {
@@ -357,14 +349,7 @@ function deviceIsConnected(){
    else
       return myBoard.isConnected;
 }
-function deviceIsConnected2(){
-   if (myBoard2===undefined)
-      return false;
-   else if (myBoard2.isConnected===undefined)
-      return false;
-   else
-      return myBoard2.isConnected;
-}
+
 
 const app = express();
 const linebotParser = bot.parser();
