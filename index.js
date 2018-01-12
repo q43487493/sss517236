@@ -79,7 +79,7 @@ getdata() ; //讀取試算表
 		door,
         [people,'總人數'],	
 		[new Date(),'時間'],
-		[],
+		['--------------',],
 	   ]                         
      }
    };
@@ -130,7 +130,6 @@ bot.on('message', function(event) {
  
 
 function processText(myMsg){
-   getdata();
    var myResult=setIoT(myMsg);  
    var txt_p =  myMsg.indexOf(':') + 1;   
    var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
@@ -255,8 +254,7 @@ boardReady(myBoardVars, true, function (board) {
    rfid.on("enter",function(_uid){
    rfid._uid = _uid;
    
-   if (add ===  '新增' ){
-     getdata();	   
+   if (add ===  '新增' ){   
 	   var f = (card_uid.length);	  		  
 		 for (var j = 0; j <= f-2; j++) {
 		   if (card_uid[j] === rfid._uid  ){
@@ -294,7 +292,7 @@ boardReady(myBoardVars, true, function (board) {
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
 				}
-			 //appendMyRow(); 	//上傳資料
+			 appendMyRow(); 	//上傳資料
 			 relay.on();
 	         setTimeout(function () {                   
 	         relay.off();
