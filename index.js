@@ -14,13 +14,10 @@ var bot = linebot({
   channelAccessToken: 'zI7eLUJ3FMOUVClhYjI8GoDhsyWrNLxB6r0NY7S97MpiWISC6e1RxIQybp0LbDnvCUt9uqU7Jj5gwqFgnJHbGY0bfYOrCMc9UX3eZVUEAhcdUuI66ai/i1I8p1fMyEO0yklI/6NupLaiUH8E+t5IbAdB04t89/1O/w1cDnyilFU='
 });
 
-//底下輸入client_secret.json檔案的內容
 var myClientSecret={"installed":{"client_id":"479898043718-lup8n5jqu4966evfttbaqi54u8g0rk4c.apps.googleusercontent.com","project_id":"praxis-granite-191610","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"Xw2vL6zIcBNxtKr8o381KQWo","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
 var auth = new googleAuth();
 var oauth2Client = new auth.OAuth2(myClientSecret.installed.client_id,myClientSecret.installed.client_secret, myClientSecret.installed.redirect_uris[0]);
-//底下輸入sheetsapi.json檔案的內容
 oauth2Client.credentials ={"access_token":"ya29.Gls9BQU9XIxCcwKmh8x1DNBFw7KtZUtnz5yWIzzdNkGlLIuVSHwavOwF1brXAauVGCY5CLB6_bI_hi6ceK7vGrLuHsUxU5AHjMCUcNS6U42xvMxMmHHOct6nV23A","refresh_token":"1/ClJ-30WGZ8vjXlkHGKxkDw6yzVnowbf2pseYf2iMrk8","token_type":"Bearer","expiry_date":1515497815494}
-//試算表的ID，引號不能刪掉
 
 var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';
 
@@ -35,12 +32,11 @@ var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
 var door = [] ;  //不在家or在家中/列表 
 var user_id_t = '' ;  //暫存身分
-var add = '' ;       //新增用
+var add = '' ;       //新增
 var admin = 0 ;     //管理員
 
 
 getdata() ; //讀取試算表
-//appendMyRow();  //上傳試算表
 //讀取試算表的函式
   function getdata() {
   var sheets = google.sheets('v4');
@@ -50,7 +46,7 @@ getdata() ; //讀取試算表
      range:encodeURI('資料庫'),  //試算表-工作表名稱
   }, function(err, response) {	
   var data = response.values;	  // 讀取資料以二維陣列表示  [列][攔]
-   if (err) {             //沒有讀取到試算表
+   if (err) {            
      console.log('讀取資料庫的API產生問題：' + err);
      return;
     }   	 
@@ -287,14 +283,16 @@ boardReady(myBoardVars, true, function (board) {
 		       if (door[j] === '在家中'){
 	              people = people -1 		 
 			      bot.push('U79964e56665caa1f44bb589160964c84', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
+				  bot.push('U521b36e35725cf42a964ed5394806142', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
 			      door[j] = '不在家';			 
 			    }
 			   else if (door[j] === '不在家'){
 				 people = people + 1 		 
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
+				 bot.push('U521b36e35725cf42a964ed5394806142','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
 				}
-			 appendMyRow(); 	//上傳資料
+			 appendMyRow(); 	
 			 relay.on();
 	         setTimeout(function () {                   
 	         relay.off();
@@ -347,7 +345,7 @@ function buzzer_music(m) {
 }
   
 
-//以下為檢查webduino是否已連線成功的函式
+//檢查webduino是否已連線成功的函式
 function deviceIsConnected(){
    if (myBoard===undefined)
       return false;
@@ -369,7 +367,7 @@ const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
 
-//因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
+//express 預設走 port 3000，而 heroku 上預設卻不是，透過下列程式轉換
 var server = app.listen(process.env.PORT || 8080, function() {
   var port = server.address().port;
   console.log("App now running on port", port);
