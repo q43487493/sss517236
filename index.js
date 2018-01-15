@@ -22,6 +22,8 @@ oauth2Client.credentials ={"access_token":"ya29.Gls9BQU9XIxCcwKmh8x1DNBFw7KtZUtn
 var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';
 
 
+//new Date().toLocaleString()
+
 
 var myBoardVars={device: '8QwwV'}; //Webduino的device id
 var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
@@ -183,7 +185,7 @@ function processText(myMsg){
 		}     	   
     }   
    else if (myMsg==='目前家中人數')	   
-       myResult='目前家中有' + people +'人' + new Date().toLocaleString() ;   
+       myResult='目前家中有' + people +'人'  ;   
    else if (myMsg==='連線狀況')
 	  if (!deviceIsConnected())
          myResult='裝置未連接！';
