@@ -183,7 +183,7 @@ function processText(myMsg){
 		}     	   
     }   
    else if (myMsg==='目前家中人數')	   
-       myResult='目前家中有' + people +'人'  ;   
+       myResult='目前家中有' + people +'人' + new Date().toLocaleString() ;   
    else if (myMsg==='連線狀況')
 	  if (!deviceIsConnected())
          myResult='裝置未連接！';
