@@ -29,7 +29,7 @@ var myBoardVars={device: '8QwwV'}; //Webduino的device id
 var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;
 var myBoard2;
-var people = 0 ;               //家庭人數 
+var people  ;               //家庭人數 
 var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
 var door = [] ;  //不在家or在家中/列表 
@@ -208,7 +208,7 @@ function processText(myMsg){
 function setIoT(fromMsg){
    var returnResult='';  
    
-   if (fromMsg==='1234' && admin === 5688){    
+   if (fromMsg==='5688' && admin === 1234){    
          if (!deviceIsConnected())
          returnResult='裝置未連接！';
       else{
