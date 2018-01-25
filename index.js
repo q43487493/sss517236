@@ -245,7 +245,7 @@ boardReady(myBoardVars, true, function (board) {
    myBoard=board;
    board.systemReset();
    board.samplingInterval = 250;
-   relay = getRelay(board, 5);
+   relay = getRelay(board, 7);
    relay.off();
    buzzer = getBuzzer(board, 2);  
    rfid = getRFID(board);
