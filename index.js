@@ -195,17 +195,18 @@ function processText(myMsg){
       }
 	  
 	else if (myMsg === '1234'){
-		if (!deviceIsConnected())
+	    if (!deviceIsConnected()){
          returnResult='裝置未連接，無法啟用!';
+		} 
        else{
-		  admin = 1234 ;
+		 admin = 1234 ;
 	     myResult='管理員權限已開啟，權限啟動時間為1分鐘\n 管理功能: \n 1.啟動緊急開關碼5688 \n 2.新增門禁卡:XX \n 3.刪除門禁卡:XX \n XX 為 身分';  
 	     setTimeout(function () { 
-	     admin = 0 ;
-		 bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!');	
-		 bot.push('U521b36e35725cf42a964ed5394806142', '管理權限啟動時間結束!');
-        }, 1000 * 60);	      
-      }		
+	         admin = 0 ;
+		     bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!');	
+		     bot.push('U521b36e35725cf42a964ed5394806142', '管理權限啟動時間結束!');
+            } , 1000 * 60);	      
+        }		
 	 
 	}		
    return myResult;
