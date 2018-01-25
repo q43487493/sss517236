@@ -14,22 +14,22 @@ var bot = linebot({
   channelAccessToken: 'zI7eLUJ3FMOUVClhYjI8GoDhsyWrNLxB6r0NY7S97MpiWISC6e1RxIQybp0LbDnvCUt9uqU7Jj5gwqFgnJHbGY0bfYOrCMc9UX3eZVUEAhcdUuI66ai/i1I8p1fMyEO0yklI/6NupLaiUH8E+t5IbAdB04t89/1O/w1cDnyilFU='
 });
 
+//google權杖及試算表
 var myClientSecret={"installed":{"client_id":"479898043718-lup8n5jqu4966evfttbaqi54u8g0rk4c.apps.googleusercontent.com","project_id":"praxis-granite-191610","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"Xw2vL6zIcBNxtKr8o381KQWo","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
-var auth = new googleAuth();
 var oauth2Client = new auth.OAuth2(myClientSecret.installed.client_id,myClientSecret.installed.client_secret, myClientSecret.installed.redirect_uris[0]);
 oauth2Client.credentials ={"access_token":"ya29.Gls9BQU9XIxCcwKmh8x1DNBFw7KtZUtnz5yWIzzdNkGlLIuVSHwavOwF1brXAauVGCY5CLB6_bI_hi6ceK7vGrLuHsUxU5AHjMCUcNS6U42xvMxMmHHOct6nV23A","refresh_token":"1/ClJ-30WGZ8vjXlkHGKxkDw6yzVnowbf2pseYf2iMrk8","token_type":"Bearer","expiry_date":1515497815494}
 
-var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';
+var auth = new googleAuth();
 
+var mySheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0'; //試算表id
 
-//new Date().toLocaleString()
 
 
 var myBoardVars={device: '8QwwV'}; //Webduino的device id
 var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;
 var myBoard2;
-var people  ;               //家庭人數 
+var people  ;       //家庭人數 
 var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
 var door = [] ;  //不在家or在家中/列表 
@@ -195,13 +195,18 @@ function processText(myMsg){
       }
 	  
 	else if (myMsg === '1234'){
-	 admin = 1234 ;
-	 myResult='管理員權限已開啟，權限啟動時間為1分鐘\n 管理功能: \n 1.啟動緊急開關碼5688 \n 2.新增門禁卡:XX \n 3.刪除門禁卡:XX \n XX 為 身分';  
-	 setTimeout(function () { 
+		if (!deviceIsConnected())
+         returnResult='裝置未連接，無法啟用!';
+       else{
+		  admin = 1234 ;
+	     myResult='管理員權限已開啟，權限啟動時間為1分鐘\n 管理功能: \n 1.啟動緊急開關碼5688 \n 2.新增門禁卡:XX \n 3.刪除門禁卡:XX \n XX 為 身分';  
+	     setTimeout(function () { 
 	     admin = 0 ;
 		 bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!');	
 		 bot.push('U521b36e35725cf42a964ed5394806142', '管理權限啟動時間結束!');
-        }, 1000 * 60);	
+        }, 1000 * 60);	      
+      }		
+	 
 	}		
    return myResult;
 }
