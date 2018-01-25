@@ -152,7 +152,8 @@ function processText(myMsg){
 	    }   
      setTimeout(function () { 
 	     if (add === '新增') {
-             bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');			 
+             bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');
+             bot.push('U521b36e35725cf42a964ed5394806142', '新增時間已過!');			 
              user_id_t ='';	
              add = '' ;	
 		    }
@@ -199,6 +200,7 @@ function processText(myMsg){
 	 setTimeout(function () { 
 	     admin = 0 ;
 		 bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!');	
+		 bot.push('U521b36e35725cf42a964ed5394806142', '管理權限啟動時間結束!');
         }, 1000 * 60);	
 	}		
    return myResult;
