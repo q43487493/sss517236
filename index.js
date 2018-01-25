@@ -268,7 +268,7 @@ boardReady(myBoardVars, true, function (board) {
 	     user_id.splice(0,0,user_id_t);
 	     card_uid.splice(0,0,rfid._uid);
 	     door.splice(0,0,'在家中');
-		 people = people + 1
+		 people = people + 1 ;
 	     bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
 	     user_id_t ='';	
@@ -283,13 +283,13 @@ boardReady(myBoardVars, true, function (board) {
 		 for (var j = 0; j <= f-2; j++) {
 		   if (card_uid[j] === rfid._uid  ){
 		       if (door[j] === '在家中'){
-	              people = people -1 		 
+	              people = people -1 ;		 
 			      bot.push('U79964e56665caa1f44bb589160964c84', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
 				  bot.push('U521b36e35725cf42a964ed5394806142', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
 			      door[j] = '不在家';			 
 			    }
 			   else if (door[j] === '不在家'){
-				 people = people + 1 		 
+				 people = people + 1;  		 
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 				 bot.push('U521b36e35725cf42a964ed5394806142','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
@@ -305,6 +305,7 @@ boardReady(myBoardVars, true, function (board) {
         }
      if (rfid._uid != ''){
 	     bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + rfid._uid);
+		 bot.push('U521b36e35725cf42a964ed5394806142','有外來人士感應\n卡號:' + rfid._uid);
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	 
         }
 	} 
