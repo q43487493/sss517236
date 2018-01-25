@@ -244,9 +244,8 @@ function setIoT(fromMsg){
 boardReady(myBoardVars, true, function (board) {
    myBoard=board;
    board.systemReset();
-   board.samplingInterval = 50;
+   board.samplingInterval = 250;
    relay = getRelay(board, 5);
-   relay_2 = getRelay(board,5);
    relay.off();
    buzzer = getBuzzer(board, 2);  
    rfid = getRFID(board);
