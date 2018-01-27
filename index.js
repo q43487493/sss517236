@@ -15,7 +15,7 @@ var bot = linebot({
 });
 
 
-//Google的憑證及權杖
+//google與試算表權杖
 var myClientSecret={"installed":{"client_id":"479898043718-lup8n5jqu4966evfttbaqi54u8g0rk4c.apps.googleusercontent.com","project_id":"praxis-granite-191610","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"Xw2vL6zIcBNxtKr8o381KQWo","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
 var auth = new googleAuth();
 var oauth2Client = new auth.OAuth2(myClientSecret.installed.client_id,myClientSecret.installed.client_secret, myClientSecret.installed.redirect_uris[0]);
@@ -198,7 +198,7 @@ function processText(myMsg){
 	  
 	else if (myMsg === '1234'){
 	    if (!deviceIsConnected()){
-         myResult='裝置未連接，無法啟用!';
+         returnResult='裝置未連接，無法啟用!';
 		} 
        else{
 		 admin = 1234 ;
@@ -235,7 +235,7 @@ function setIoT(fromMsg){
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已開啟!';
-		 relay2.on();		 	            
+		 //relay2.on();		 	            
         }     
    }
    else if (fromMsg==='關燈'){    
@@ -243,7 +243,7 @@ function setIoT(fromMsg){
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已關閉!';
-		 relay2.off();		 	            
+		 //relay2.off();		 	            
         }     
    }    
    return returnResult;
@@ -262,11 +262,26 @@ boardReady(myBoardVars, true, function (board) {
    rfid.read();     
    rfid.on("enter",function(_uid){
    rfid._uid = _uid;
+   read_rfid(_uid);
+  
+});  
+   });
    
-   if (add ===  '新增' ){   
+boardReady(myBoardVars2, true, function (board) {
+   myBoard2=board;
+   board.systemReset();
+   board.samplingInterval = 50;
+   //relay2 = getRelay(board, 5);
+   //relay2.off();
+}); 
+ 
+ //RFID判斷副程式//未測試
+function read_rfid(UID){
+	 
+	if (add ===  '新增' ){   
 	   var f = (card_uid.length);	  		  
 		 for (var j = 0; j <= f-2; j++) {
-		   if (card_uid[j] === rfid._uid  ){
+		   if (card_uid[j] === UID  ){
 		     bot.push('U79964e56665caa1f44bb589160964c84', '此門禁卡已存在!');	
 		     user_id_t ='';	
              add = '' ;
@@ -276,7 +291,7 @@ boardReady(myBoardVars, true, function (board) {
 	 if (add === '新增'){	
 	     people = people + 1 ;
 	     user_id.splice(0,0,user_id_t);
-	     card_uid.splice(0,0,rfid._uid);
+	     card_uid.splice(0,0,UID);
 	     door.splice(0,0,'在家中');
 	     bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
@@ -290,7 +305,7 @@ boardReady(myBoardVars, true, function (board) {
   else{   
      var f = (card_uid.length);	  		  
 		 for (var j = 0; j <= f-2; j++) {
-		   if (card_uid[j] === rfid._uid  ){
+		   if (card_uid[j] === UID  ){
 		       if (door[j] === '在家中'){
 	              people = people -1 ;		 
 			      bot.push('U79964e56665caa1f44bb589160964c84', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
@@ -312,22 +327,16 @@ boardReady(myBoardVars, true, function (board) {
 			 break;
 	        }		
         }
-     if (rfid._uid != ''){
-	     bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + rfid._uid);
-		 bot.push('U521b36e35725cf42a964ed5394806142','有外來人士感應\n卡號:' + rfid._uid);
+     if (UID != ''){
+	     bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + UID);
+		 bot.push('U521b36e35725cf42a964ed5394806142','有外來人士感應\n卡號:' + UID);
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	 
         }
-	} 
-});  
-   });
-   
-boardReady(myBoardVars2, true, function (board) {
-   myBoard2=board;
-   board.systemReset();
-   board.samplingInterval = 50;
-   relay2 = getRelay(board, 5);
-   relay2.off();
-}); 
+	}
+	
+	 
+ }
+ 
  
 //設定蜂鳴器音樂函示
 function buzzer_music(m) {
