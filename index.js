@@ -273,6 +273,10 @@ boardReady(myBoardVars2, true, function (board) {
    board.samplingInterval = 50;
    relay2 = getRelay(board, 5);
    relay2.off();
+   g3 = getG3(board, 2,3);
+   g3.read(function(evt){
+	 bot.push('U79964e56665caa1f44bb589160964c84',  '目前pm25:'  + g3.pm25 );	    
+  }, 1000);
 }); 
  
  //RFID判斷副程式//未測試
