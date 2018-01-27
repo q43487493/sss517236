@@ -380,10 +380,10 @@ function deviceIsConnected(){
 function deviceIsConnected2(){
    if (myBoard2===undefined)
       return false;
-   else if (myBoard.isConnected===undefined)
+   else if (myBoard2.isConnected===undefined)
       return false;
    else
-      return myBoard.isConnected;
+      return myBoard2.isConnected;
 }
 
 const app = express();
