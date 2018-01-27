@@ -231,19 +231,21 @@ function setIoT(fromMsg){
    }
    
    else if (fromMsg==='開燈'){    
-         if (!deviceIsConnected2())
+         /* if (!deviceIsConnected2())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已開啟!';
-		 //relay2.on();		 	            
-        }     
+		 relay2.on();		 	            
+        } */  
+         returnResult='電燈已開啟!';
+		 //relay2.on();			
    }
    else if (fromMsg==='關燈'){    
          if (!deviceIsConnected2())
          returnResult='裝置未連接！';
       else{
          returnResult='電燈已關閉!';
-		 //relay2.off();		 	            
+		 relay2.off();		 	            
         }     
    }    
    return returnResult;
