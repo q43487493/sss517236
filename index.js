@@ -268,7 +268,7 @@ boardReady(myBoardVars, true, function (board) {
    });
    
 boardReady(myBoardVars2, true, function (board) {
-   myBoard2=board;
+   //myBoard2=board;
    board.systemReset();
    board.samplingInterval = 50;
    //relay2 = getRelay(board, 5);
