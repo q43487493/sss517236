@@ -238,7 +238,7 @@ function setIoT(fromMsg){
 		 relay2.on();		 	            
         } */  
          returnResult='電燈已開啟!';
-		 //relay2.on();			
+		 relay2.on();			
    }
    else if (fromMsg==='關燈'){    
          if (!deviceIsConnected2())
