@@ -275,7 +275,10 @@ boardReady(myBoardVars2, true, function (board) {
    relay2.off();
    g3 = getG3(board, 2,3);
    g3.read(function(evt){
-	 bot.push('U79964e56665caa1f44bb589160964c84',  '目前pm25:'  + g3.pm25 );	    
+	 bot.push('U79964e56665caa1f44bb589160964c84',  '目前pm25:'  + g3.pm25 );
+	 bot.push('U521b36e35725cf42a964ed5394806142',  '目前pm25:'  + g3.pm25 );
+
+	 
   }, 1000);
 }); 
  
