@@ -268,11 +268,11 @@ boardReady(myBoardVars, true, function (board) {
    });
    
 boardReady(myBoardVars2, true, function (board) {
-   //myBoard2=board;
+   myBoard2=board;
    board.systemReset();
    board.samplingInterval = 50;
-   //relay2 = getRelay(board, 5);
-   //relay2.off();
+   relay2 = getRelay(board, 5);
+   relay2.off();
 }); 
  
  //RFID判斷副程式//未測試
