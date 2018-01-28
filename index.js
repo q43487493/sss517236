@@ -198,7 +198,7 @@ function processText(myMsg){
 	  
 	else if (myMsg === '1234'){
 	    if (!deviceIsConnected()){
-         returnResult='裝置未連接，無法啟用!';
+         myResult='裝置未連接，無法啟用!';
 		} 
        else{
 		 admin = 1234 ;
