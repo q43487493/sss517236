@@ -37,9 +37,67 @@ var door = [] ;  //不在家or在家中/列表
 var user_id_t = '' ;  //暫存身分
 var add = '' ;       //新增
 var admin = 0 ;     //管理員
-
+var line_id  ;
 
 getdata() ; 
+
+
+//LineBot處理文字訊息的函式
+bot.on('message', function(event) {
+   var bot_txt='';
+   line_id = event.source.userId ; 
+   if (event.message.type === 'text') {
+      bot_txt=botText(event.message.text);
+   } 
+
+   event.reply(bot_txt).then(function(data) {   
+      console.log('訊息已傳送！');   // success 
+      console.log(line_id);
+   }).catch(function(error) {
+      console.log('error');       // error 
+   });
+});
+ 
+
+// 連接開發版以及開發版與各裝置連接的函示
+boardReady(myBoardVars, true, function (board) {
+   myBoard=board;
+   board.systemReset();
+   board.samplingInterval = 250;
+   relay = getRelay(board, 7);
+   relay.off();
+   buzzer = getBuzzer(board, 2);  
+   rfid = getRFID(board);
+   rfid.read();     
+   rfid.on("enter",function(_uid){
+   rfid._uid = _uid;
+   read_RFID(_uid);
+  
+});  
+   });
+   
+boardReady(myBoardVars2, true, function (board) {
+   myBoard2=board;
+   board.systemReset();
+   board.samplingInterval = 50;
+   relay2 = getRelay(board, 5);
+   relay2.off();
+   /* g3 = getG3(board, 2,3);
+   g3.read(function(evt){
+   bot.push('U79964e56665caa1f44bb589160964c84',  '目前pm25:'  + g3.pm25 ); 
+  }, 1000 * 5 ); */
+}); 
+
+const app = express();
+const linebotParser = bot.parser();
+app.post('/', linebotParser);
+
+//express 預設走 port 3000，而 heroku 上預設卻不是，透過下列程式轉換
+var server = app.listen(process.env.PORT || 8080, function() {
+  var port = server.address().port;
+  console.log("App now running on port", port);
+});
+
 
 //讀取試算表的函式
   function getdata() {
@@ -48,18 +106,18 @@ getdata() ;
      auth: oauth2Client,
      spreadsheetId: mySheetId,
      range:encodeURI('資料庫'),  //試算表-工作表名稱
-  }, function(err, response) {	
-  var data = response.values;	  // 讀取資料以二維陣列表示  [列][攔]
+  }, function(err, response) {  
+  var data = response.values;   // 讀取資料以二維陣列表示  [列][攔]
    if (err) {            
      console.log('讀取資料庫的API產生問題：' + err);
      return;
-    }   	 
-   else {	   
-     var f = (data.length);	 
+    }      
+   else {    
+     var f = (data.length);  
          card_uid = data[f-6];  //0
-         user_id =  data[f-5];	//1
-		 door = data[f-4];      //2
-	     people = data[f-3][0];	//3,1
+         user_id =  data[f-5];  //1
+     door = data[f-4];      //2
+       people = data[f-3][0]; //3,1
          console.log('資料庫已取得完畢！');
         } 
   });
@@ -78,11 +136,11 @@ getdata() ;
         "values": [      
         card_uid,      //第一列  [第一欄,第二欄,.... ]
         user_id,      //第二列  
-		door,
-        [people,'總人數'],	
-		[new Date(),'時間'],
-		['--------------',],
-	   ]                         
+    door,
+        [people,'總人數'], 
+    [new Date(),'時間'],
+    ['--------------',],
+     ]                         
      }
    };
    var sheets = google.sheets('v4');
@@ -95,7 +153,7 @@ getdata() ;
 } 
 
 
-//尋找字元函式
+//字元處理函式
  function text_get_substring(text, where1, at1, where2, at2) {
   function getAt(where, at) {
     if (where == 'FROM_START') {
@@ -116,22 +174,7 @@ getdata() ;
   return text.slice(at1, at2);
 }
 
-//LineBot處理文字訊息的函式
-bot.on('message', function(event) {
-   var myReply='';
-   if (event.message.type === 'text') {
-      myReply=processText(event.message.text);
-   } 
-   console.log('sticker');
-   event.reply(myReply).then(function(data) {   
-      console.log('訊息已傳送！');   // success 
-   }).catch(function(error) {
-      console.log('error');       // error 
-   });
-});
- 
-
-function processText(myMsg){
+function botText(myMsg){
    var myResult=setIoT(myMsg);  
    var txt_p =  myMsg.indexOf(':') + 1;   
    var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
@@ -161,7 +204,7 @@ function processText(myMsg){
 		    }
         }, 1000 * 10);		       	   
     }        
-  else if (txt_c ==='刪除門禁卡' && admin === 1234){	  	  
+   else if (txt_c ==='刪除門禁卡' && admin === 1234){	  	  
       user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
 	  var f = (user_id.length);	  		  
 		 for (var j = 0; j <= f-2; j++) {
@@ -196,21 +239,22 @@ function processText(myMsg){
          myResult='裝置連接中！';        
       }
 	  
-	else if (myMsg === '1234'){
+	 else if (myMsg === '1234'){
 	    if (!deviceIsConnected()){
          myResult='裝置未連接，無法啟用!';
-		} 
-       else{
-		 admin = 1234 ;
-	     myResult='管理員權限已開啟，權限啟動時間為1分鐘\n 管理功能: \n 1.啟動緊急開關碼5688 \n 2.新增門禁卡:XX \n 3.刪除門禁卡:XX \n XX 為 身分';  
-	     setTimeout(function () { 
-	         admin = 0 ;
-		     bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!');	
-		     bot.push('U521b36e35725cf42a964ed5394806142', '管理權限啟動時間結束!');
+        } 
+      else{
+		    admin = 1234 ;
+	      myResult='管理員權限已開啟，權限啟動時間為1分鐘\n 管理功能: \n 1.新增門禁卡:XX \n 2.刪除門禁卡:XX \n XX為身分';  
+	      setTimeout(function () { 
+	      admin = 0 ;
+		    bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!');	
             } , 1000 * 60);	      
-        }		
-	 
-	}		
+        }	
+   	  }
+   else{
+    myResult = '謝謝回復!' ;
+   } 
    return myResult;
 }
 
@@ -250,37 +294,10 @@ function setIoT(fromMsg){
 }
 
 
-// 連接開發版以及開發版與各裝置連接的函示
-boardReady(myBoardVars, true, function (board) {
-   myBoard=board;
-   board.systemReset();
-   board.samplingInterval = 250;
-   relay = getRelay(board, 7);
-   relay.off();
-   buzzer = getBuzzer(board, 2);  
-   rfid = getRFID(board);
-   rfid.read();     
-   rfid.on("enter",function(_uid){
-   rfid._uid = _uid;
-   read_rfid(_uid);
-  
-});  
-   });
-   
-boardReady(myBoardVars2, true, function (board) {
-   myBoard2=board;
-   board.systemReset();
-   board.samplingInterval = 50;
-   relay2 = getRelay(board, 5);
-   relay2.off();
-   /* g3 = getG3(board, 2,3);
-   g3.read(function(evt){
-	 bot.push('U79964e56665caa1f44bb589160964c84',  '目前pm25:'  + g3.pm25 ); 
-  }, 1000 * 5 ); */
-}); 
+
  
  //RFID判斷副程式//未測試
-function read_rfid(UID){
+function read_RFID(UID){
 	 
 	if (add ===  '新增' ){   
 	   var f = (card_uid.length);	  		  
@@ -313,13 +330,11 @@ function read_rfid(UID){
 		       if (door[j] === '在家中'){
 	              people = people -1 ;		 
 			      bot.push('U79964e56665caa1f44bb589160964c84', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
-				  bot.push('U521b36e35725cf42a964ed5394806142', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
 			      door[j] = '不在家';			 
 			    }
 			   else if (door[j] === '不在家'){
 				 people = people + 1;  		 
 			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
-				 bot.push('U521b36e35725cf42a964ed5394806142','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
 			     door[j] = '在家中';												
 				}
 			 appendMyRow(); 	
@@ -334,12 +349,9 @@ function read_rfid(UID){
 
      if (UID != ''){
 	     bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + UID);
-		 bot.push('U521b36e35725cf42a964ed5394806142','有外來人士感應\n卡號:' + UID);
 	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	 
         }
-	}
-	
-	 
+	} 
  }
  
  
@@ -389,12 +401,4 @@ function deviceIsConnected2(){
       return myBoard2.isConnected;
 }
 
-const app = express();
-const linebotParser = bot.parser();
-app.post('/', linebotParser);
 
-//express 預設走 port 3000，而 heroku 上預設卻不是，透過下列程式轉換
-var server = app.listen(process.env.PORT || 8080, function() {
-  var port = server.address().port;
-  console.log("App now running on port", port);
-});
