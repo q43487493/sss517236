@@ -327,10 +327,11 @@ function read_rfid(UID){
 	         setTimeout(function () {                   
 	         relay.off();
              }, 1000 * 3);
-			 rfid._uid = '' ;
+			  UID  = '' ;
 			 break;
 	        }		
         }
+
      if (UID != ''){
 	     bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + UID);
 		 bot.push('U521b36e35725cf42a964ed5394806142','有外來人士感應\n卡號:' + UID);
