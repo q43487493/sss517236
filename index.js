@@ -330,13 +330,17 @@ function read_RFID(UID){
 		   if (card_uid[j] === UID  ){
 		       if (door[j] === '在家中'){
 	              people = people -1 ;		 
-			      bot.push('U79964e56665caa1f44bb589160964c84', '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
 			      door[j] = '不在家';			 
+            for (var t = 0 ; t<= f-2 ; t++){
+            bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[t]  +'" 出門，家裡人數:' + people  + '人在家' );   
+          }   
 			    }
 			   else if (door[j] === '不在家'){
 				 people = people + 1;  		 
-			     bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );
-			     door[j] = '在家中';												
+			     door[j] = '在家中';	           	
+           for (var t = 0 ; t<= f-2 ; t++){
+            bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[t]  +'" 回家，家裡人數:' + people  + '人在家' );   
+          }							
 				}
 			 appendMyRow(); 	
 			 relay.on();
@@ -356,36 +360,40 @@ function read_RFID(UID){
  }
  
  function read_line_id(UID){  
-    var text ;  
-     var f = (line_id.length);         
-     for (var j = 0; j <= f-2; j++) {
-       if (line_id[j] === UID  ){
-           if (door[j] === '在家中'){
-                people = people -1 ;     
-            text = user_id[j]  +'" 出門，家裡人數:' + people  + '人在家';
-            door[j] = '不在家';       
-          }
-         else if (door[j] === '不在家'){
-         people = people + 1;      
-           text = user_id[j]  +'" 回家，家裡人數:' + people  + '人在家';
-           door[j] = '在家中';                       
-        }
-       appendMyRow();   
-       relay.on();
-           setTimeout(function () {                   
-           relay.off();
-             }, 1000 * 3);
-        UID  = '' ;
-       break;
-          }   
-        }
+var text ;  
+var f = (line_id.length);         
+for (var j = 0; j <= f-2; j++) {
+if (line_id[j] === UID  ){
+if (door[j] === '在家中'){
+people = people -1 ;     
+door[j] = '不在家';   
+for (var t = 0 ; t<= f-2 ; t++){
+text = '"' + user_id[t]  +'" 出門，家裡人數:' + people  + '人在家';
+}
+}
+else if (door[j] === '不在家'){
+people = people + 1;  
+door[j] = '在家中'; 
+for (var t = 0 ; t<= f-2 ; t++){
+text = '"' +  user_id[t]  +'" 回家，家裡人數:' + people  + '人在家';
+}                
+}
+appendMyRow();   
+relay.on();
+setTimeout(function () {                   
+relay.off();
+}, 1000 * 3);
+UID  = '' ;
+break;
+}   
+}
 
-     if (UID != ''){
-       bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\nline_id:' + UID);
-       buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );  
-        }
-  return text ;
- }
+if (UID != ''){
+bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\nline_id:' + UID);
+buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );  
+}
+return text ;
+}
 
  
 //設定蜂鳴器音樂函示
