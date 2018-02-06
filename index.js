@@ -172,7 +172,7 @@ function botText(myMsg){
   else if (myMsg === '1234'){
     if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){      
       admin = 1234 ;
-      myResult='管理權限已開啟，權限啟動時間為60秒\n 管理功能: \n 1.新增LINE使用者 \n 2.刪除LINE使用者 \n 3.新增門禁卡:XX \n 4.刪除門禁卡:XX \n XX為身分';  
+      myResult='管理權限已開啟，權限啟動時間為60秒\n 管理功能: \n 1.新增LINE使用者:XX \n 2.刪除LINE使用者:XX \n 3.新增門禁卡:XX \n 4.刪除門禁卡:XX \n XX為身分';  
       setTimeout(function () { 
         admin = 0 ;
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
@@ -201,7 +201,7 @@ function botText(myMsg){
       if (card_add === '新增') {
         bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');			 
         user_id_t ='';	
-        add = '' ;	
+        card_add = '' ;	
       }
     }, 1000 * 10);		       	   
   }        
@@ -210,12 +210,13 @@ function botText(myMsg){
     var f = (user_id.length);	  		  
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === user_id_t  ){           
-        if (f === 1)
-          myResult= '只剩' + user_id.join('')  +'，無法刪除!';
+        if (f === 2)
+          myResult= '只剩' + user_id[0]  +'，無法刪除!';
         else {
           if (door[j] === '在家中' ){
             people = people - 1 ;			    
           }
+          line_id.splice(j, 1);
           card_uid.splice(j, 1);
           user_id.splice(j, 1);
           door.splice(j, 1);				 
@@ -231,17 +232,79 @@ function botText(myMsg){
       user_id_t ='';  			
     }     	   
   }   
-  else if(myMsg === '新增LINE使用者'){
-    myResult= '請在15秒內讓要新增的LINE使用者傳送任何訊息!';
-    setTimeout(function () { 
-      if (card_add === '新增') {
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');      
+  else if(txt_c === '新增LINE使用者' && admin === 1234){
+    user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
+    var f = (user_id.length);         
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === user_id_t  ){
+        myResult = '此身分已有，請換別的稱呼';
         user_id_t ='';  
-        add = '' ;  
+        line_add = '' ;
+        break;
+      }           
+    }
+    if (user_id_t != ''){
+      myResult = '請在10秒內讓要新增的LINE使用者傳送159訊息!';
+      line_add = '新增' ;    
+    }   
+    setTimeout(function () { 
+      if (line_add === '新增') {
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');      
+        user_id_t ='' ;  
+        line_add = '' ;  
       }
-    }, 1000 * 15);
+    }, 1000 * 10);
   }
-  else if(myMsg === '刪除LINE使用者'){
+  else if (line_add === '新增' && myMsg === '123'){
+    var f = line_id.length;
+    for (var j = 0 ; j <=f-2 ; j++){
+      if (line_id[j] === line_id_t){
+        myResult = '此使用者已存在!';
+        user_id_t ='' ;  
+        line_add = '' ;
+        break;
+      }
+    }
+    if(line_add === '新增'){
+      people = people + 1 ;
+      user_id.splice(0,0,user_id_t);
+      card_uid.splice(0,0,"");
+      line_id.splice(0,0,line_id_t);
+      door.splice(0,0,'在家中');
+      bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
+      user_id_t ='';  
+      line_add = '';  
+      appendMyRow();
+    }
+  }
+  else if(txt_c === '刪除LINE使用者' && admin === 1234){
+    user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
+    var f = (user_id.length);         
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === user_id_t  ){           
+        if (f === 2)
+          myResult= '只剩' + user_id[0]  +'，無法刪除!';
+        else {
+          if (door[j] === '在家中' ){
+            people = people - 1 ;         
+          }
+          line_id.splice(j, 1);
+          card_uid.splice(j, 1);
+          user_id.splice(j, 1);
+          door.splice(j, 1);         
+          myResult= '刪除成功!';                                    
+        }
+        user_id_t ='';
+        appendMyRow();
+        break;
+      }   
+    }
+    if (user_id_t != ''){
+      myResult= '沒有這位使用者!';       
+      user_id_t ='';        
+    }
+  }
+  else if (line_dele === '刪除' && myMsg === '123'){
 
   }
   else if (myMsg==='目前家中人數')	   
