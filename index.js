@@ -381,7 +381,7 @@ function read_RFID(UID){
         }
 
      if (UID != ''){
-       text = '有外來人士感應\nline_uid:' + UID  ;
+       bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\nline_id:' + UID);
        buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );  
         }
   return text ;
