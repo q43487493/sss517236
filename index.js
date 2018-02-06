@@ -24,7 +24,7 @@ var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;  
 var myBoard2;
 var admin = 0 ;       //管理員
-var people  ;        //家庭總人數
+var people =0 ;        //家庭總人數
 var line_id = [] ;  // LINE 身分列表 
 var card_uid = [] ;//卡號列表
 var user_id =[] ; //門禁卡身分列表   
@@ -108,8 +108,8 @@ function getdata() {
       line_id = data[f-7]    //0
       card_uid = data[f-6];  //1
       user_id =  data[f-5];  //2
-      door = data[f-4];      //3
-      people = data[f-3][0]; //4,1
+      door = data[f-4];      //3     
+      people = parseFloat(data[f-3][0]); //4,1
       console.log('資料庫已取得完畢！');
     } 
   });
