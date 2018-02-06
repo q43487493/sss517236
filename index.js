@@ -30,14 +30,17 @@ var myBoardVars={device: '8QwwV'}; //Webduino的device id
 var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;
 var myBoard2;
-var people  ;       //家庭人數 
+var people  ;       //家庭人數
+var line_id = [] ; // line 身分陣列 
 var card_uid = [] ;//卡號列表
 var user_id =[];  //身分列表   
 var door = [] ;  //不在家or在家中/列表 
-var user_id_t = '' ;  //暫存身分
+var user_id_t = '' ;   //暫存身分
+var line_id_t = '' ;  //暫存line id
+var line_name = '' ;  //line身分名稱
 var add = '' ;       //新增
 var admin = 0 ;     //管理員
-var line_id  ;
+
 
 getdata() ; 
 
@@ -45,17 +48,19 @@ getdata() ;
 //LineBot處理文字訊息的函式
 bot.on('message', function(event) {
    var bot_txt='';
-   line_id = event.source.userId ; 
+   line_id_t = event.source.userId;
    if (event.message.type === 'text') {
       bot_txt=botText(event.message.text);
    } 
-
+   event.source.profile().then(function (profile) {
+     line_name = profile.displayName ;
+});
    event.reply(bot_txt).then(function(data) {   
       console.log('訊息已傳送！');   // success 
-      console.log(line_id);
    }).catch(function(error) {
       console.log('error');       // error 
    });
+
 });
  
 
@@ -114,10 +119,11 @@ var server = app.listen(process.env.PORT || 8080, function() {
     }      
    else {    
      var f = (data.length);  
-         card_uid = data[f-6];  //0
-         user_id =  data[f-5];  //1
-     door = data[f-4];      //2
-       people = data[f-3][0]; //3,1
+         line_id = data[f-7]    //0
+         card_uid = data[f-6];  //1
+         user_id =  data[f-5];  //2
+         door = data[f-4];      //3
+         people = data[f-3][0]; //4,1
          console.log('資料庫已取得完畢！');
         } 
   });
@@ -136,10 +142,10 @@ var server = app.listen(process.env.PORT || 8080, function() {
         "values": [      
         card_uid,      //第一列  [第一欄,第二欄,.... ]
         user_id,      //第二列  
-    door,
+        door,
         [people,'總人數'], 
-    [new Date(),'時間'],
-    ['--------------',],
+        [new Date(),'時間'],
+        ['--------------',],
      ]                         
      }
    };
@@ -197,8 +203,7 @@ function botText(myMsg){
 	    }   
      setTimeout(function () { 
 	     if (add === '新增') {
-             bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');
-             bot.push('U521b36e35725cf42a964ed5394806142', '新增時間已過!');			 
+             bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');			 
              user_id_t ='';	
              add = '' ;	
 		    }
@@ -255,6 +260,10 @@ function botText(myMsg){
    else{
     myResult = '謝謝回復!' ;
    } 
+
+    
+
+
    return myResult;
 }
 
@@ -262,15 +271,11 @@ function botText(myMsg){
 function setIoT(fromMsg){
    var returnResult='';  
    
-   if (fromMsg==='5688' && admin === 1234){    
+   if (fromMsg==='5688'){    
          if (!deviceIsConnected())
          returnResult='裝置未連接！';
       else{
-         returnResult='已啟動緊急開關';
-		 relay.on();
-		 setTimeout(function () {                   
-	     relay.off();
-        }, 1000 * 2);	            
+          returnResult = read_line_id(line_id_t);        
       }     
    }
    
@@ -296,9 +301,8 @@ function setIoT(fromMsg){
 
 
  
- //RFID判斷副程式//未測試
-function read_RFID(UID){
-	 
+ //RFID副程式
+function read_RFID(UID){ 
 	if (add ===  '新增' ){   
 	   var f = (card_uid.length);	  		  
 		 for (var j = 0; j <= f-2; j++) {
@@ -315,7 +319,7 @@ function read_RFID(UID){
 	     card_uid.splice(0,0,UID);
 	     door.splice(0,0,'在家中');
 	     bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
-	     buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
+	     buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
 	     user_id_t ='';	
          add = '';	
 		 appendMyRow();
@@ -354,6 +358,38 @@ function read_RFID(UID){
 	} 
  }
  
+ function read_line_id(UID){  
+    var text ;  
+     var f = (line_id.length);         
+     for (var j = 0; j <= f-2; j++) {
+       if (line_id[j] === UID  ){
+           if (door[j] === '在家中'){
+                people = people -1 ;     
+            text = user_id[j]  +'" 出門，家裡人數:' + people  + '人在家';
+            door[j] = '不在家';       
+          }
+         else if (door[j] === '不在家'){
+         people = people + 1;      
+           text = user_id[j]  +'" 回家，家裡人數:' + people  + '人在家';
+           door[j] = '在家中';                       
+        }
+       appendMyRow();   
+       relay.on();
+           setTimeout(function () {                   
+           relay.off();
+             }, 1000 * 3);
+        UID  = '' ;
+       break;
+          }   
+        }
+
+     if (UID != ''){
+       text = '有外來人士感應\n外來人士line名稱:'+  line_name + '\nline_id:' + UID  ;
+       buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );  
+        }
+  return text ;
+ }
+
  
 //設定蜂鳴器音樂函示
 function buzzer_music(m) {
