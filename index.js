@@ -325,6 +325,7 @@ function read_RFID(UID){
     }	
  //判斷卡號與對應身分及目前動作	
   else{   
+     var line_f = (line_id.length); 
      var f = (card_uid.length);	  		  
 		 for (var j = 0; j <= f-2; j++) {
 		   if (card_uid[j] === UID  ){
@@ -332,14 +333,14 @@ function read_RFID(UID){
 	              people = people -1 ;		 
 			      door[j] = '不在家';			 
             for (var t = 0 ; t<= f-2 ; t++){
-            bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[t]  +'" 出門，家裡人數:' + people  + '人在家' );   
+            bot.push(line_id[t],'"' + user_id[t]  +'" 出門，家裡人數:' + people  + '人在家' );   
           }   
 			    }
 			   else if (door[j] === '不在家'){
 				 people = people + 1;  		 
 			     door[j] = '在家中';	           	
            for (var t = 0 ; t<= f-2 ; t++){
-            bot.push('U79964e56665caa1f44bb589160964c84','"' + user_id[t]  +'" 回家，家裡人數:' + people  + '人在家' );   
+            bot.push(line_id[t],'"' + user_id[t]  +'" 回家，家裡人數:' + people  + '人在家' );   
           }							
 				}
 			 appendMyRow(); 	
@@ -359,7 +360,7 @@ function read_RFID(UID){
 	} 
  }
  
- function read_line_id(UID){  
+function read_line_id(UID){  
 var text ;  
 var f = (line_id.length);         
 for (var j = 0; j <= f-2; j++) {
@@ -368,14 +369,14 @@ if (door[j] === '在家中'){
 people = people -1 ;     
 door[j] = '不在家';   
 for (var t = 0 ; t<= f-2 ; t++){
-text = '"' + user_id[t]  +'" 出門，家裡人數:' + people  + '人在家';
+bot.push(line_id[t],'"' + user_id[t]  +'" 出門，家裡人數:' + people  + '人在家' );   
 }
 }
 else if (door[j] === '不在家'){
 people = people + 1;  
 door[j] = '在家中'; 
 for (var t = 0 ; t<= f-2 ; t++){
-text = '"' +  user_id[t]  +'" 回家，家裡人數:' + people  + '人在家';
+bot.push(line_id[t],'"' + user_id[t]  +'" 回家，家裡人數:' + people  + '人在家' );  
 }                
 }
 appendMyRow();   
