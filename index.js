@@ -37,7 +37,6 @@ var user_id =[];  //身分列表
 var door = [] ;  //不在家or在家中/列表 
 var user_id_t = '' ;   //暫存身分
 var line_id_t = '' ;  //暫存line id
-var line_name = '' ;  //line身分名稱
 var add = '' ;       //新增
 var admin = 0 ;     //管理員
 
@@ -52,9 +51,6 @@ bot.on('message', function(event) {
    if (event.message.type === 'text') {
       bot_txt=botText(event.message.text);
    } 
-   event.source.profile().then(function (profile) {
-     line_name = profile.displayName ;
-});
    event.reply(bot_txt).then(function(data) {   
       console.log('訊息已傳送！');   // success 
    }).catch(function(error) {
@@ -385,7 +381,7 @@ function read_RFID(UID){
         }
 
      if (UID != ''){
-       text = '有外來人士感應\n外來人士line名稱:'+  line_name + '\nline_id:' + UID  ;
+       text = '有外來人士感應\nline_uid:' + UID  ;
        buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );  
         }
   return text ;
