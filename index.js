@@ -268,7 +268,7 @@ function botText(myMsg){
 function setIoT(fromMsg){
    var returnResult='';  
    
-   if (fromMsg==='5688'){    
+   if (fromMsg==='開門'){    
          if (!deviceIsConnected())
          returnResult='裝置未連接！';
       else{
