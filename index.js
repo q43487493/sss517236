@@ -244,7 +244,7 @@ function botText(myMsg){
       }           
     }
     if (user_id_t != ''){
-      myResult = '請在10秒內讓要新增的LINE使用者傳送159訊息!';
+      myResult = '請在10秒內讓要新增的LINE使用者傳送123訊息!';
       line_add = '新增' ;    
     }   
     setTimeout(function () { 
@@ -253,7 +253,7 @@ function botText(myMsg){
         user_id_t ='' ;  
         line_add = '' ;  
       }
-    }, 1000 * 10);
+    }, 1000 * 15);
   }
   else if (line_add === '新增' && myMsg === '123'){
     var f = line_id.length;
