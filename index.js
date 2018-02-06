@@ -171,8 +171,8 @@ function botText(myMsg){
   if (myResult!=''){}
   else if (myMsg === '1234'){
     if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){      
-      admin = 1234 ;
-      myResult='管理權限已開啟，權限啟動時間為60秒\n 管理功能: \n 1.新增LINE使用者:XX \n 2.刪除LINE使用者:XX \n 3.新增門禁卡:XX \n 4.刪除門禁卡:XX \n XX為身分';  
+      admin = 1234 ;                                           //\n  1.新增使用者:XX \n  2.刪除使用者:XX \n  3.新增LINE ID:XX \n  4.刪除LINE ID:XX \n  5.新增卡號:XX \n  6.刪除卡號:XX \n  XX為身分
+      myResult='管理權限已開啟，權限限時1分鐘\n  管理功能: \n  1.新增LINE使用者:XX \n  2.刪除LINE使用者:XX \n  3.新增門禁卡:XX \n  4.刪除門禁卡:XX \n------------------------------\nXX請更改成身分。';  
       setTimeout(function () { 
         admin = 0 ;
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
