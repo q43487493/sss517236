@@ -139,9 +139,10 @@ var server = app.listen(process.env.PORT || 8080, function() {
       insertDataOption: 'INSERT_ROWS',
       valueInputOption: 'RAW',
       resource: {
-        "values": [      
-        card_uid,      //第一列  [第一欄,第二欄,.... ]
-        user_id,      //第二列  
+        "values": [ 
+        line_id,     
+        card_uid,      //第二列  [第一欄,第二欄,.... ]
+        user_id,      //第三列  
         door,
         [people,'總人數'], 
         [new Date(),'時間'],
