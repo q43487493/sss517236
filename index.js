@@ -170,16 +170,16 @@ function botText(myMsg){
   var t = myMsg.length ;
   if (myResult!=''){}
   else if (myMsg === '1234'){
-    if (line_id_t <> 'U79964e56665caa1f44bb589160964c84' ){
-      myResult='您未具備管理身分，無法啟用!';
-    } 
-    else{
+    if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){      
       admin = 1234 ;
       myResult='管理權限已開啟，權限啟動時間為60秒\n 管理功能: \n 1.新增LINE使用者 \n 2.刪除LINE使用者 \n 3.新增門禁卡:XX \n 4.刪除門禁卡:XX \n XX為身分';  
       setTimeout(function () { 
         admin = 0 ;
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
-      } , 1000 * 60);       
+      } , 1000 * 60);
+    } 
+    else{
+      myResult='您未具備管理身分，無法啟用!';  
     } 
   }    
   else if (txt_c ==='新增門禁卡' && admin === 1234 ){	  	  
