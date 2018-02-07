@@ -304,9 +304,10 @@ function botdoor(myMsg){
   else if (do_1_2_3_4_5_6 = 2 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg ){           
-        if (f === 2)
+        if (f === 2){}
           myResult= '只剩' + user_id[0]  +'，無法刪除!';
           break;
+        }
         else {
           if (door[j] === '在家中' ){
             people = people - 1 ;         
