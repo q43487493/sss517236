@@ -57,8 +57,7 @@ bot.on('message', function(event) {
 });
 //處理選單的函式
 bot.on('postback', function (event) {
-  var bot_txt = '';
-  event.reply(botpostback(bot_txt)).then(function(data) {   
+  event.reply(botpostback(event.postback.data)).then(function(data) {   
     console.log('訊息已傳送！');   // success 
   }).catch(function(error) {
     console.log('error');       // error 
@@ -252,7 +251,7 @@ function botText(myMsg){
 //處理選單點選時文字處理的函式
 function botpostback(myMsg){
   var myResult = '';
-  if (myMsg === '新增身分' || myMsg === '刪除身分' || myMsg === '新增LINE UID' || myMsg === '刪除LINE UID' || myMsg === '新增卡號' || myMsg === '刪除卡號'){
+  if (myMsg === '新增身分' && admin === 1234 || myMsg === '刪除身分' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
     myResult = '請在10秒內輸入身分!';
     if (myMsg === '新增身分'){
       do_1_2_3_4_5_6 = 1 ;
