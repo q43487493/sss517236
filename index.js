@@ -196,13 +196,13 @@ function botText(myMsg){
                       }]
                     }]
                   }
-                }
+                },{ type: 'text', text: "管理功能使用時間為90秒。"}
       setTimeout(function () { 
         admin = 0 ;
         do_1_2_3_4_5_6 = '' ;        
         line_add = '';
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
-      } , 1000 * 60);
+      } , 1000 * 90);
     } 
     else{
       myResult='您未具備管理身分，無法啟用!';  
@@ -214,14 +214,15 @@ function botText(myMsg){
       if (user_id[j] === user_id_t){
         for (var k = 0 ; k<= f-2 ; k++){
           if (line_id[k] === line_id_t){
-            bot.push('U79964e56665caa1f44bb589160964c84', user_id_t +'已具備此功能!');
-            myResult = '您身分為:' + user_id_t + '\n早就能用LINE來開門喔!'  ;
+            bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，他以代表一位使用者');
+            myResult = '您身分為:' + user_id[k] + '\n早就能用LINE來開門喔!'  ;
+            line_add = '';
           }
         }
         if (myResult === ''){
           line_id[j] = line_id_t ;
           bot.push('U79964e56665caa1f44bb589160964c84', 'LINE UID新增成功!');
-          myResult = '已被新增\n可以使用LINE來控制開門囉!\n您身分為:' + user_id_t ;
+          myResult = '已被新增\n可以使用LINE來控制開門囉!\n您身分為:' + user_id[j] ;
           appendMyRow();
           line_add = '';
         }
