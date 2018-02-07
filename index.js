@@ -252,7 +252,11 @@ function botpostback(message){
       admin_1_2_3_4_5_6= 4 ;
     }
     else if (message === '新增卡號'){
-      admin_1_2_3_4_5_6= 5 ;
+      if (!deviceIsConnected())
+        Result='裝置未連接，無法新增卡號';
+      else{  
+        admin_1_2_3_4_5_6= 5 ;
+      }
     }
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
@@ -338,10 +342,7 @@ function admin_door(message){
     }
   }
   else if (admin_1_2_3_4_5_6=== 5){
-    if (!deviceIsConnected())
-      Result='裝置未連接，無法新增卡號';
-    else{
-      for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === message  ){
         Result = '請感應要新增的門禁卡';
         card_add = '新增' ;
@@ -352,7 +353,6 @@ function admin_door(message){
     }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }     
     }
   }
   else if (admin_1_2_3_4_5_6=== 6){
