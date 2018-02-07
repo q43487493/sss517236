@@ -390,24 +390,19 @@ function setIoT(fromMsg){
 }
 //使用RFID開門的函式
 function door_RFID(UID){ 
-  if (add ===  '新增' ){   
+  if (card_add ===  '新增' ){   
     var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-2; j++) {
       if (card_uid[j] === UID  ){
         bot.push('U79964e56665caa1f44bb589160964c84', '此門禁卡已存在!');	
-        user_id_t ='';	
         card_add = '' ;
         break;
       }				 
     }
-    if (add === '新增'){	
-      people = people + 1 ;
-      user_id.splice(0,0,user_id_t);
+    if (card_add === '新增'){	
       card_uid.splice(0,0,UID);
-      door.splice(0,0,'在家中');
       bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
       buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
-      user_id_t ='';	
       card_add = '';	
       appendMyRow();
     }
