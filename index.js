@@ -29,11 +29,12 @@ var line_id = [] ;  // LINE 身分列表
 var card_uid = [] ;//卡號列表
 var user_id =[] ; //門禁卡身分列表   
 var door = [] ;  //進or出門列表 
-var user_id_t = '' ;    //暫存身分
-var card_add = '' ;    //新增卡號
 var line_id_t = '' ;  //暫存line id
+var user_id_t = '' ;     //暫存身分
+var card_add = '' ;     //新增卡號
 var line_add = '' ;  //新增LINE使用者
 var line_dele= '' ; //刪除LINE使用者
+var do_1_2_3_4_5_6 = '' ; //新增刪除暫存總變數
 var line_name= '' ;//LINE的使用者名子
 
 getdata(); 
@@ -54,8 +55,14 @@ bot.on('message', function(event) {
     console.log('error');       // error 
   });
 });
-//選單postback回推
+//處理選單的函式
 bot.on('postback', function (event) {
+  var bot_txt = '';
+
+  event.reply(botpostback(bot_txt)).then(function(data) {   
+    console.log('訊息已傳送！');   // success 
+  }).catch(function(error) {
+    console.log('error');       // error 
 });
 //連接開發版的函示
 boardReady(myBoardVars, true, function (board) {
@@ -167,7 +174,9 @@ function text_get_substring(text, where1, at1, where2, at2) {
 }
 //處理line訊息函式
 function botText(myMsg){
-  var myResult=setIoT(myMsg);  
+  var myResult='';
+  myResult = setIoT(myMsg) ;
+  myResult = botdoor(myMsg) ;
   var txt_p =  myMsg.indexOf(':') + 1;   
   var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
   var t = myMsg.length ;
@@ -192,16 +201,16 @@ function botText(myMsg){
                         data: '刪除身分' 
                       }]
                     }, {
-                      title: 'LINE ID 管理',
-                      text: '為身分追加LINE ID控制 ，可使用LINE控制開門',
+                      title: 'LINE UID 管理',
+                      text: '為身分追加LINE UID控制 ，可使用LINE控制開門',
                       actions:[{
                         type: 'postback',
-                        label: '新增身分',
-                        data: '新增身分' 
+                        label: '新增LINE UID',
+                        data: '新增LINE UID' 
                       }, {
                         type: 'postback',
-                        label: '刪除身分',
-                        data: '刪除身分' 
+                        label: '刪除LINE UID',
+                        data: '刪除LINE UID' 
                       }]
                     },{
                       title: '卡號管理',
@@ -226,132 +235,7 @@ function botText(myMsg){
     else{
       myResult='您未具備管理身分，無法啟用!';  
     } 
-  }    
-  else if (txt_c ==='新增門禁卡' && admin === 1234 ){	  	  
-    user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
-    var f = (user_id.length);	  		  
-    for (var j = 0; j <= f-2; j++) {
-      if (user_id[j] === user_id_t  ){
-        myResult = '此身分已有，請換別的稱呼';
-        user_id_t ='';	
-        card_add = '' ;
-        break;
-      }		        
-    }
-    if (user_id_t != ''){
-      myResult = '請在10秒內感應需要新增的門禁卡';
-      card_add = '新增' ;    
-    }   
-    setTimeout(function () { 
-      if (card_add === '新增') {
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');			 
-        user_id_t ='';	
-        card_add = '' ;	
-      }
-    }, 1000 * 10);		       	   
-  }        
-  else if (txt_c ==='刪除門禁卡' && admin === 1234){	  	  
-    user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
-    var f = (user_id.length);	  		  
-    for (var j = 0; j <= f-2; j++) {
-      if (user_id[j] === user_id_t  ){           
-        if (f === 2)
-          myResult= '只剩' + user_id[0]  +'，無法刪除!';
-        else {
-          if (door[j] === '在家中' ){
-            people = people - 1 ;			    
-          }
-          line_id.splice(j, 1);
-          card_uid.splice(j, 1);
-          user_id.splice(j, 1);
-          door.splice(j, 1);				 
-          myResult= '刪除成功!'; 	                				 			    
-        }
-        user_id_t ='';
-        appendMyRow();
-        break;
-      }		
-    }
-    if (user_id_t != ''){
-      myResult= '沒有這位身分!';       
-      user_id_t ='';  			
-    }     	   
-  }   
-  else if(txt_c === '新增LINE使用者' && admin === 1234){
-    user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
-    var f = (user_id.length);         
-    for (var j = 0; j <= f-2; j++) {
-      if (user_id[j] === user_id_t  ){
-        myResult = '此身分已有，請換別的稱呼';
-        user_id_t ='';  
-        line_add = '' ;
-        break;
-      }           
-    }
-    if (user_id_t != ''){
-      myResult = '請在10秒內讓要新增的LINE使用者傳送123訊息!';
-      line_add = '新增' ;    
-    }   
-    setTimeout(function () { 
-      if (line_add === '新增') {
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增時間已過!');      
-        user_id_t ='' ;  
-        line_add = '' ;  
-      }
-    }, 1000 * 15);
-  }
-  else if (line_add === '新增' && myMsg === '123'){
-    var f = line_id.length;
-    for (var j = 0 ; j <=f-2 ; j++){
-      if (line_id[j] === line_id_t){
-        myResult = '此使用者已存在!';
-        user_id_t ='' ;  
-        line_add = '' ;
-        break;
-      }
-    }
-    if(line_add === '新增'){
-      people = people + 1 ;
-      user_id.splice(0,0,user_id_t);
-      card_uid.splice(0,0,"");
-      line_id.splice(0,0,line_id_t);
-      door.splice(0,0,'在家中');
-      bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
-      user_id_t ='';  
-      line_add = '';  
-      appendMyRow();
-    }
-  }
-  else if(txt_c === '刪除LINE使用者' && admin === 1234){
-    user_id_t = text_get_substring(myMsg, 'FROM_START', txt_p + 1 , 'FROM_START', t);
-    var f = (user_id.length);         
-    for (var j = 0; j <= f-2; j++) {
-      if (user_id[j] === user_id_t  ){           
-        if (f === 2)
-          myResult= '只剩' + user_id[0]  +'，無法刪除!';
-        else {
-          if (door[j] === '在家中' ){
-            people = people - 1 ;         
-          }
-          line_id.splice(j, 1);
-          card_uid.splice(j, 1);
-          user_id.splice(j, 1);
-          door.splice(j, 1);         
-          myResult= '刪除成功!';                                    
-        }
-        user_id_t ='';
-        appendMyRow();
-        break;
-      }   
-    }
-    if (user_id_t != ''){
-      myResult= '沒有這位使用者!';       
-      user_id_t ='';        
-    }
-  }
-  else if (line_dele === '刪除' && myMsg === '123'){
-
-  }
+  }  
   else if (myMsg==='目前家中人數')	   
     myResult='目前家中有' + people +'人'  ;   
   else if (myMsg==='連線狀況')
@@ -364,6 +248,85 @@ function botText(myMsg){
     myResult = '謝謝回覆!' ;
   } 
   return myResult;
+}
+//處理選單點選時文字處理的函式
+function botpostback(myMsg){
+  var myResult = '';
+  if (myMsg === '新增身分' || myMsg === '刪除身分' || myMsg === '新增LINE UID' || myMsg === '刪除LINE UID' || myMsg === '新增卡號' || myMsg === '刪除卡號'){
+    myResult = '請輸入身分';
+    if (myMsg === '新增身分'){
+      do_1_2_3_4_5_6 = 1 ;
+    }
+    else if (myMsg === '刪除身分'){
+      do_1_2_3_4_5_6 = 2 ;
+    }
+    else if (myMsg === '新增LINE UID'){
+      do_1_2_3_4_5_6 = 3 ;
+    }
+    else if (myMsg === '刪除LINE UID'){
+      do_1_2_3_4_5_6 = 4 ;
+    }
+    else if (myMsg === '新增卡號'){
+      do_1_2_3_4_5_6 = 5 ;
+    }
+    else if (myMsg === '刪除卡號'){
+      do_1_2_3_4_5_6 = 6 ;
+    }
+  }
+  return myResult;
+} 
+//處理各類新增刪除的函式
+function botdoor(myMsg){
+  var myResult = '';
+  var f = (user_id.length);  
+  if (do_1_2_3_4_5_6 = 1 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
+    for (var j = 0 ; j <=f-2 ; j++){
+      if (line_id[j] === myMsg){
+        myResult = '此使用者已存在!';
+        myMsg ='' ;  
+        break;
+      }
+    }
+    if (myMsg != ''){
+      people = people + 1 ;
+      user_id.splice(0,0,myMsg);
+      card_uid.splice(0,0,"");
+      line_id.splice(0,0,"");
+      door.splice(0,0,'在家中');
+      myResult = '"' + myMsg + '"新增成功!';
+      appendMyRow();
+    }
+  }
+  else if (do_1_2_3_4_5_6 = 2 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === myMsg ){           
+        if (f === 2)
+          myResult= '只剩' + user_id[0]  +'，無法刪除!';
+          break;
+        else {
+          if (door[j] === '在家中' ){
+            people = people - 1 ;         
+          }
+          line_id.splice(j, 1);
+          card_uid.splice(j, 1);
+          user_id.splice(j, 1);
+          door.splice(j, 1);         
+          myResult= '刪除成功!';                                    
+        }
+        myMsg ='';
+        appendMyRow();
+        break;
+      }   
+    }
+    if (myMsg != ''){
+      myResult= '沒有這位身分!';       
+      myMsg ='';        
+    }
+  }
+  else if (do_1_2_3_4_5_6 = 3 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){
+    
+  }
+  return myResult ;
 }
 //處理webduino腳位開關的函式
 function setIoT(fromMsg){
