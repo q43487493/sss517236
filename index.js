@@ -253,7 +253,7 @@ function botText(myMsg){
 function botpostback(myMsg){
   var myResult = '';
   if (myMsg === '新增身分' || myMsg === '刪除身分' || myMsg === '新增LINE UID' || myMsg === '刪除LINE UID' || myMsg === '新增卡號' || myMsg === '刪除卡號'){
-    myResult = '請輸入身分';
+    myResult = '請在10秒內輸入身分!';
     if (myMsg === '新增身分'){
       do_1_2_3_4_5_6 = 1 ;
     }
@@ -272,6 +272,10 @@ function botpostback(myMsg){
     else if (myMsg === '刪除卡號'){
       do_1_2_3_4_5_6 = 6 ;
     }
+    setTimeout(function () {       
+      bot.push('U79964e56665caa1f44bb589160964c84', myMsg +'時間已過!');       
+      do_1_2_3_4_5_6 = '' ; 
+    }, 1000 * 10);
   }
   return myResult;
 } 
@@ -324,7 +328,7 @@ function botdoor(myMsg){
     }
   }
   else if (do_1_2_3_4_5_6 = 3 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){
-    
+
   }
   return myResult ;
 }
