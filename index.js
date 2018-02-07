@@ -160,7 +160,7 @@ function botText(myMsg){
                     type: 'carousel', //選單旋轉
                     columns: [{ //最多10個
                       title: '身分管理',
-                      text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料',
+                      text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料。',
                       actions: [{//最多三個
                         type: 'postback',
                         label: '新增使用者',
@@ -172,7 +172,7 @@ function botText(myMsg){
                       }]
                     }, {
                       title: 'LINE UID 管理',
-                      text: '為使用者追加LINE UID控制 ，可使用LINE來控制開門',
+                      text: '為使用者追加LINE控制 ，可以使用LINE來開門。\n1位LINE用戶僅能代表一位使用者',
                       actions:[{
                         type: 'postback',
                         label: '新增LINE UID',
@@ -184,7 +184,7 @@ function botText(myMsg){
                       }]
                     },{
                       title: '卡號管理',
-                      text: '為使用者追加悠遊卡控制 ，可使用悠遊卡感應來控制開門',
+                      text: '為使用者追加悠遊卡控制 ，可以使用悠遊卡感應來開門。\n1張悠遊卡僅能代表一位使用者',
                       actions:[{
                         type: 'postback',
                         label: '新增卡號',
@@ -214,7 +214,7 @@ function botText(myMsg){
       if (user_id[j] === user_id_t){
         for (var k = 0 ; k<= f-2 ; k++){
           if (line_id[k] === line_id_t){
-            bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，他以代表一位使用者');
+            bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該用戶以代表一位使用者');
             myResult = '您身分為:' + user_id[k] + '\n早就能用LINE來開門喔!'  ;
             line_add = '';
           }
@@ -222,7 +222,7 @@ function botText(myMsg){
         if (myResult === ''){
           line_id[j] = line_id_t ;
           bot.push('U79964e56665caa1f44bb589160964c84', 'LINE UID新增成功!');
-          myResult = '已被新增\n可以使用LINE來控制開門囉!\n您身分為:' + user_id[j] ;
+          myResult = '已被新增\n可以使用LINE來開門囉!\n您身分為:' + user_id[j] ;
           appendMyRow();
           line_add = '';
         }
