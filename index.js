@@ -275,7 +275,7 @@ function botText(myMsg){
 function botpostback(myMsg){
   var myResult = '';
   if (myMsg === '新增使用者' && admin === 1234 || myMsg === '刪除使用者' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
-    myResult = '請輸入使用者名稱!';
+    myResult = myMsg + '\N請輸入使用者名稱!';
     if (myMsg === '新增使用者'){
       do_1_2_3_4_5_6 = 1 ;
     }
@@ -324,6 +324,7 @@ function botdoor(myMsg){
       if (user_id[j] === myMsg ){           
         if (f === 2){
           myResult= '只剩' + user_id[0]  +'，無法刪除!';
+          myMsg ='';
           break;
         }
         else {
@@ -342,7 +343,7 @@ function botdoor(myMsg){
       }   
     }
     if (myMsg != ''){
-      myResult= '沒有這位使用者! \n 請檢查是否輸入錯誤';              
+      myResult= '沒有這位使用者! \n請檢查是否輸入錯誤';              
     }
   }    
   else if (do_1_2_3_4_5_6 === 3){
@@ -356,13 +357,13 @@ function botdoor(myMsg){
       }           
     }
     if (myMsg != ''){
-      myResult = '沒有這位使用者! \n 請檢查是否輸入錯誤';    
+      myResult = '沒有這位使用者! \n請檢查是否輸入錯誤';    
     }   
   }
   else if (do_1_2_3_4_5_6 === 4){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg  ){
-        myResult = '"'+ myMsg +'"刪除成功!';
+        myResult = '刪除成功!';
         line_id[j] = '' ;
         myMsg = '';
         appendMyRow();
@@ -370,7 +371,7 @@ function botdoor(myMsg){
       }           
     }
     if (myMsg != ''){
-      myResult = '沒有這位使用者! \n 請檢查是否輸入錯誤';    
+      myResult = '沒有這位使用者! \n請檢查是否輸入錯誤';    
     }
   }
   else if (do_1_2_3_4_5_6 === 5){
