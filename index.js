@@ -193,7 +193,7 @@ function botText(myMsg){
                         type: 'postback',
                         label: '新增使用者',
                         data: '新增使用者' 
-                      }, {
+                      },{
                         type: 'postback',
                         label: '刪除使用者',
                         data: '刪除使用者' 
@@ -230,8 +230,9 @@ function botText(myMsg){
                   }
                 }
       setTimeout(function () { 
-        do_1_2_3_4_5_6 = '' ;
         admin = 0 ;
+        do_1_2_3_4_5_6 = '' ;        
+        line_add = '';
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
       } , 1000 * 60);
     } 
