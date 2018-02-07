@@ -69,7 +69,7 @@ boardReady(myBoardVars, true, function (board) {
   rfid.read();     
   rfid.on("enter",function(_uid){
     rfid._uid = _uid;
-    read_RFID(_uid);
+    door_RFID(_uid);
   });  
 });   
 boardReady(myBoardVars2, true, function (board) {
@@ -329,7 +329,6 @@ function botdoor(myMsg){
   else if (do_1_2_3_4_5_6 === 4){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg  ){
-
         myResult = '刪除成功!';
         line_id[j] = '' ;
         myMsg = '';
@@ -345,7 +344,18 @@ function botdoor(myMsg){
     myResult = myMsg ;
   }
   else if (do_1_2_3_4_5_6 === 6){
-    myResult = myMsg ;
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === myMsg  ){
+        myResult = '刪除成功!';
+        card_uid[j] = '' ;
+        myMsg = '';
+        appendMyRow();
+        break;
+      }           
+    }
+    if (myMsg != ''){
+      myResult = '沒有這位使用者! \n請檢查是否輸入錯誤';    
+    }
   }
   do_1_2_3_4_5_6 = '' ;
   return myResult ;
@@ -357,7 +367,7 @@ function setIoT(fromMsg){
     if (!deviceIsConnected())
       returnResult='裝置未連接！';
     else{
-      returnResult = read_line_id(line_id_t);        
+      returnResult = door_LINE(line_id_t);        
     }     
   }
   else if (fromMsg==='開燈'){    
@@ -379,7 +389,7 @@ function setIoT(fromMsg){
   return returnResult;
 }
 //使用RFID開門的函式
-function read_RFID(UID){ 
+function door_RFID(UID){ 
   if (add ===  '新增' ){   
     var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-2; j++) {
@@ -438,7 +448,7 @@ function read_RFID(UID){
   } 
 }
 //使用LINE開門的函式
-function read_line_id(UID){  
+function door_LINE(UID){  
   var text ;  
   var f = (line_id.length);         
   for (var j = 0; j <= f-2; j++) {
@@ -466,10 +476,9 @@ function read_line_id(UID){
       break;
     }   
   }
-  
   if (UID != ''){
     bot.push('U79964e56665caa1f44bb589160964c84','有外來人士加入\n此人line_UID:' + UID);
-    buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );  
+    bot.push(line_id_t,'不好意思!\n您非此家庭使用者!');
   }
   return text ;
 }
