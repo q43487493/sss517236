@@ -181,7 +181,7 @@ function botText(myMsg){
                     type: 'carousel', //選單旋轉
                     columns: [{ //最多10個
                       title: '身分管理',
-                      text: '';
+                      text: '新增or刪除身分';
                       actions: [{//最多三個
                         type: 'postback',
                         label: '新增身分',
