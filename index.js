@@ -154,49 +154,50 @@ function botText(message){
   else if (message === '1234'){                                  
     if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){   
       admin = 1234 ;                                           
-      Result= [{ type: 'template',
-                  altText: 'this is a carousel template',
-                  template: {
-                    type: 'carousel', //選單旋轉
-                    columns: [{ //最多10個
-                      title: '身分管理',
-                      text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料',
-                      actions: [{//最多三個
-                        type: 'postback',
-                        label: '新增使用者',
-                        data: '新增使用者' 
-                      },{
-                        type: 'postback',
-                        label: '刪除使用者',
-                        data: '刪除使用者' 
-                      }]
-                    }, {
-                      title: 'LINE UID 管理',
-                      text: '為使用者追加LINE控制 ，可以使用LINE來開門。\n1位LINE用戶僅能代表一位使用者',
-                      actions:[{
-                        type: 'postback',
-                        label: '新增LINE UID',
-                        data: '新增LINE UID' 
-                      }, {
-                        type: 'postback',
-                        label: '刪除LINE UID',
-                        data: '刪除LINE UID' 
-                      }]
+      Result= [{ type: 'text', text: '管理功能使用時間為90秒。'},{ type: 'text', text: '資料庫連結:https://goo.gl/PMx5q9'},
+              { type: 'template',
+                altText: 'this is a carousel template',
+                template: {
+                  type: 'carousel', //選單旋轉
+                  columns: [{ //最多10個
+                    title: '身分管理',
+                    text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料',
+                    actions: [{//最多三個
+                      type: 'postback',
+                      label: '新增使用者',
+                      data: '新增使用者' 
                     },{
-                      title: '卡號管理',
-                      text: '為使用者追加悠遊卡控制 ，可以使用悠遊卡感應來開門。\n1張悠遊卡僅能代表一位使用者',
-                      actions:[{
-                        type: 'postback',
-                        label: '新增卡號',
-                        data: '新增卡號' 
-                      }, {
-                        type: 'postback',
-                        label: '刪除卡號',
-                        data: '刪除卡號' 
-                      }]
+                      type: 'postback',
+                      label: '刪除使用者',
+                      data: '刪除使用者' 
                     }]
-                  }
-                },{ type: 'text', text: '管理功能使用時間為90秒。'},{ type: 'text', text: '資料庫連結:https://goo.gl/PMx5q9'}]
+                  }, {
+                    title: 'LINE UID 管理',
+                    text: '為使用者追加LINE控制 ，可以使用LINE來開門。\n1位LINE用戶僅能代表一位使用者',
+                    actions:[{
+                      type: 'postback',
+                      label: '新增LINE UID',
+                      data: '新增LINE UID' 
+                    }, {
+                      type: 'postback',
+                      label: '刪除LINE UID',
+                      data: '刪除LINE UID' 
+                    }]
+                  },{
+                    title: '卡號管理',
+                    text: '為使用者追加悠遊卡控制 ，可以使用悠遊卡感應來開門。\n1張悠遊卡僅能代表一位使用者',
+                    actions:[{
+                      type: 'postback',
+                      label: '新增卡號',
+                      data: '新增卡號' 
+                    }, {
+                      type: 'postback',
+                      label: '刪除卡號',
+                      data: '刪除卡號' 
+                    }]
+                  }]
+                }
+              }]
       setTimeout(function () { 
         admin = 0 ;
         admin_1_2_3_4_5_6= '' ;        
@@ -237,7 +238,7 @@ function botText(message){
 function botpostback(message){
   var Result = '';
   if (message === '新增使用者' && admin === 1234 || message === '刪除使用者' && admin === 1234 || message === '新增LINE UID' && admin === 1234 || message === '刪除LINE UID' && admin === 1234 || message === '新增卡號' && admin === 1234 || message === '刪除卡號' && admin === 1234 ){
-    Result = message + '\n請輸入使用者名稱!';
+    Result = message + '\n請輸入使用者名稱';
     if (message === '新增使用者'){
       admin_1_2_3_4_5_6= 1 ;
     }
@@ -266,7 +267,7 @@ function admin_door(message){
   if (admin_1_2_3_4_5_6=== 1  ){
     for (var j = 0 ; j <=f-2 ; j++){
       if (user_id[j] === message){
-        Result = '此使用者已存在!';
+        Result = '此使用者已存在';
         message ='' ;  
         break;
       }
@@ -311,7 +312,7 @@ function admin_door(message){
   else if (admin_1_2_3_4_5_6=== 3){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === message  ){
-        Result = '請讓要新增的LINE使用者傳送"159"訊息!';
+        Result = '請讓要新增的LINE使用者傳送"159"訊息';
         line_add = '新增' ;
         user_id_t = j ;
         message = '';
@@ -337,7 +338,10 @@ function admin_door(message){
     }
   }
   else if (admin_1_2_3_4_5_6=== 5){
-    for (var j = 0; j <= f-2; j++) {
+    if (!deviceIsConnected())
+      Result='裝置未連接，無法新增卡號';
+    else{
+      for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === message  ){
         Result = '請感應要新增的門禁卡';
         card_add = '新增' ;
@@ -348,6 +352,7 @@ function admin_door(message){
     }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
+    }     
     }
   }
   else if (admin_1_2_3_4_5_6=== 6){
@@ -526,8 +531,3 @@ function deviceIsConnected2(){
    else
       return Board_2.isConnected;
 }
-
-
-
-
-
