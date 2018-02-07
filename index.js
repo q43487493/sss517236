@@ -226,6 +226,10 @@ function botText(myMsg){
                     }]
                   }
                 }
+      setTimeout(function () { 
+        admin = 0 ;
+        bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
+      } , 1000 * 60);
     } 
     else{
       myResult='您未具備管理身分，無法啟用!';  
@@ -267,10 +271,6 @@ function botpostback(myMsg){
     else if (myMsg === '刪除卡號'){
       do_1_2_3_4_5_6 = 6 ;
     }
-    setTimeout(function () {       
-      bot.push('U79964e56665caa1f44bb589160964c84', myMsg +'時間已過!');       
-      do_1_2_3_4_5_6 = '' ; 
-    }, 1000 * 10);
   }
   return myResult;
 } 
