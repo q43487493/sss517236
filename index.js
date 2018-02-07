@@ -252,7 +252,7 @@ function botText(myMsg){
 function botpostback(myMsg){
   var myResult = '';
   if (myMsg === '新增身分' && admin === 1234 || myMsg === '刪除身分' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
-    myResult = '請在10秒內輸入身分!';
+    myResult = '請輸入身分!';
     if (myMsg === '新增身分'){
       do_1_2_3_4_5_6 = 1 ;
     }
@@ -282,7 +282,7 @@ function botpostback(myMsg){
 function botdoor(myMsg){
   var myResult = '';
   var f = (user_id.length);  
-  if (do_1_2_3_4_5_6 === 1 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
+  if (do_1_2_3_4_5_6 === 1  ){
     for (var j = 0 ; j <=f-2 ; j++){
       if (line_id[j] === myMsg){
         myResult = '此使用者已存在!';
@@ -300,7 +300,7 @@ function botdoor(myMsg){
       appendMyRow();
     }
   }
-  else if (do_1_2_3_4_5_6 === 2 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
+  else if (do_1_2_3_4_5_6 === 2 ){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg ){           
         if (f === 2){
@@ -327,9 +327,10 @@ function botdoor(myMsg){
       myMsg ='';        
     }
   }    
-  else if (do_1_2_3_4_5_6 === 3 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){
+  else if (do_1_2_3_4_5_6 === 3){
     myResult = myMsg ;
   }
+  do_1_2_3_4_5_6 = '' ;
   return myResult ;
 }
 //處理webduino腳位開關的函式
