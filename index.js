@@ -283,7 +283,7 @@ function botpostback(myMsg){
 function botdoor(myMsg){
   var myResult = '';
   var f = (user_id.length);  
-  if (do_1_2_3_4_5_6 = 1 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
+  if (do_1_2_3_4_5_6 === 1 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
     for (var j = 0 ; j <=f-2 ; j++){
       if (line_id[j] === myMsg){
         myResult = '此使用者已存在!';
@@ -301,7 +301,7 @@ function botdoor(myMsg){
       appendMyRow();
     }
   }
-  else if (do_1_2_3_4_5_6 = 2 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
+  else if (do_1_2_3_4_5_6 === 2 && line_id_t === 'U79964e56665caa1f44bb589160964c84' ){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg ){           
         if (f === 2){
@@ -328,7 +328,7 @@ function botdoor(myMsg){
       myMsg ='';        
     }
   }    
-  else if (do_1_2_3_4_5_6 = 3 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){
+  else if (do_1_2_3_4_5_6 === 3 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){
     myResult = myMsg ;
   }
   return myResult ;
