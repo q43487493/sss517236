@@ -54,6 +54,9 @@ bot.on('message', function(event) {
     console.log('error');       // error 
   });
 });
+//選單postback回推
+bot.on('postback', function (event) {
+});
 //連接開發版的函示
 boardReady(myBoardVars, true, function (board) {
   myBoard=board;
@@ -169,10 +172,52 @@ function botText(myMsg){
   var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
   var t = myMsg.length ;
   if (myResult!=''){}
-  else if (myMsg === '1234'){
-    if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){      
-      admin = 1234 ;                                           //\n    1.新增使用者:XX \n    2.刪除使用者:XX \n    3.新增LINE ID:XX \n    4.刪除LINE ID:XX \n    5.新增卡號:XX \n    6.刪除卡號:XX \n  XX為身分
-      myResult='管理權限已開啟，權限限時60秒。\n    管理功能: \n    1.新增LINE使用者:XX \n    2.刪除LINE使用者:XX \n    3.新增門禁卡:XX \n    4.刪除門禁卡:XX \n---------------------------------------------\nXX請更改成身分。';  
+  else if (myMsg === '1234'){                                      //'管理權限已開啟，權限限時60秒。\n    管理功能: \n    1.新增LINE使用者:XX \n    2.刪除LINE使用者:XX \n    3.新增門禁卡:XX \n    4.刪除門禁卡:XX \n---------------------------------------------\nXX請更改成身分。';  
+    if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){    // 未來以旋轉選單製作 1.新增使用者 \n    2.刪除使用者 \n    3.新增LINE ID \n    4.刪除LINE ID \n    5.新增卡號 \n    6.刪除卡號  
+      admin = 1234 ;                                           //1.新增使用者:XX \n    2.刪除使用者:XX \n    3.新增LINE ID:XX \n    4.刪除LINE ID:XX \n    5.新增卡號:XX \n    6.刪除卡號:XX 
+      myResult= { type: 'template',
+                  altText: 'this is a carousel template',
+                  template: {
+                    type: 'carousel', //選單旋轉
+                    columns: [{ //最多10個
+                      title: '身分管理',
+                      text: '';
+                      actions: [{//最多三個
+                        type: 'postback',
+                        label: '新增身分',
+                        data: '新增身分' 
+                      }, {
+                        type: 'postback',
+                        label: '刪除身分',
+                        data: '刪除身分' 
+                      }]
+                    }, {
+                      title: 'LINE ID 管理',
+                      text: '為身分追加LINE ID ，可使用LINE控制開門';
+                      actions:[{
+                        type: 'postback',
+                        label: '新增身分',
+                        data: '新增身分' 
+                      }, {
+                        type: 'postback',
+                        label: '刪除身分',
+                        data: '刪除身分' 
+                      }]
+                    },{
+                      title: '卡號管理',
+                      text: '為身分追加悠遊卡控制 ，可使用L悠遊卡控制開門';
+                      actions:[{
+                        type: 'postback',
+                        label: '新增卡號',
+                        data: '新增卡號' 
+                      }, {
+                        type: 'postback',
+                        label: '刪除卡號',
+                        data: '刪除卡號' 
+                      }]
+                    }]
+                  }
+                }
       setTimeout(function () { 
         admin = 0 ;
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
