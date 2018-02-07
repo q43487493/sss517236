@@ -226,10 +226,6 @@ function botText(myMsg){
                     }]
                   }
                 }
-      setTimeout(function () { 
-        admin = 0 ;
-        bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
-      } , 1000 * 60);
     } 
     else{
       myResult='您未具備管理身分，無法啟用!';  
