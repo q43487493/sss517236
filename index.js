@@ -24,16 +24,16 @@ var myBoardVars2={ device: '10Q28gDy', transport: 'mqtt'};
 var myBoard;  
 var myBoard2;
 var admin = 0 ;       //管理員
-var people =0 ;        //家庭總人數
+var people =0 ;      //家庭總人數
 var line_id = [] ;  // LINE 身分列表 
 var card_uid = [] ;//卡號列表
 var user_id =[] ; //門禁卡身分列表   
 var door = [] ;  //進or出門列表 
-var line_id_t = '' ;  //暫存line id
-var user_id_t = '' ;     //暫存身分
-var card_add = '' ;     //新增卡號
-var line_add = '' ;  //新增LINE使用者
-var line_dele= '' ; //刪除LINE使用者
+var line_id_t = '' ;   //暫存line id 
+var user_id_t = '' ;  //暫存身分 
+var card_add = '' ;  //新增卡號
+var line_add = '' ; //新增LINE使用者
+var line_dele= '' ;//刪除LINE使用者
 var do_1_2_3_4_5_6 = '' ; //新增刪除暫存總變數
 var line_name= '' ;//LINE的使用者名子
 
@@ -227,6 +227,7 @@ function botText(myMsg){
                   }
                 }
       setTimeout(function () { 
+        do_1_2_3_4_5_6 = '' ;
         admin = 0 ;
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
       } , 1000 * 60);
@@ -234,7 +235,33 @@ function botText(myMsg){
     else{
       myResult='您未具備管理身分，無法啟用!';  
     } 
-  }  
+  }
+  else if (line_add === '新增' && myMsg === '159'){
+    var f = user_id.length;
+    for (var j = 0 ; j <=f-2 ; j++){
+      if (user_id[j] === line_id_t){
+        line_id[j] = line_id_t ;
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
+        myResult = '已被新增!\n您可以使用LINE來開門!' ;
+        appendMyRow();
+        line_add = '';
+        break;
+      }
+    }
+  }
+  else if (line_dele === '刪除' && myMsg === '159'){
+    var f = user_id.length;
+    for (var j = 0 ; j <=f-2 ; j++){
+      if (user_id[j] === line_id_t){
+        line_id[j] = '' ;
+        bot.push('U79964e56665caa1f44bb589160964c84', '刪除成功!');
+        myResult = '已被刪除!\n您無法使用LINE來開門' ;
+        appendMyRow();
+        line_dele = '';
+        break;
+      }
+    }
+  }   
   else if (myMsg==='目前家中人數')	   
     myResult='目前家中有' + people +'人'  ;   
   else if (myMsg==='連線狀況')
@@ -319,11 +346,41 @@ function botdoor(myMsg){
       }   
     }
     if (myMsg != ''){
-      myResult= '沒有這位身分!';       
-      myMsg ='';        
+      myResult= '沒有這位身分! \n 請檢查是否輸入錯誤';              
     }
   }    
   else if (do_1_2_3_4_5_6 === 3){
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === myMsg  ){
+        myResult = '請讓要新增的LINE使用者傳送"159"訊息!';
+        line_add = '新增' ;
+        user_id_t = myMsg ;
+        myMsg = '';
+        break;
+      }           
+    }
+    if (myMsg != ''){
+      myResult = '沒有這位身分! \n 請檢查是否輸入錯誤';    
+    }   
+  }
+  else if (do_1_2_3_4_5_6 === 4){
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === myMsg  ){
+        myResult = '請讓要刪除的LINE使用者傳送"159"訊息!';
+        line_dele = '刪除' ;
+        user_id_t = myMsg ;
+        myMsg = '';
+        break;
+      }           
+    }
+    if (myMsg != ''){
+      myResult = '沒有這位身分! \n 請檢查是否輸入錯誤';    
+    }
+  }
+  else if (do_1_2_3_4_5_6 === 5){
+    myResult = myMsg ;
+  }
+  else if (do_1_2_3_4_5_6 === 6){
     myResult = myMsg ;
   }
   do_1_2_3_4_5_6 = '' ;
