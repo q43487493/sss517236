@@ -210,21 +210,19 @@ function botText(myMsg){
   }
   else if (line_add === '新增' && myMsg === '159'){
     var f = user_id.length;
-    var f_f = line_id.length;
     for (var j = 0 ; j <=f-2 ; j++){
       if (user_id[j] === user_id_t){
-        for (var k = 0 ; k<= f_f-2 ; k++){
-          if (line_id[k] != line_id_t){
-            line_id[j] = line_id_t ;
-            bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
-            myResult = '已被新增!\n您可以使用LINE來控制開門!' ;
-            appendMyRow();
-            line_add = '';
-            break;
-          }
-          else{
+        for (var k = 0 ; k<= f-2 ; k++){
+          if (line_id[k] === line_id_t){
             myResult = '此LINE使用者已存在' ;
           }
+        }
+        if (myResult === ''){
+          line_id[j] = line_id_t ;
+          bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
+          myResult = '已被新增!\n您可以使用LINE來控制開門!' ;
+          appendMyRow();
+          line_add = '';
         }
         break;
       }
