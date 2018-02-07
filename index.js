@@ -181,7 +181,7 @@ function botText(myMsg){
                     type: 'carousel', //選單旋轉
                     columns: [{ //最多10個
                       title: '身分管理',
-                      text: '新增/刪除身分';
+                      text: '新增/刪除身分',
                       actions: [{//最多三個
                         type: 'postback',
                         label: '新增身分',
@@ -193,7 +193,7 @@ function botText(myMsg){
                       }]
                     }, {
                       title: 'LINE ID 管理',
-                      text: '為身分追加LINE ID控制 ，可使用LINE控制開門';
+                      text: '為身分追加LINE ID控制 ，可使用LINE控制開門',
                       actions:[{
                         type: 'postback',
                         label: '新增身分',
@@ -205,7 +205,7 @@ function botText(myMsg){
                       }]
                     },{
                       title: '卡號管理',
-                      text: '為身分追加悠遊卡控制 ，可使用悠遊卡控制開門';
+                      text: '為身分追加悠遊卡控制 ，可使用悠遊卡控制開門',
                       actions:[{
                         type: 'postback',
                         label: '新增卡號',
