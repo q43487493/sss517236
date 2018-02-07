@@ -154,7 +154,7 @@ function botText(myMsg){
   else if (myMsg === '1234'){                                  
     if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){   
       admin = 1234 ;                                           
-      myResult= { type: 'template',
+      myResult= [{ type: 'template',
                   altText: 'this is a carousel template',
                   template: {
                     type: 'carousel', //選單旋轉
@@ -172,7 +172,7 @@ function botText(myMsg){
                       }]
                     }, {
                       title: 'LINE UID 管理',
-                      text: '為身分追加LINE UID控制 ，可使用LINE來控制開門',
+                      text: '為使用者追加LINE UID控制 ，可使用LINE來控制開門',
                       actions:[{
                         type: 'postback',
                         label: '新增LINE UID',
@@ -184,7 +184,7 @@ function botText(myMsg){
                       }]
                     },{
                       title: '卡號管理',
-                      text: '為身分追加悠遊卡控制 ，可使用悠遊卡感應來控制開門',
+                      text: '為使用者追加悠遊卡控制 ，可使用悠遊卡感應來控制開門',
                       actions:[{
                         type: 'postback',
                         label: '新增卡號',
@@ -196,7 +196,7 @@ function botText(myMsg){
                       }]
                     }]
                   }
-                },{ type: 'text', text: "管理功能使用時間為90秒。"}
+                },{ type: 'text', text: "管理功能使用時間為90秒。"}]
       setTimeout(function () { 
         admin = 0 ;
         do_1_2_3_4_5_6 = '' ;        
