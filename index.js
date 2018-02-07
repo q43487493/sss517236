@@ -214,13 +214,14 @@ function botText(myMsg){
       if (user_id[j] === user_id_t){
         for (var k = 0 ; k<= f-2 ; k++){
           if (line_id[k] === line_id_t){
-            myResult = '此LINE使用者已存在' ;
+            bot.push('U79964e56665caa1f44bb589160964c84', user_id_t +'已具備此功能!');
+            myResult = '您身分為:' + user_id_t + '\n早就能用LINE來開門喔!'  ;
           }
         }
         if (myResult === ''){
           line_id[j] = line_id_t ;
-          bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
-          myResult = '已被新增!\n您可以使用LINE來控制開門!' ;
+          bot.push('U79964e56665caa1f44bb589160964c84', 'LINE UID新增成功!');
+          myResult = '已被新增\n可以使用LINE來控制開門囉!\n您身分為:' + user_id_t ;
           appendMyRow();
           line_add = '';
         }
@@ -299,7 +300,7 @@ function botdoor(myMsg){
           card_uid.splice(j, 1);
           user_id.splice(j, 1);
           door.splice(j, 1);         
-          myResult= '刪除成功!';                                    
+          myResult= '"' + myMsg + '"刪除成功!';                                    
         }
         myMsg ='';
         appendMyRow();
@@ -327,7 +328,7 @@ function botdoor(myMsg){
   else if (do_1_2_3_4_5_6 === 4){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg  ){
-        myResult = '刪除成功!';
+        myResult = 'LINE UID刪除成功!';
         line_id[j] = '' ;
         myMsg = '';
         appendMyRow();
@@ -344,7 +345,7 @@ function botdoor(myMsg){
   else if (do_1_2_3_4_5_6 === 6){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg  ){
-        myResult = '刪除成功!';
+        myResult = '卡號刪除成功!';
         card_uid[j] = '' ;
         myMsg = '';
         appendMyRow();
