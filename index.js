@@ -28,14 +28,12 @@ var people =0 ;      //家庭總人數
 var line_id = [] ;  // LINE 身分列表 
 var card_uid = [] ;//卡號列表
 var user_id =[] ; //門禁卡身分列表   
-var door = [] ;  //進or出門列表 
-var line_id_t = '' ;   //暫存line id 
-var user_id_t = '' ;  //暫存身分 
-var card_add = '' ;  //新增卡號
-var line_add = '' ; //新增LINE使用者
-var do_1_2_3_4_5_6 = '' ; //新增刪除暫存總變數
-var line_name= '' ;//LINE的使用者名子
-
+var door = [] ;  //進or出門列表  
+var card_add = '' ;        //新增卡號
+var line_add = '' ;       //新增LINE使用者
+var do_1_2_3_4_5_6 = '' ;//暫存新增刪除總變數
+var line_id_t = '' ;    //暫存line id 
+var user_id_t = '' ;   //暫存身分
 getdata(); 
 
 //LineBot處理文字訊息的函式
@@ -45,9 +43,6 @@ bot.on('message', function(event) {
   if (event.message.type === 'text') {
     bot_txt=botText(event.message.text);
   }
-  event.source.profile().then(function (profile) {
-   line_name = profile.displayName ; 
-  }); 
   event.reply(bot_txt).then(function(data) {   
     console.log('訊息已傳送！');   // success 
   }).catch(function(error) {
@@ -150,34 +145,11 @@ function appendMyRow() {
     }
   });
 } 
-//字元處理的函式
-function text_get_substring(text, where1, at1, where2, at2) {
- function getAt(where, at) {
-   if (where == 'FROM_START') {
-     at--;
-   } else if (where == 'FROM_END') {
-     at = text.length - at;
-   } else if (where == 'FIRST') {
-     at = 0;
-   } else if (where == 'LAST') {
-     at = text.length - 1;
-   } else {
-     throw 'Unhandled option (text_getSubstring).';
-   }
-   return at;
- }
- at1 = getAt(where1, at1);
- at2 = getAt(where2, at2) + 1;
- return text.slice(at1, at2);
-}
 //處理line訊息函式
 function botText(myMsg){
   var myResult='';
   if (admin === 1234 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){ myResult = botdoor(myMsg) }
   else { myResult = setIoT(myMsg) } 
-  var txt_p =  myMsg.indexOf(':') + 1;   
-  var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
-  var t = myMsg.length ;
   if (myResult!=''){}
   else if (myMsg === '1234'){                                  
     if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){   
@@ -188,7 +160,7 @@ function botText(myMsg){
                     type: 'carousel', //選單旋轉
                     columns: [{ //最多10個
                       title: '身分管理',
-                      text: '新增/刪除使用者與資料庫連結',
+                      text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料',
                       actions: [{//最多三個
                         type: 'postback',
                         label: '新增使用者',
@@ -200,7 +172,7 @@ function botText(myMsg){
                       }]
                     }, {
                       title: 'LINE UID 管理',
-                      text: '為身分追加LINE UID控制 ，可使用LINE控制開門',
+                      text: '為身分追加LINE UID控制 ，可使用LINE來控制開門',
                       actions:[{
                         type: 'postback',
                         label: '新增LINE UID',
@@ -212,7 +184,7 @@ function botText(myMsg){
                       }]
                     },{
                       title: '卡號管理',
-                      text: '為身分追加悠遊卡控制 ，可使用悠遊卡控制開門',
+                      text: '為身分追加悠遊卡控制 ，可使用悠遊卡感應來控制開門',
                       actions:[{
                         type: 'postback',
                         label: '新增卡號',
@@ -245,7 +217,7 @@ function botText(myMsg){
           if (line_id[k] != line_id_t){
             line_id[j] = line_id_t ;
             bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
-            myResult = '已被新增!\n您可以使用LINE來開門!' ;
+            myResult = '已被新增!\n您可以使用LINE來控制開門!' ;
             appendMyRow();
             line_add = '';
             break;
@@ -260,12 +232,6 @@ function botText(myMsg){
   }   
   else if (myMsg==='目前家中人數')	   
     myResult='目前家中有' + people +'人'  ;   
-  else if (myMsg==='連線狀況')
-    if (!deviceIsConnected())
-      myResult='裝置未連接！';
-    else{
-      myResult='裝置連接中！';        
-    }
   else{
     myResult = '謝謝回覆!' ;
   } 
@@ -363,6 +329,7 @@ function botdoor(myMsg){
   else if (do_1_2_3_4_5_6 === 4){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg  ){
+
         myResult = '刪除成功!';
         line_id[j] = '' ;
         myMsg = '';
