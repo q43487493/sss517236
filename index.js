@@ -58,11 +58,11 @@ bot.on('message', function(event) {
 //處理選單的函式
 bot.on('postback', function (event) {
   var bot_txt = '';
-
   event.reply(botpostback(bot_txt)).then(function(data) {   
     console.log('訊息已傳送！');   // success 
   }).catch(function(error) {
     console.log('error');       // error 
+  });
 });
 //連接開發版的函示
 boardReady(myBoardVars, true, function (board) {
