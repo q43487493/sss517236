@@ -275,7 +275,7 @@ function botText(myMsg){
 function botpostback(myMsg){
   var myResult = '';
   if (myMsg === '新增使用者' && admin === 1234 || myMsg === '刪除使用者' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
-    myResult = myMsg + '\N請輸入使用者名稱!';
+    myResult = myMsg + '\n請輸入使用者名稱!';
     if (myMsg === '新增使用者'){
       do_1_2_3_4_5_6 = 1 ;
     }
@@ -323,7 +323,7 @@ function botdoor(myMsg){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg ){           
         if (f === 2){
-          myResult= '只剩' + user_id[0]  +'，無法刪除!';
+          myResult= '只剩"' + user_id[0]  +'"，無法刪除!';
           myMsg ='';
           break;
         }
