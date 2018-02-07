@@ -202,6 +202,7 @@ function botText(message){
         admin = 0 ;
         admin_1_2_3_4_5_6= '' ;        
         line_add = '';
+        card_add = '';
         bot.push('U79964e56665caa1f44bb589160964c84', '管理權限啟動時間結束!'); 
       } , 1000 * 90);
     } 
@@ -406,7 +407,8 @@ function door_RFID(UID){
     var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-2; j++) {
       if (card_uid[j] === UID  ){
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者');	
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者');
+        buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	
         card_add = '' ;
         break;
       }				 
