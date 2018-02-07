@@ -329,7 +329,7 @@ function botdoor(myMsg){
     }
   }    
   else if (do_1_2_3_4_5_6 = 3 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){
-
+    myResult = myMsg ;
   }
   return myResult ;
 }
