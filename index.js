@@ -36,7 +36,7 @@ var line_id_t = '' ;    //暫存line id
 var user_id_t = '' ;   //暫存身分
 getdata(); 
 
-//LineBot處理文字訊息的函式
+//LineBot處理文字訊息
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -49,7 +49,7 @@ bot.on('message', function(event) {
     console.log('error');       // error 
   });
 });
-//處理選單的函式
+//處理選單
 bot.on('postback', function (event) {
   event.reply(botpostback(event.postback.data)).then(function(data) {   
     console.log('訊息已傳送！');   // success 
@@ -57,7 +57,7 @@ bot.on('postback', function (event) {
     console.log('error');       // error 
   });
 });
-//連接開發版的函示
+//處理開發版
 boardReady(myBoardVars, true, function (board) {
   myBoard=board;
   board.systemReset();
@@ -93,7 +93,7 @@ var server = app.listen(process.env.PORT || 8080, function() {
   console.log("App now running on port", port);
 });
 
-//讀取試算表的函式
+//讀取試算表
 function getdata() {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
@@ -117,7 +117,7 @@ function getdata() {
     } 
   });
 } 
-//上傳試算表的函式
+//上傳試算表
 function appendMyRow() {
   var request = {
     auth: oauth2Client,
@@ -145,7 +145,7 @@ function appendMyRow() {
     }
   });
 } 
-//處理line訊息函式
+//處理line訊息
 function botText(myMsg){
   var myResult='';
   if (admin === 1234 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){ myResult = botdoor(myMsg) }
@@ -160,7 +160,7 @@ function botText(myMsg){
                     type: 'carousel', //選單旋轉
                     columns: [{ //最多10個
                       title: '身分管理',
-                      text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料。',
+                      text: '新增使用者將預設為在家中\n刪除使用者將刪除相關資料',
                       actions: [{//最多三個
                         type: 'postback',
                         label: '新增使用者',
@@ -210,24 +210,20 @@ function botText(myMsg){
   }
   else if (line_add === '新增' && myMsg === '159'){
     var f = user_id.length;
-    for (var j = 0 ; j <=f-2 ; j++){
-      if (user_id[j] === user_id_t){
-        for (var k = 0 ; k<= f-2 ; k++){
-          if (line_id[k] === line_id_t){
-            bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該用戶以代表一位使用者');
-            myResult = '您身分為:' + user_id[k] + '\n早就能用LINE來開門喔!'  ;
-            line_add = '';
-          }
-        }
-        if (myResult === ''){
-          line_id[j] = line_id_t ;
-          bot.push('U79964e56665caa1f44bb589160964c84', 'LINE UID新增成功!');
-          myResult = '已被新增\n可以使用LINE來開門囉!\n您身分為:' + user_id[j] ;
-          appendMyRow();
-          line_add = '';
-        }
+    for (var k = 0 ; k<= f-2 ; k++){
+      if (line_id[k] === line_id_t){
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，此用戶以代表一位使用者');
+        myResult = '您身分為:' + user_id[k] + '\n早就能用LINE來開門喔!'  ;
+        line_add = '';
         break;
       }
+    }
+    if (line_add === '新增'){
+      line_id[user_id_t] = line_id_t ;
+      bot.push('U79964e56665caa1f44bb589160964c84', 'LINE UID新增成功!');
+      myResult = '已被新增\n可以使用LINE來開門囉!\n您身分為:' + user_id[user_id_t] ;
+      appendMyRow();
+      line_add = '';
     }
   }   
   else if (myMsg==='目前家中人數')	   
@@ -237,7 +233,7 @@ function botText(myMsg){
   } 
   return myResult;
 }
-//處理選單點選時文字處理的函式
+//處理選單點選時文字處理
 function botpostback(myMsg){
   var myResult = '';
   if (myMsg === '新增使用者' && admin === 1234 || myMsg === '刪除使用者' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
@@ -263,7 +259,7 @@ function botpostback(myMsg){
   }
   return myResult;
 } 
-//處理各類新增刪除的函式
+//處理各類新增刪除
 function botdoor(myMsg){
   var myResult = '';
   var f = (user_id.length);  
@@ -317,7 +313,7 @@ function botdoor(myMsg){
       if (user_id[j] === myMsg  ){
         myResult = '請讓要新增的LINE使用者傳送"159"訊息!';
         line_add = '新增' ;
-        user_id_t = myMsg ;
+        user_id_t = j ;
         myMsg = '';
         break;
       }           
@@ -341,7 +337,18 @@ function botdoor(myMsg){
     }
   }
   else if (do_1_2_3_4_5_6 === 5){
-    myResult = myMsg ;
+    for (var j = 0; j <= f-2; j++) {
+      if (user_id[j] === myMsg  ){
+        myResult = '請感應要新增的門禁卡';
+        card_add = '新增' ;
+        user_id_t = j ;
+        myMsg = '';
+        break;
+      }           
+    }
+    if (myMsg != ''){
+      myResult = '沒有這位使用者! \n請檢查是否輸入錯誤';    
+    }
   }
   else if (do_1_2_3_4_5_6 === 6){
     for (var j = 0; j <= f-2; j++) {
@@ -360,7 +367,7 @@ function botdoor(myMsg){
   do_1_2_3_4_5_6 = '' ;
   return myResult ;
 }
-//處理webduino腳位開關的函式
+//處理webduino腳位開關
 function setIoT(fromMsg){
   var returnResult='';  
   if (fromMsg==='開門'){    
@@ -388,26 +395,25 @@ function setIoT(fromMsg){
   }    
   return returnResult;
 }
-//使用RFID開門的函式
+//使用RFID開門
 function door_RFID(UID){ 
   if (card_add ===  '新增' ){   
     var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-2; j++) {
       if (card_uid[j] === UID  ){
-        bot.push('U79964e56665caa1f44bb589160964c84', '此門禁卡已存在!');	
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，此卡以代表一位使用者');	
         card_add = '' ;
         break;
       }				 
     }
     if (card_add === '新增'){	
-      card_uid.splice(0,0,UID);
-      bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
+      card_uid[user_id_t] = UID;
+      bot.push('U79964e56665caa1f44bb589160964c84', '門禁卡新增成功!\n此卡代表身分為:' + user_id[user_id_t] );
       buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
       card_add = '';	
       appendMyRow();
     }
-  }	
-  //判斷卡號與對應身分及目前動作	
+  }		
   else{   
     var line_f = (line_id.length); 
     var f = (card_uid.length);	  		  
@@ -442,7 +448,7 @@ function door_RFID(UID){
     }
   } 
 }
-//使用LINE開門的函式
+//使用LINE開門
 function door_LINE(UID){  
   var text ;  
   var f = (line_id.length);         
@@ -477,7 +483,7 @@ function door_LINE(UID){
   }
   return text ;
 }
-//設定蜂鳴器音樂的函示
+//設定蜂鳴器音樂
 function buzzer_music(m) {
   var musicNotes = {};
   musicNotes.notes = [];
@@ -503,7 +509,7 @@ function buzzer_music(m) {
   }
   return musicNotes;
 }  
-//檢查webduino是否已連線成功的函式
+//檢查webduino是否已連線成功
 function deviceIsConnected(){
    if (myBoard===undefined)
       return false;
