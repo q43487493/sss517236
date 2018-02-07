@@ -33,7 +33,6 @@ var line_id_t = '' ;   //暫存line id
 var user_id_t = '' ;  //暫存身分 
 var card_add = '' ;  //新增卡號
 var line_add = '' ; //新增LINE使用者
-var line_dele= '' ;//刪除LINE使用者
 var do_1_2_3_4_5_6 = '' ; //新增刪除暫存總變數
 var line_name= '' ;//LINE的使用者名子
 
@@ -189,15 +188,19 @@ function botText(myMsg){
                     type: 'carousel', //選單旋轉
                     columns: [{ //最多10個
                       title: '身分管理',
-                      text: '新增/刪除身分',
+                      text: '新增/刪除使用者與資料庫連結',
                       actions: [{//最多三個
                         type: 'postback',
-                        label: '新增身分',
-                        data: '新增身分' 
+                        label: '新增使用者',
+                        data: '新增使用者' 
                       }, {
                         type: 'postback',
-                        label: '刪除身分',
-                        data: '刪除身分' 
+                        label: '刪除使用者',
+                        data: '刪除使用者' 
+                      },{
+                        type: 'uri',
+                        label: '資料庫',
+                        uri: 'https://goo.gl/PMx5q9' 
                       }]
                     }, {
                       title: 'LINE UID 管理',
@@ -238,26 +241,22 @@ function botText(myMsg){
   }
   else if (line_add === '新增' && myMsg === '159'){
     var f = user_id.length;
+    var f_f = line_id.length;
     for (var j = 0 ; j <=f-2 ; j++){
       if (user_id[j] === user_id_t){
-        line_id[j] = line_id_t ;
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
-        myResult = '已被新增!\n您可以使用LINE來開門!' ;
-        appendMyRow();
-        line_add = '';
-        break;
-      }
-    }
-  }
-  else if (line_dele === '刪除' && myMsg === '159'){
-    var f = user_id.length;
-    for (var j = 0 ; j <=f-2 ; j++){
-      if (user_id[j] === user_id_t){
-        line_id[j] = '' ;
-        bot.push('U79964e56665caa1f44bb589160964c84', '刪除成功!');
-        myResult = '已被刪除!\n您無法使用LINE來開門' ;
-        appendMyRow();
-        line_dele = '';
+        for (var k = 0 ; k<= f_f-2 ; k++){
+          if (line_id[k] != line_id_t){
+            line_id[j] = line_id_t ;
+            bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
+            myResult = '已被新增!\n您可以使用LINE來開門!' ;
+            appendMyRow();
+            line_add = '';
+            break;
+          }
+          else{
+            myResult = '此LINE使用者已存在' ;
+          }
+        }
         break;
       }
     }
@@ -278,12 +277,12 @@ function botText(myMsg){
 //處理選單點選時文字處理的函式
 function botpostback(myMsg){
   var myResult = '';
-  if (myMsg === '新增身分' && admin === 1234 || myMsg === '刪除身分' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
-    myResult = '請輸入身分!';
-    if (myMsg === '新增身分'){
+  if (myMsg === '新增使用者' && admin === 1234 || myMsg === '刪除使用者' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
+    myResult = '請輸入使用者名稱!';
+    if (myMsg === '新增使用者'){
       do_1_2_3_4_5_6 = 1 ;
     }
-    else if (myMsg === '刪除身分'){
+    else if (myMsg === '刪除使用者'){
       do_1_2_3_4_5_6 = 2 ;
     }
     else if (myMsg === '新增LINE UID'){
@@ -307,7 +306,7 @@ function botdoor(myMsg){
   var f = (user_id.length);  
   if (do_1_2_3_4_5_6 === 1  ){
     for (var j = 0 ; j <=f-2 ; j++){
-      if (line_id[j] === myMsg){
+      if (user_id[j] === myMsg){
         myResult = '此使用者已存在!';
         myMsg ='' ;  
         break;
@@ -346,7 +345,7 @@ function botdoor(myMsg){
       }   
     }
     if (myMsg != ''){
-      myResult= '沒有這位身分! \n 請檢查是否輸入錯誤';              
+      myResult= '沒有這位使用者! \n 請檢查是否輸入錯誤';              
     }
   }    
   else if (do_1_2_3_4_5_6 === 3){
@@ -360,21 +359,21 @@ function botdoor(myMsg){
       }           
     }
     if (myMsg != ''){
-      myResult = '沒有這位身分! \n 請檢查是否輸入錯誤';    
+      myResult = '沒有這位使用者! \n 請檢查是否輸入錯誤';    
     }   
   }
   else if (do_1_2_3_4_5_6 === 4){
     for (var j = 0; j <= f-2; j++) {
       if (user_id[j] === myMsg  ){
-        myResult = '請讓要刪除的LINE使用者傳送"159"訊息!';
-        line_dele = '刪除' ;
-        user_id_t = myMsg ;
+        myResult = '"'+ myMsg +'"刪除成功!';
+        line_id[j] = '' ;
         myMsg = '';
+        appendMyRow();
         break;
       }           
     }
     if (myMsg != ''){
-      myResult = '沒有這位身分! \n 請檢查是否輸入錯誤';    
+      myResult = '沒有這位使用者! \n 請檢查是否輸入錯誤';    
     }
   }
   else if (do_1_2_3_4_5_6 === 5){
