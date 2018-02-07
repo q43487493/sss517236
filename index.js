@@ -49,7 +49,7 @@ bot.on('message', function(event) {
     console.log('error');       // error 
   });
 });
-//處理選單
+//LineBot處理選單訊息
 bot.on('postback', function (event) {
   event.reply(botpostback(event.postback.data)).then(function(data) {   
     console.log('訊息已傳送！');   // success 
@@ -57,7 +57,7 @@ bot.on('postback', function (event) {
     console.log('error');       // error 
   });
 });
-//處理開發版
+//處理webduino開發版
 boardReady(myBoardVars, true, function (board) {
   myBoard=board;
   board.systemReset();
@@ -93,7 +93,7 @@ var server = app.listen(process.env.PORT || 8080, function() {
   console.log("App now running on port", port);
 });
 
-//讀取試算表
+//讀取試算表-資料庫
 function getdata() {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
@@ -117,7 +117,7 @@ function getdata() {
     } 
   });
 } 
-//上傳試算表
+//上傳試算表-資料庫
 function appendMyRow() {
   var request = {
     auth: oauth2Client,
@@ -212,7 +212,7 @@ function botText(myMsg){
     var f = user_id.length;
     for (var k = 0 ; k<= f-2 ; k++){
       if (line_id[k] === line_id_t){
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，此用戶以代表一位使用者');
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該用戶以代表一位使用者');
         myResult = '您身分為:' + user_id[k] + '\n早就能用LINE來開門喔!'  ;
         line_add = '';
         break;
@@ -233,7 +233,7 @@ function botText(myMsg){
   } 
   return myResult;
 }
-//處理選單點選時文字處理
+//處理選單訊息
 function botpostback(myMsg){
   var myResult = '';
   if (myMsg === '新增使用者' && admin === 1234 || myMsg === '刪除使用者' && admin === 1234 || myMsg === '新增LINE UID' && admin === 1234 || myMsg === '刪除LINE UID' && admin === 1234 || myMsg === '新增卡號' && admin === 1234 || myMsg === '刪除卡號' && admin === 1234 ){
@@ -259,7 +259,7 @@ function botpostback(myMsg){
   }
   return myResult;
 } 
-//處理各類新增刪除
+//處理管理功能
 function botdoor(myMsg){
   var myResult = '';
   var f = (user_id.length);  
@@ -367,7 +367,7 @@ function botdoor(myMsg){
   do_1_2_3_4_5_6 = '' ;
   return myResult ;
 }
-//處理webduino腳位開關
+//處理webduino腳位
 function setIoT(fromMsg){
   var returnResult='';  
   if (fromMsg==='開門'){    
@@ -401,7 +401,7 @@ function door_RFID(UID){
     var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-2; j++) {
       if (card_uid[j] === UID  ){
-        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，此卡以代表一位使用者');	
+        bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者');	
         card_add = '' ;
         break;
       }				 
