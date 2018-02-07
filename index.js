@@ -239,7 +239,7 @@ function botText(myMsg){
   else if (line_add === '新增' && myMsg === '159'){
     var f = user_id.length;
     for (var j = 0 ; j <=f-2 ; j++){
-      if (user_id[j] === line_id_t){
+      if (user_id[j] === user_id_t){
         line_id[j] = line_id_t ;
         bot.push('U79964e56665caa1f44bb589160964c84', '新增成功!');
         myResult = '已被新增!\n您可以使用LINE來開門!' ;
@@ -252,7 +252,7 @@ function botText(myMsg){
   else if (line_dele === '刪除' && myMsg === '159'){
     var f = user_id.length;
     for (var j = 0 ; j <=f-2 ; j++){
-      if (user_id[j] === line_id_t){
+      if (user_id[j] === user_id_t){
         line_id[j] = '' ;
         bot.push('U79964e56665caa1f44bb589160964c84', '刪除成功!');
         myResult = '已被刪除!\n您無法使用LINE來開門' ;
