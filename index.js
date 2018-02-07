@@ -175,15 +175,15 @@ function text_get_substring(text, where1, at1, where2, at2) {
 //處理line訊息函式
 function botText(myMsg){
   var myResult='';
-  myResult = setIoT(myMsg) ;
-  myResult = botdoor(myMsg) ;
+  if (admin === 1234 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){ myResult = botdoor(myMsg) }
+  else { myResult = setIoT(myMsg) } 
   var txt_p =  myMsg.indexOf(':') + 1;   
   var txt_c = text_get_substring(myMsg, 'FROM_START', 1 , 'FROM_START', txt_p - 1);  
   var t = myMsg.length ;
   if (myResult!=''){}
-  else if (myMsg === '1234'){                                      //'管理權限已開啟，權限限時60秒。\n    管理功能: \n    1.新增LINE使用者:XX \n    2.刪除LINE使用者:XX \n    3.新增門禁卡:XX \n    4.刪除門禁卡:XX \n---------------------------------------------\nXX請更改成身分。';  
-    if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){    // 未來以旋轉選單製作 1.新增使用者 \n    2.刪除使用者 \n    3.新增LINE ID \n    4.刪除LINE ID \n    5.新增卡號 \n    6.刪除卡號  
-      admin = 1234 ;                                           //1.新增使用者:XX \n    2.刪除使用者:XX \n    3.新增LINE ID:XX \n    4.刪除LINE ID:XX \n    5.新增卡號:XX \n    6.刪除卡號:XX 
+  else if (myMsg === '1234'){                                  
+    if (line_id_t === 'U79964e56665caa1f44bb589160964c84' ){   
+      admin = 1234 ;                                           
       myResult= { type: 'template',
                   altText: 'this is a carousel template',
                   template: {
