@@ -196,7 +196,7 @@ function botText(message){
                       }]
                     }]
                   }
-                },{ type: 'text', text: "管理功能使用時間為90秒。"}]
+                },{ type: 'text', text: '管理功能使用時間為90秒。'},{ type: 'text', text: '資料庫連結:https://goo.gl/PMx5q9'}]
       setTimeout(function () { 
         admin = 0 ;
         admin_1_2_3_4_5_6= '' ;        
