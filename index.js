@@ -197,10 +197,6 @@ function botText(myMsg){
                         type: 'postback',
                         label: '刪除使用者',
                         data: '刪除使用者' 
-                      },{
-                        type: 'uri',
-                        label: '資料庫',
-                        uri: 'https://goo.gl/PMx5q9' 
                       }]
                     }, {
                       title: 'LINE UID 管理',
