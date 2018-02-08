@@ -169,9 +169,9 @@ function add_date() {
 //分類要上傳的資料
 function add_sort() {
   var f = user_id.length;
-  var form_0 = [line_id[0],card_uid[0],user_id[0],door[0]];
-  var form_1 = [line_id[1],card_uid[1],user_id[1],door[1]];
-  var form_2 = [line_id[2],card_uid[2],user_id[2],door[2]];
+  //var form_0 = [line_id[0],card_uid[0],user_id[0],door[0]];
+  //var form_1 = [line_id[1],card_uid[1],user_id[1],door[1]];
+  //var form_2 = [line_id[2],card_uid[2],user_id[2],door[2]];
   //var form_3 = [line_id[3],card_uid[3],user_id[3],door[3]];
   //var form_4 = [line_id[4],card_uid[4],user_id[4],door[4]];
   //var form_5 = [line_id[5],card_uid[5],user_id[5],door[5]];
