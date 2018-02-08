@@ -445,21 +445,21 @@ function door_RFID(UID){
     }
   }		
   else{   
-    var line_f = (line_id.length); 
+    var user_f = (user_id.length); 
     var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         if (door[j] === '在家中'){
         people = people -1 ;		 
         door[j] = '不在家';			 
-          for (var t = 0 ; t<= f-1 ; t++){
+          for (var t = 0 ; t<= user_f-1 ; t++){
             bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );   
           }   
         }
         else if (door[j] === '不在家'){
           people = people + 1;  		 
           door[j] = '在家中';	           	
-          for (var t = 0 ; t<= f-1 ; t++){
+          for (var t = 0 ; t<= user_f-1 ; t++){
             bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );   
           }							
         }
