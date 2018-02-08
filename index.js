@@ -23,7 +23,6 @@ var device_id_1={device: '8QwwV'}; //Webduino的device id
 var device_id_2={device: '10Q28gDy', transport: 'mqtt'};
 var Board_1;  
 var Board_2;
-var form = [];
 var admin = 0 ;       //管理員
 var people =0 ;      //家庭總人數
 var line_id = [] ;  // LINE 身分列表 
@@ -138,7 +137,6 @@ function data_sort(data){
 
 //上傳試算表-資料庫
 function add_date() {
-  add_sort();
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
@@ -146,7 +144,7 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      'values': form //[  
+      'values': add_sort() //[  
         //line_id,     
         //card_uid,      //第二列  [第一欄,第二欄,.... ]
         //user_id,      //第三列  
@@ -167,6 +165,7 @@ function add_date() {
 } 
 //分類要上傳的資料
 function add_sort() {
+  var form = [];
   var f = user_id.length;
   //var form_0 = [line_id[0],card_uid[0],user_id[0],door[0]];
   //var form_1 = [line_id[1],card_uid[1],user_id[1],door[1]];
@@ -184,6 +183,7 @@ function add_sort() {
     }
     form[f] = ['----------------------------'];
   }
+  return form;
 }
 //處理line訊息
 function botText(message){
