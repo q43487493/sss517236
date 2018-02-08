@@ -145,7 +145,7 @@ function add_date() {
     valueInputOption: 'RAW',
     resource: {
       'values': [
-        add_sort()    
+        add_sort(),    
         //line_id,     
         //card_uid,      //第二列  [第一欄,第二欄,.... ]
         //user_id,      //第三列  
@@ -168,7 +168,7 @@ function add_date() {
 function add_sort() {
   var Result ;
   var f = user_id.length;
-  var form = '';
+  var form = [];
   var form_1=[];
   var form_2=[];
   var form_3=[];
@@ -176,10 +176,8 @@ function add_sort() {
   var form_5=[];
   var form_6=[];
   for (j = 0 ; j <= f-1 ; j++ ){
-    form=form + [line_id[j],card_uid[j],user_id[j],door[j]],
+    form[j]=line_id[j],card_uid[j],user_id[j],door[j]
   }
-  form[0][4] = people;
-  form[0][5] = new Date();
   console.log(form);
   return form;
 }
