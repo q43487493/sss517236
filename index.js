@@ -123,7 +123,6 @@ function data_sort(data){
     text[j] =  data[j][0]  ;
   }
   var f_2 = text.lastIndexOf('----------------------------')+1; 
-  var f = f_1 - f_2 - 1 ; //最新資料有多少身分
   var k = 0 ;
   for (j = f_2 ; j <= f_1-2 ; j++){
     line_id[k] = data[j][0]; 
@@ -144,15 +143,7 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      'values': add_sort() //[  
-        //line_id,     
-        //card_uid,      //第二列  [第一欄,第二欄,.... ]
-        //user_id,      //第三列  
-        //door,
-        //[people,'總人數'], 
-        //[new Date(),'時間'],
-        //['----------------------------'],
-      //]                         
+      'values': add_sort()                        
     }
   };
   var sheets = google.sheets('v4');
@@ -167,14 +158,6 @@ function add_date() {
 function add_sort() {
   var form = [];
   var f = user_id.length;
-  //var form_0 = [line_id[0],card_uid[0],user_id[0],door[0]];
-  //var form_1 = [line_id[1],card_uid[1],user_id[1],door[1]];
-  //var form_2 = [line_id[2],card_uid[2],user_id[2],door[2]];
-  //var form_3 = [line_id[3],card_uid[3],user_id[3],door[3]];
-  //var form_4 = [line_id[4],card_uid[4],user_id[4],door[4]];
-  //var form_5 = [line_id[5],card_uid[5],user_id[5],door[5]];
-  //var form_6 = [line_id[6],card_uid[6],user_id[6],door[6]];
-  //form = form_0,form_1,form_2;//form_3,form_4,form_5
   for (var j = 0 ; j<= f-1 ;j++ ){
     if (j === 0)
       form[j] = [line_id[j],card_uid[j],user_id[j],door[j],people,new Date()];
