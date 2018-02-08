@@ -138,7 +138,6 @@ function data_sort(data){
 
 //上傳試算表-資料庫
 function add_date() {
-  add_sort();
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
@@ -146,14 +145,13 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      'values': [
-        form,   
-        //line_id,     
-        //card_uid,      //第二列  [第一欄,第二欄,.... ]
-        //user_id,      //第三列  
-        //door,
-        //[people,'總人數'], 
-        //[new Date(),'時間'],
+      'values': [  
+        line_id,     
+        card_uid,      //第二列  [第一欄,第二欄,.... ]
+        user_id,      //第三列  
+        door,
+        [people,'總人數'], 
+        [new Date(),'時間'],
         ['----------------------------'],
       ]                         
     }
@@ -169,6 +167,7 @@ function add_date() {
 //分類要上傳的資料
 function add_sort() {
   var f = user_id.length;
+  var form_0=[];
   var form_1=[];
   var form_2=[];
   var form_3=[];
