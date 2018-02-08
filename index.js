@@ -176,7 +176,7 @@ function add_sort() {
   var form_5=[];
   var form_6=[];
   for (j = 0 ; j <= f-1 ; j++ ){
-    form[j]=line_id[j],card_uid[j],user_id[j],door[j]
+    form[j]={line_id[j],card_uid[j],user_id[j],door[j]}
   }
   console.log(form);
   return form;
