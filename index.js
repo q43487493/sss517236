@@ -146,16 +146,16 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      'values': [  
-        form,
+      'values': form //[  
+        
         //line_id,     
         //card_uid,      //第二列  [第一欄,第二欄,.... ]
         //user_id,      //第三列  
         //door,
         //[people,'總人數'], 
         //[new Date(),'時間'],
-        ['----------------------------'],
-      ]                         
+        //['----------------------------'],
+      //]                         
     }
   };
   var sheets = google.sheets('v4');
@@ -176,7 +176,14 @@ function add_sort() {
   //var form_4 = [line_id[4],card_uid[4],user_id[4],door[4]];
   //var form_5 = [line_id[5],card_uid[5],user_id[5],door[5]];
   //var form_6 = [line_id[6],card_uid[6],user_id[6],door[6]];
-  form = form_0,form_1,form_2;//form_3,form_4,form_5
+  //form = form_0,form_1,form_2;//form_3,form_4,form_5
+  for (var j = 0 ; j<= f-1 ;j++ ){
+    if (j != f-1)
+      form[j] = [line_id[j],card_uid[j],user_id[j],door[j]];
+    else{
+      form[j] = [line_id[j],card_uid[j],user_id[j],door[j],people,new Date()];
+    } 
+  }
 }
 //處理line訊息
 function botText(message){
