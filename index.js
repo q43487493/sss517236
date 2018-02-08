@@ -145,7 +145,7 @@ function add_date() {
     valueInputOption: 'RAW',
     resource: {
       'values': [
-        add_sort(),    
+        add_sort()    
         //line_id,     
         //card_uid,      //第二列  [第一欄,第二欄,.... ]
         //user_id,      //第三列  
