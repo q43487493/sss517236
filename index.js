@@ -105,22 +105,36 @@ function getdata() {
     spreadsheetId: SheetId,
     range:encodeURI('資料庫'),  //試算表-工作表名稱
   }, function(err, response) {  
-    var data = response.values;   // 讀取資料以二維陣列表示  [列][攔]
     if (err) {            
-      console.log('讀取資料庫的API產生問題：' + err);
+      console.log('讀取資料庫發生問題：' + err);
       return;
     }      
-    else {    
-      var f = (data.length);  
-      line_id = data[f-7]    //0
-      card_uid = data[f-6];  //1
-      user_id =  data[f-5];  //2
-      door = data[f-4];      //3     
-      people = parseFloat(data[f-3][0]); //4,1
+    else {
+      data_sort(response.values);  // 讀取資料以二維陣列表示  [列][攔]
       console.log('資料庫已取得完畢！');
     } 
   });
-} 
+}
+//將讀取的資料分類
+function data_sort(data){
+  var f_1 = data.length;  
+  var text = [];
+  for (j = 0 ; j <= f_1-2 ; j++){
+    text[j] =  data[j][0]  ;
+  }
+  var f_2 = text.lastIndexOf('----------------------------')+1; 
+  var f = f_1 - f_2 - 1 ; //最新資料有多少身分
+  var k = 0 ;
+  for (j = f_2 ; j <= f_1-2 ; j++){
+    line_id[k] = data[j][0]; 
+    card_uid[k] = data[j][1]; 
+    user_id[k] = data[j][2]; 
+    door[k] = data[j][3];  
+    k = k + 1 ;
+  }
+  people = parseFloat(data[f_2][4]);
+}
+
 //上傳試算表-資料庫
 function add_date() {
   var request = {
@@ -130,14 +144,15 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      "values": [ 
-        line_id,     
-        card_uid,      //第二列  [第一欄,第二欄,.... ]
-        user_id,      //第三列  
-        door,
-        [people,'總人數'], 
-        [new Date(),'時間'],
-        ['--------------',],
+      "values": [
+        add_sort()    
+        //line_id,     
+        //card_uid,      //第二列  [第一欄,第二欄,.... ]
+        //user_id,      //第三列  
+        //door,
+        //[people,'總人數'], 
+        //[new Date(),'時間'],
+        //['----------------------------'],
       ]                         
     }
   };
@@ -149,6 +164,22 @@ function add_date() {
     }
   });
 } 
+//分類要上傳的資料
+function add_sort() {
+  var Result ;
+  var f = user_id.length;
+  var form=[[]];
+  for (j = 0 ; j <= f-1 ; j++ ){
+    form[j][0]= line_id[j];
+    form[j][1]= card_uid[j] ;
+    form[j][2]=user_id[j];
+    form[j][3]=door[j];
+  }
+  form[0][4] = people;
+  form[0][5] = new Date();
+  console.log(form);
+  return form;
+}
 //處理line訊息
 function botText(message){
   var Result='';
@@ -216,7 +247,7 @@ function botText(message){
   }
   else if (line_add === '新增' && message === '159'){
     var f = user_id.length;
-    for (var k = 0 ; k<= f-2 ; k++){
+    for (var k = 0 ; k<= f-1 ; k++){
       if (line_id[k] === line_id_t){
         bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該用戶以代表一位使用者');
         Result = '您身分為:' + user_id[k] + '\n早就能用LINE來開門喔!'  ;
@@ -274,7 +305,7 @@ function admin_door(message){
   var Result = '';
   var f = (user_id.length);  
   if (admin_1_2_3_4_5_6=== 1  ){
-    for (var j = 0 ; j <=f-2 ; j++){
+    for (var j = 0 ; j <=f-1 ; j++){
       if (user_id[j] === message){
         Result = '此使用者已存在';
         message ='' ;  
@@ -292,9 +323,9 @@ function admin_door(message){
     }
   }
   else if (admin_1_2_3_4_5_6=== 2 ){
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message ){           
-        if (f === 2){
+        if (f === 1){
           Result= '只剩"' + user_id[0]  +'"，無法刪除!';
           message ='';
           break;
@@ -319,7 +350,7 @@ function admin_door(message){
     }
   }    
   else if (admin_1_2_3_4_5_6=== 3){
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
         Result = '請讓要新增的LINE使用者傳送"159"訊息';
         line_add = '新增' ;
@@ -333,7 +364,7 @@ function admin_door(message){
     }   
   }
   else if (admin_1_2_3_4_5_6=== 4){
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
         Result = 'LINE UID刪除成功!';
         line_id[j] = '' ;
@@ -347,7 +378,7 @@ function admin_door(message){
     }
   }
   else if (admin_1_2_3_4_5_6=== 5){
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
         Result = '請感應要新增的門禁卡';
         card_add = '新增' ;
@@ -361,7 +392,7 @@ function admin_door(message){
     }
   }
   else if (admin_1_2_3_4_5_6=== 6){
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
         Result = '卡號刪除成功!';
         card_uid[j] = '' ;
@@ -409,7 +440,7 @@ function webduino(message){
 function door_RFID(UID){ 
   if (card_add ===  '新增' ){   
     var f = (card_uid.length);	  		  
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者');
         buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	
@@ -428,19 +459,19 @@ function door_RFID(UID){
   else{   
     var line_f = (line_id.length); 
     var f = (card_uid.length);	  		  
-    for (var j = 0; j <= f-2; j++) {
+    for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         if (door[j] === '在家中'){
         people = people -1 ;		 
         door[j] = '不在家';			 
-          for (var t = 0 ; t<= f-2 ; t++){
+          for (var t = 0 ; t<= f-1 ; t++){
             bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );   
           }   
         }
         else if (door[j] === '不在家'){
           people = people + 1;  		 
           door[j] = '在家中';	           	
-          for (var t = 0 ; t<= f-2 ; t++){
+          for (var t = 0 ; t<= f-1 ; t++){
             bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );   
           }							
         }
@@ -463,19 +494,19 @@ function door_RFID(UID){
 function door_LINE(UID){  
   var text ;  
   var f = (line_id.length);         
-  for (var j = 0; j <= f-2; j++) {
+  for (var j = 0; j <= f-1; j++) {
     if (line_id[j] === UID  ){
       if (door[j] === '在家中'){
         people = people -1 ;     
         door[j] = '不在家';   
-        for (var t = 0 ; t<= f-2 ; t++){
+        for (var t = 0 ; t<= f-1; t++){
           bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );   
         }
       }
       else if (door[j] === '不在家'){
         people = people + 1;  
         door[j] = '在家中'; 
-        for (var t = 0 ; t<= f-2 ; t++){
+        for (var t = 0 ; t<= f-1; t++){
           bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );  
         }                
       }
