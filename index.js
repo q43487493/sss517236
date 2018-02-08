@@ -147,7 +147,6 @@ function add_date() {
     valueInputOption: 'RAW',
     resource: {
       'values': form //[  
-        
         //line_id,     
         //card_uid,      //第二列  [第一欄,第二欄,.... ]
         //user_id,      //第三列  
@@ -177,12 +176,13 @@ function add_sort() {
   //var form_5 = [line_id[5],card_uid[5],user_id[5],door[5]];
   //var form_6 = [line_id[6],card_uid[6],user_id[6],door[6]];
   //form = form_0,form_1,form_2;//form_3,form_4,form_5
-  for (var j = 0 ; j<= f ;j++ ){
-    if (j === 1)
+  for (var j = 0 ; j<= f-1 ;j++ ){
+    if (j === 0)
       form[j] = [line_id[j],card_uid[j],user_id[j],door[j],people,new Date()];
     else{
       form[j] = [line_id[j],card_uid[j],user_id[j],door[j]];
-    } 
+    }
+    form[f] = ['----------------------------'];
   }
 }
 //處理line訊息
