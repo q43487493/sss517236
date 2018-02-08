@@ -78,10 +78,14 @@ boardReady(device_id_2, true, function (board) {
   board.samplingInterval = 50;
   relay_2 = getRelay(board, 5);
   relay_2.off();
- /* g3 = getG3(board, 2,3);
- g3.read(function(evt){
- bot.push('U79964e56665caa1f44bb589160964c84',  '目前pm25:'  + g3.pm25 ); 
- }, 1000 * 5 ); */
+  g3 = getG3(board, 2,3); //pm25
+  g3.read(function(evt){
+    console.log(g3.pm25); 
+  }, 1000 * 3 ); 
+  dht = getDht(board, 11); //溫溼度
+  dht.read(function(evt){
+    console.log(dht.temperature);
+  }, 1000 * 3);
 }); 
 
 const app = express();
