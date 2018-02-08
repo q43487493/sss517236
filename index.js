@@ -138,6 +138,7 @@ function data_sort(data){
 
 //上傳試算表-資料庫
 function add_date() {
+  add_sort();
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
@@ -153,7 +154,7 @@ function add_date() {
         //door,
         //[people,'總人數'], 
         //[new Date(),'時間'],
-        //['----------------------------'],
+        ['----------------------------'],
       ]                         
     }
   };
@@ -175,7 +176,11 @@ function add_sort() {
   var form_5=[];
   var form_6=[];
   for (j = 0 ; j <= f-1 ; j++ ){
-    form[j]=[line_id[j],card_uid[j],user_id[j],door[j]]
+    if (j != f-1 )
+      form[j]=[line_id[j],card_uid[j],user_id[j],door[j]];
+    else {
+      form[j]=[line_id[j],card_uid[j],user_id[j],door[j],people,new Date()];
+    }
   }
 }
 //處理line訊息
