@@ -176,7 +176,7 @@ function add_sort() {
   var form_5=[];
   var form_6=[];
   for (j = 0 ; j <= f-1 ; j++ ){
-    form=form + [line_id[j],card_uid[j],user_id[j],door[j]],;
+    form=form + [line_id[j],card_uid[j],user_id[j],door[j]],
   }
   form[0][4] = people;
   form[0][5] = new Date();
