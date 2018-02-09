@@ -82,7 +82,7 @@ boardReady(device_id_2, true, function (board) {
   var m = 0 ;
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
-    bot.push(line_id[t],'目前家中pm2.5為' + g3.pm25);
+    bot.push('U79964e56665caa1f44bb589160964c84','目前家中pm2.5為' + g3.pm25);
     if (g3.pm25 >= 54){
       if (m = 1){
         m = 0 ;
@@ -97,7 +97,7 @@ boardReady(device_id_2, true, function (board) {
       //relay_3.off();
       m = 1 ;
     } 
-  }, 1000 * 1);
+  }, 1000 * 3);
 }); 
 boardReady(device_id_3, true, function (board) {
   board.systemReset();
