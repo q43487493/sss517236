@@ -80,15 +80,15 @@ boardReady(device_id_2, true, function (board) {
   relay_2 = getRelay(board, 5);
   relay_2.off();
   var m = 0 ;
+  var f = user_id.length
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     bot.push('U79964e56665caa1f44bb589160964c84','目前家中pm2.5為' + g3.pm25);
-    /*if (g3.pm25 >= 46){
+    if (g3.pm25 >= 48){
       if (m = 1){
         m = 0 ;
         relay_2.on();
-        var f = user_id.length
-        for (var t = 0 ; t<= user_f-1 ; t++){
+        for (var t = 0 ; t<= f-1 ; t++){
           bot.push(line_id[t],'目前家中pm2.5為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
         }
       }
@@ -96,7 +96,7 @@ boardReady(device_id_2, true, function (board) {
     else{
       relay_2.off();
       m = 1 ;
-    } */
+    } 
   }, 1000 * 1);
 }); 
 boardReady(device_id_3, true, function (board) {
