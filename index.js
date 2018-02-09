@@ -93,7 +93,7 @@ boardReady(device_id_2, true, function (board) {
       }
     }
     else{
-      if (m = 1){
+      if (m === 1){
         for (var t = 0 ; t<= f-1 ; t++){
           bot.push(line_id[t],'清淨完畢\n空氣清淨機以關閉!');   
         }
