@@ -86,9 +86,9 @@ boardReady(device_id_2, true, function (board) {
     if (g3.pm25 >= 54){
       if (m != 1){
         m = 1 ;
-        relay_2.on();
+        relay_2.on();//
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'目前家中pm2.5為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
+          bot.push(line_id[t],'目前家中pm2.5超標，為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
         }
       }
     }
@@ -98,7 +98,7 @@ boardReady(device_id_2, true, function (board) {
           bot.push(line_id[t],'清淨完畢\n空氣清淨機以關閉!');   
         }
       }
-      relay_2.off();
+      relay_2.off();//
       m=0
     } 
   }, 1000 * 1);
@@ -113,16 +113,21 @@ boardReady(device_id_3, true, function (board) {
   dht.read(function(evt){
     if (dht.humidity >= 75){
       if (m != 1){
-        relay_3.on();
+        relay_3.on();//
         m = 1 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
-          bot.push(line_id[t],'目前浴室濕度為' + dht.humidity + '\n將自動開啟抽風機');   
+          bot.push(line_id[t],'目前浴室濕度超標，為' + dht.humidity + '\n將自動開啟抽風機');   
         }
       }
     }
     else{
-      relay_3.off();
+      if (m === 1){
+        for (var t = 0 ; t<= f-1 ; t++){
+          bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
+        }
+      }
+      relay_3.off();//
       m = 0 ;
     }
   }, 1000 * 1);
