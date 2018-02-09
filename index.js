@@ -63,7 +63,7 @@ boardReady(device_id_1, true, function (board) {
   Board_1=board;
   board.systemReset();
   board.samplingInterval = 250;
-  relay_1 = getRelay(board, 7);
+  relay_1 = getRelay(board, 5);
   relay_1.off();
   buzzer = getBuzzer(board, 2);  
   rfid = getRFID(board);
@@ -112,7 +112,7 @@ boardReady(device_id_3, true, function (board) {
         m = 0 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
-          bot.push(line_id[t],'目前浴室濕度為' + dht.humidity + '\n將自動開啟除濕機');   
+          bot.push(line_id[t],'目前浴室濕度為' + dht.humidity + '\n將自動開啟抽風機');   
         }
       }
     }
