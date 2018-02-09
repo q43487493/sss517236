@@ -83,7 +83,7 @@ boardReady(device_id_2, true, function (board) {
   var f = user_id.length
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
-    if (g3.pm25 >= 48){
+    if (g3.pm25 >= 54){
       if (m != 1){
         m = 1 ;
         relay_2.on();
