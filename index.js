@@ -86,7 +86,7 @@ boardReady(device_id_2, true, function (board) {
     if (g3.pm25 >= 54){
       if (m = 1){
         m = 0 ;
-        //relay_3.on();
+        relay_2.on();
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
           bot.push(line_id[t],'目前家中pm2.5為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
@@ -94,7 +94,7 @@ boardReady(device_id_2, true, function (board) {
       }
     }
     else{
-      //relay_3.off();
+      relay_2.off();
       m = 1 ;
     } 
   }, 1000 * 1);
