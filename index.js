@@ -83,7 +83,6 @@ boardReady(device_id_2, true, function (board) {
   var f = user_id.length
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
-    bot.push('U79964e56665caa1f44bb589160964c84','目前家中pm2.5為' + g3.pm25);
     if (g3.pm25 >= 48){
       if (m != 1){
         m = 1 ;
@@ -95,7 +94,7 @@ boardReady(device_id_2, true, function (board) {
     }
     else{
       relay_2.off();
-      m = 0 ;
+      m=0
     } 
   }, 1000 * 1);
 }); 
@@ -108,9 +107,9 @@ boardReady(device_id_3, true, function (board) {
   dht = getDht(board, 2); //溫溼度
   dht.read(function(evt){
     if (dht.humidity >= 75){
-      if (m = 1){
+      if (m != 1){
         relay_3.on();
-        m = 0 ;
+        m = 1 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
           bot.push(line_id[t],'目前浴室濕度為' + dht.humidity + '\n將自動開啟抽風機');   
@@ -119,7 +118,7 @@ boardReady(device_id_3, true, function (board) {
     }
     else{
       relay_3.off();
-      m = 1 ;
+      m = 0 ;
     }
   }, 1000 * 1);
 });
