@@ -36,7 +36,7 @@ var admin_1_2_3_4_5_6 = '' ;//暫存新增刪除總變數
 var line_id_t = '' ;    //暫存line id 
 var user_id_t = '' ;   //暫存身分位置
 getdata(); 
-
+bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });
 //LineBot處理文字訊息
 bot.on('message', function(event) {
   var bot_txt='';
