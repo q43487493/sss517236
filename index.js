@@ -85,9 +85,8 @@ boardReady(device_id_2, true, function (board) {
   g3.read(function(evt){
     bot.push('U79964e56665caa1f44bb589160964c84','目前家中pm2.5為' + g3.pm25);
     if (g3.pm25 >= 48){
-      m = m + 1 ;
-      if (m = 120){
-        m = 0 ;
+      if (m != 1){
+        m = 1 ;
         relay_2.on();
         for (var t = 0 ; t<= f-1 ; t++){
           bot.push(line_id[t],'目前家中pm2.5為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
@@ -96,6 +95,7 @@ boardReady(device_id_2, true, function (board) {
     }
     else{
       relay_2.off();
+      m = 0 ;
     } 
   }, 1000 * 1);
 }); 
