@@ -21,6 +21,7 @@ oauth2Client.credentials ={"access_token":"ya29.Gls9BQU9XIxCcwKmh8x1DNBFw7KtZUtn
 var SheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';//試算表id
 var device_id_1={device: '8QwwV'}; //Webduino的device id
 var device_id_2={device: '10Q28gDy', transport: 'mqtt'};
+var device_id_3={device: '456', transport: 'mqtt'};
 var Board_1;  
 var Board_2;
 var admin = 0 ;       //管理員
@@ -77,17 +78,50 @@ boardReady(device_id_2, true, function (board) {
   board.systemReset();
   board.samplingInterval = 50;
   relay_2 = getRelay(board, 5);
-  relay_2.off();/*
+  relay_2.off();
+  var m = 0 ;
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
-    console.log(g3.pm25); 
-  }, 1000 * 3 ); 
-  dht = getDht(board, 11); //溫溼度
-  dht.read(function(evt){
-    console.log(dht.temperature);
-  }, 1000 * 3);*/
+    if (g3.pm25 >= 54){
+      if (m = 1){
+        m = 0 ;
+        relay_3.on();
+        var f = user_id.length
+        for (var t = 0 ; t<= user_f-1 ; t++){
+          bot.push(line_id[t],'目前家中pm2.5為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
+        }
+      }
+    }
+    else{
+      //relay_3.off();
+      m = 1 ;
+    } 
+  }, 1000 * 3);
 }); 
-
+boardReady(device_id_3, true, function (board) {
+  board.systemReset();
+  board.samplingInterval = 50;
+  relay_3 = getRelay(board, 5);
+  relay_3.off();
+  var m = 0 ; 
+  dht = getDht(board, 2); //溫溼度
+  dht.read(function(evt){
+    if (dht.humidity >= 75){
+      if (m = 1){
+        relay_3.on();
+        m = 0 ;
+        var f = user_id.length
+        for (var t = 0 ; t<= user_f-1 ; t++){
+          bot.push(line_id[t],'目前浴室濕度為' + dht.humidity + '\n將自動開啟除濕機');   
+        }
+      }
+    }
+    else{
+      relay_3.off();
+      m = 1 ;
+    }
+  }, 1000 * 3);
+});
 const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
