@@ -97,7 +97,7 @@ boardReady(device_id_2, true, function (board) {
       //relay_3.off();
       m = 1 ;
     } 
-  }, 1000 * 3);
+  }, 1000 * 1);
 }); 
 boardReady(device_id_3, true, function (board) {
   board.systemReset();
@@ -121,7 +121,7 @@ boardReady(device_id_3, true, function (board) {
       relay_3.off();
       m = 1 ;
     }
-  }, 1000 * 3);
+  }, 1000 * 1);
 });
 const app = express();
 const linebotParser = bot.parser();
