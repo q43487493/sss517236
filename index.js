@@ -447,20 +447,11 @@ function webduino(message){
     Result = door_LINE(line_id_t);     
   }
   else if (message==='開燈'){    
-    if ('5464561'=== message)
-      Result='裝置未連接！';
-    else{
-      Result='電燈已開啟!';
-      relay_2.on();		 	            
-    }               			
+    Result='電燈已開啟!';
+    relay_2.on();               			
   }
   else if (message==='關燈'){    
-    if ('456451'=== message)
-      Result='裝置未連接！';
-    else{
-      Result='電燈已關閉!';
-      relay_2.off();		 	            
-    }     
+     Result='電燈已關閉!';
   }    
   return Result;
 }
