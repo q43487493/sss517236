@@ -444,11 +444,7 @@ function admin_door(message){
 function webduino(message){
   var Result='';  
   if (message==='開門'){    
-    if ('54561'=== message)
-      Result='裝置未連接！';
-    else{
-      Result = door_LINE(line_id_t);        
-    }     
+    Result = door_LINE(line_id_t);     
   }
   else if (message==='開燈'){    
     if ('5464561'=== message)
