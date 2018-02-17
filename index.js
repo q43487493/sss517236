@@ -444,14 +444,14 @@ function admin_door(message){
 function webduino(message){
   var Result='';  
   if (message==='開門'){    
-    if (!deviceIsConnected())
+    if ('54561'=== message)
       Result='裝置未連接！';
     else{
       Result = door_LINE(line_id_t);        
     }     
   }
   else if (message==='開燈'){    
-    if (!deviceIsConnected2())
+    if ('5464561'=== message)
       Result='裝置未連接！';
     else{
       Result='電燈已開啟!';
@@ -459,7 +459,7 @@ function webduino(message){
     }               			
   }
   else if (message==='關燈'){    
-    if (!deviceIsConnected2())
+    if ('456451'=== message)
       Result='裝置未連接！';
     else{
       Result='電燈已關閉!';
@@ -586,17 +586,17 @@ function buzzer_music(m) {
 //檢查webduino是否已連線成功
 function deviceIsConnected(){
    if (Board_1===undefined)
-      return Board_1.isConnected;
+      return false;
    else if (Board_1.isConnected===undefined)
-      return Board_1.isConnected;
+      return false;
    else
       return Board_1.isConnected;
 }
 function deviceIsConnected2(){
    if (Board_2===undefined)
-      return Board_2.isConnected;
+      return false;
    else if (Board_2.isConnected===undefined)
-      return Board_2.isConnected;
+      return false;
    else
       return Board_2.isConnected;
 }
