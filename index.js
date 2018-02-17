@@ -63,8 +63,8 @@ boardReady(device_id_1, true, function (board) {
   Board_1=board;
   board.systemReset();
   board.samplingInterval = 250;
-  relay_1 = getRelay(board, 5);
-  relay_1.off();
+  //relay_1 = getRelay(board, 5);
+  //relay_1.off();
   buzzer = getBuzzer(board, 2);  
   rfid = getRFID(board);
   rfid.read();     
@@ -77,8 +77,8 @@ boardReady(device_id_2, true, function (board) {
   Board_2=board;
   board.systemReset();
   board.samplingInterval = 50;
-  relay_2 = getRelay(board, 5);
-  relay_2.off();
+  //relay_2 = getRelay(board, 5);
+  //relay_2.off();
   var m = 0 ;
   var f = user_id.length
   g3 = getG3(board, 2,3); //pm25
@@ -86,7 +86,7 @@ boardReady(device_id_2, true, function (board) {
     if (g3.pm25 >= 54){
       if (m != 1){
         m = 1 ;
-        //relay_2.on();
+        ////relay_2.on();
         for (var t = 0 ; t<= f-1 ; t++){
           bot.push(line_id[t],'目前家中pm2.5超標，為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
         }
@@ -98,7 +98,7 @@ boardReady(device_id_2, true, function (board) {
           bot.push(line_id[t],'清淨完畢\n空氣清淨機以關閉!');   
         }
       }
-      //relay_2.off();
+      ////relay_2.off();
       m=0
     } 
   }, 1000 * 1);
@@ -106,14 +106,14 @@ boardReady(device_id_2, true, function (board) {
 boardReady(device_id_3, true, function (board) {
   board.systemReset();
   board.samplingInterval = 50;
-  relay_3 = getRelay(board, 5);
-  relay_3.off();
+  //relay_3 = getRelay(board, 5);
+  //relay_3.off();
   var m = 0 ; 
   dht = getDht(board, 2); //溫溼度
   dht.read(function(evt){
     if (dht.humidity >= 75){
       if (m != 1){
-        relay_3.on();
+        //relay_3.on();
         m = 1 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
@@ -127,7 +127,7 @@ boardReady(device_id_3, true, function (board) {
           bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
         }
       }
-      relay_3.off();
+      //relay_3.off();
       m = 0 ;
     }
   }, 1000 * 1);
@@ -447,8 +447,7 @@ function webduino(message){
     Result = door_LINE(line_id_t);     
   }
   else if (message==='開燈'){    
-    Result='電燈已開啟!';
-    relay_2.on();               			
+    Result='電燈已開啟!';              			
   }
   else if (message==='關燈'){    
      Result='電燈已關閉!';
@@ -495,9 +494,9 @@ function door_RFID(UID){
           }							
         }
         add_date(); 	
-        relay_1.on();
+        //relay_1.on();
         setTimeout(function () {                   
-          relay_1.off();
+          //relay_1.off();
         }, 1000 * 3);
         UID  = '' ;
         break;
@@ -530,9 +529,9 @@ function door_LINE(UID){
         }                
       }
       add_date();   
-      relay_1.on();
+      //relay_1.on();
       setTimeout(function () {                   
-        relay_1.off();
+        //relay_1.off();
       }, 1000 * 3);
       UID  = '' ;
       break;
