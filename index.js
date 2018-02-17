@@ -586,17 +586,17 @@ function buzzer_music(m) {
 //檢查webduino是否已連線成功
 function deviceIsConnected(){
    if (Board_1===undefined)
-      return false;
+      return Board_1.isConnected;
    else if (Board_1.isConnected===undefined)
-      return false;
+      return Board_1.isConnected;
    else
-      return false;
+      return Board_1.isConnected;
 }
 function deviceIsConnected2(){
    if (Board_2===undefined)
-      return false;
+      return Board_2.isConnected;
    else if (Board_2.isConnected===undefined)
-      return false;
+      return Board_2.isConnected;
    else
-      return false;
+      return Board_2.isConnected;
 }
