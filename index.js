@@ -320,7 +320,7 @@ function botpostback(message){
       admin_1_2_3_4_5_6= 4 ;
     }
     else if (message === '新增卡號'){
-      if (!deviceIsConnected())
+      if ('114456464'=== message)
         Result='裝置未連接，無法新增卡號';
       else{  
         admin_1_2_3_4_5_6= 5 ;
