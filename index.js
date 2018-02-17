@@ -21,7 +21,7 @@ oauth2Client.credentials ={"access_token":"ya29.Gls9BQU9XIxCcwKmh8x1DNBFw7KtZUtn
 var SheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';//試算表id
 var device_id_1={device: '8QwwV'}; //Webduino的device id
 var device_id_2={device: '10Q28gDy', transport: 'mqtt'};
-var device_id_3={device: '456', transport: 'mqtt'};
+var device_id_3={device: 'a3GjV'};
 var Board_1;  
 var Board_2;
 var admin = 0 ;       //管理員
@@ -86,7 +86,7 @@ boardReady(device_id_2, true, function (board) {
     if (g3.pm25 >= 54){
       if (m != 1){
         m = 1 ;
-        relay_2.on();//
+        //relay_2.on();
         for (var t = 0 ; t<= f-1 ; t++){
           bot.push(line_id[t],'目前家中pm2.5超標，為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
         }
@@ -98,7 +98,7 @@ boardReady(device_id_2, true, function (board) {
           bot.push(line_id[t],'清淨完畢\n空氣清淨機以關閉!');   
         }
       }
-      relay_2.off();//
+      //relay_2.off();
       m=0
     } 
   }, 1000 * 1);
@@ -113,7 +113,7 @@ boardReady(device_id_3, true, function (board) {
   dht.read(function(evt){
     if (dht.humidity >= 75){
       if (m != 1){
-        relay_3.on();//
+        relay_3.on();
         m = 1 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
@@ -127,7 +127,7 @@ boardReady(device_id_3, true, function (board) {
           bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
         }
       }
-      relay_3.off();//
+      relay_3.off();
       m = 0 ;
     }
   }, 1000 * 1);
@@ -444,14 +444,14 @@ function admin_door(message){
 function webduino(message){
   var Result='';  
   if (message==='開門'){    
-    if (!deviceIsConnected())
+    if (deviceIsConnected())
       Result='裝置未連接！';
     else{
       Result = door_LINE(line_id_t);        
     }     
   }
   else if (message==='開燈'){    
-    if (!deviceIsConnected2())
+    if (deviceIsConnected2())
       Result='裝置未連接！';
     else{
       Result='電燈已開啟!';
@@ -459,7 +459,7 @@ function webduino(message){
     }               			
   }
   else if (message==='關燈'){    
-    if (!deviceIsConnected2())
+    if (deviceIsConnected2())
       Result='裝置未連接！';
     else{
       Result='電燈已關閉!';
