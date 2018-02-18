@@ -544,7 +544,7 @@ function door_LINE(UID){
     }   
   }
   if (UID != ''){
-    bot.push('U79964e56665caa1f44bb589160964c84','有外來人士加入\n此人line_UID:' + UID);
+    bot.push('U79964e56665caa1f44bb589160964c84','有外來人士\n此人Line_UID:' + UID);
     bot.push(line_id_t,'不好意思!\n您非此家庭使用者!');
   }
   return text ;
