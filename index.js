@@ -35,6 +35,8 @@ var line_add = '' ;       //新增LINE使用者
 var admin_1_2_3_4_5_6 = '' ;//暫存新增刪除總變數
 var line_id_t = '' ;    //暫存line id 
 var user_id_t = '' ;   //暫存身分位置
+var pm_25 = '39' ; 
+var humid = '25' ;
 getdata(); 
 //bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
 //LineBot處理文字訊息
@@ -296,7 +298,11 @@ function botText(message){
     }
   }   
   else if (message==='目前家中人數')	   
-    Result='目前家中有' + people +'人'  ;   
+    Result='目前家中有' + people +'人' ;
+  else if (message==='目前家中pm2.5')     
+    Result='pm2.5:' + pm_25  ;
+  else if (message==='目前浴室濕度')     
+    Result='濕度:' + humid  ;
   else{
     Result = '謝謝回覆!' ;
   } 
