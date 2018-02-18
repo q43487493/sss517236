@@ -90,7 +90,7 @@ boardReady(device_id_2, true, function (board) {
         m = 1 ;
         ////relay_2.on();
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'目前家中pm2.5超標，為' + g3.pm25 + '\n將自動開啟空氣清淨機');   
+          bot.push(line_id[t],'目前家中pm2.5超標' + '\n將自動開啟空氣清淨機');   
         }
       }
     }
@@ -119,7 +119,7 @@ boardReady(device_id_3, true, function (board) {
         m = 1 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
-          bot.push(line_id[t],'目前浴室濕度超標，為' + dht.humidity + '\n將自動開啟抽風機');   
+          bot.push(line_id[t],'目前浴室濕度超標' + '\n將自動開啟抽風機');   
         }
       }
     }
