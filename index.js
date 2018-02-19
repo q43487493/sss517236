@@ -76,10 +76,8 @@ boardReady(device_id_1, true, function (board) {
   });  
 });  
 
-bot.push('U79964e56665caa1f44bb589160964c84','目前浴室濕度高於75%' + '\n將自動開啟抽風機');
-setTimeout(function () {                   
-bot.push('U79964e56665caa1f44bb589160964c84','濕度已低於60%\n抽風機以關閉!');
-        }, 1000 * 60);
+bot.push('U79964e56665caa1f44bb589160964c84','目前家中pm2.5高於54' + '\n請留意下');
+
 
 boardReady(device_id_2, true, function (board) {
   Board_2=board;
