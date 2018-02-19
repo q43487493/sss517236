@@ -74,7 +74,13 @@ boardReady(device_id_1, true, function (board) {
     rfid._uid = _uid;
     door_RFID(_uid);
   });  
-});   
+});  
+
+bot.push('U79964e56665caa1f44bb589160964c84','目前浴室濕度高於75%' + '\n將自動開啟抽風機');
+setTimeout(function () {                   
+bot.push(line_id[t],'濕度已低於60%\n抽風機以關閉!');
+        }, 1000 * 60);
+
 boardReady(device_id_2, true, function (board) {
   Board_2=board;
   board.systemReset();
@@ -90,14 +96,14 @@ boardReady(device_id_2, true, function (board) {
         m = 1 ;
         ////relay_2.on();
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'目前家中pm2.5超標' + '\n將自動開啟空氣清淨機');   
+          bot.push(line_id[t],'目前浴室濕度超標' + '\n將自動開啟抽風機');   
         }
       }
     }
     else{
       if (m === 1){
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'清淨完畢\n空氣清淨機以關閉!');   
+          bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
         }
       }
       ////relay_2.off();
