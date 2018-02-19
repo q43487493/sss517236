@@ -78,7 +78,7 @@ boardReady(device_id_1, true, function (board) {
 
 bot.push('U79964e56665caa1f44bb589160964c84','目前浴室濕度高於75%' + '\n將自動開啟抽風機');
 setTimeout(function () {                   
-bot.push(line_id[t],'濕度已低於60%\n抽風機以關閉!');
+bot.push('U79964e56665caa1f44bb589160964c84','濕度已低於60%\n抽風機以關閉!');
         }, 1000 * 60);
 
 boardReady(device_id_2, true, function (board) {
