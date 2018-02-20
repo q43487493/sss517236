@@ -43,8 +43,11 @@ getdata();
 bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);
 
 setTimeout(function () { 
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，啟動澆水裝置'},Watering()]);
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);
       } , 1000 * 90);
+setTimeout(function () { 
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
+      } , 1000 * 120);
 function Exhaust(){
  return {
   type: 'template',
@@ -83,6 +86,27 @@ function Watering(){
             type: 'postback',
             label: 'no',
             data: 'no'
+          }]
+    }
+  };
+}
+function Clean(){
+ return {
+  type: 'template',
+  altText: 'this is a confirm template',
+  template: {
+      type: 'confirm',
+      text: '空氣清淨機控制選單',
+      actions: [
+          {
+            type: 'message',
+            label: '開啟清淨機',
+            text: '開啟清淨機'
+          },
+          {
+            type: 'message',
+            label: '關閉清淨機',
+            text: '關閉清淨機'
           }]
     }
   };
