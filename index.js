@@ -43,7 +43,7 @@ getdata();
 bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);
 
 setTimeout(function () { 
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，請選擇是否澆水'},Watering()]);
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，啟動澆水裝置'},Watering()]);
       } , 1000 * 90);
 function Exhaust(){
  return {
