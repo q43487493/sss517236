@@ -22,8 +22,8 @@ var SheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';//試算表id
 var device_id_1={device: '8QwwV'}; //Webduino的device id
 var device_id_2={device: '10Q28gDy', transport: 'mqtt'};
 var device_id_3={device: 'a3GjV'};
-var Board_1;  
-var Board_2;
+var Board_1 ;  
+var Board_2 ;
 var admin = 0 ;       //管理員
 var people =0 ;      //家庭總人數
 var line_id = [] ;  // LINE 身分列表 
@@ -35,13 +35,31 @@ var line_add = '' ;       //新增LINE使用者
 var admin_1_2_3_4_5_6 = '' ;//暫存新增刪除總變數
 var line_id_t = '' ;    //暫存line id 
 var user_id_t = '' ;   //暫存身分位置
-var pm_25 = '39' ; 
-var humid = '25' ;
+var pm_25 ; 
+var humid ; 
 getdata(); 
 //bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
 //LineBot處理文字訊息
-
-bot.push('U79964e56665caa1f44bb589160964c84','"' + '媽媽'  +'" 出門，家裡人數:' + 1  + '人在家' );
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度超標，建議您開啟抽風機!'},
+  {
+  type: 'template',
+  altText: 'this is a confirm template',
+  template: {
+      type: 'confirm',
+      text: '抽風機控制選單',
+      actions: [
+          {
+            type: 'postback',
+            label: '開啟',
+            data: '開啟抽風機'
+          },
+          {
+            type: 'postback',
+            label: '關閉',
+            data: '關閉抽風機'
+          }]
+    }
+  }]);
 
 bot.on('message', function(event) {
   var bot_txt='';
@@ -68,8 +86,8 @@ boardReady(device_id_1, true, function (board) {
   Board_1=board;
   board.systemReset();
   board.samplingInterval = 250;
-  //relay_1 = getRelay(board, 5);
-  //relay_1.off();
+  relay_1 = getRelay(board, 5);
+  relay_1.off();
   buzzer = getBuzzer(board, 2);  
   rfid = getRFID(board);
   rfid.read();     
@@ -77,60 +95,57 @@ boardReady(device_id_1, true, function (board) {
     rfid._uid = _uid;
     door_RFID(_uid);
   });  
-});  
+});   
 boardReady(device_id_2, true, function (board) {
   Board_2=board;
   board.systemReset();
   board.samplingInterval = 50;
-  //relay_2 = getRelay(board, 5);
-  //relay_2.off();
+  relay_2 = getRelay(board, 5);
+  relay_2.off();
   var m = 0 ;
   var f = user_id.length
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
+    pm_25 = g3.pm25 ;
     if (g3.pm25 >= 54){
       if (m != 1){
         m = 1 ;
-        ////relay_2.on();
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'目前浴室濕度超標' + '\n將自動開啟抽風機');   
+          bot.push(line_id[t],'目前家中pm2.5高於54' + '\n請留意下');   
         }
       }
-    }
-    else{
-      if (m === 1){
-        for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
-        }
+      else if (g3.pm25 <= 41){
+        m = 0 ;
       }
-      ////relay_2.off();
-      m=0
     } 
   }, 1000 * 1);
 }); 
 boardReady(device_id_3, true, function (board) {
   board.systemReset();
   board.samplingInterval = 50;
-  //relay_3 = getRelay(board, 5);
-  //relay_3.off();
+  relay_3 = getRelay(board, 5);
+  relay_3.off();
   var m = 0 ; 
+  var f = user_id.length
   dht = getDht(board, 2); //溫溼度
   dht.read(function(evt){
+    humid = dht.humidity
     if (dht.humidity >= 75){
       if (m != 1){
+        relay_3.on();
         m = 1 ;
-        var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
-          bot.push(line_id[t],'目前浴室濕度超標' + '\n將自動開啟抽風機');   
+          bot.push(line_id[t],'目前浴室濕度高於75%' + '\n將自動開啟抽風機');   
         }
       }
     }
-    else{
-      if (m === 1){
-        for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
-        }
-      }
+    else if (dht.humidity <= 60){
+        if (m === 1){
+          for (var t = 0 ; t<= f-1 ; t++){
+            bot.push(line_id[t],'濕度已低於60%\n抽風機以關閉!');   
+          }
+        } 
+      relay_3.off();
       m = 0 ;
     }
   }, 1000 * 1);
@@ -144,11 +159,6 @@ var server = app.listen(process.env.PORT || 8080, function() {
   console.log("App now running on port", port);
 });
 
-
-
-//抽風機控制選單
-function Exhaust(){
-}
 //讀取試算表-資料庫
 function getdata() {
   var sheets = google.sheets('v4');
@@ -303,12 +313,12 @@ function botText(message){
       line_add = '';
     }
   }   
-  else if (message==='目前家中人數')	   
+  else if (message==='目前家中人數')     
     Result='目前家中有' + people +'人' ;
   else if (message==='目前家中pm2.5')     
     Result='pm2.5:' + pm_25  ;
   else if (message==='目前浴室濕度')     
-    Result='濕度:' + humid  ;
+    Result='濕度:' + humid  ;       
   else{
     Result = '謝謝回覆!' ;
   } 
@@ -332,7 +342,7 @@ function botpostback(message){
       admin_1_2_3_4_5_6= 4 ;
     }
     else if (message === '新增卡號'){
-      if ('114456464'=== message)
+      if (!deviceIsConnected())
         Result='裝置未連接，無法新增卡號';
       else{  
         admin_1_2_3_4_5_6= 5 ;
@@ -341,12 +351,7 @@ function botpostback(message){
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
     }
-    else if (message === '開啟抽風機'){
-      webduino(message);
-    }
-    else if (message === '關閉抽風機'){ 
-      webduino(message);
-    }
+  }
   return Result;
 } 
 //處理管理功能
@@ -435,9 +440,6 @@ function admin_door(message){
         card_add = '新增' ;
         user_id_t = j ;
         message = '';
-        setTimeout(function () { 
-        bot.push('U79964e56665caa1f44bb589160964c84', '門禁卡新增成功!\n此卡代表身分為:' + '爸爸' );      
-      } , 1000 * 60);
         break;
       }           
     }
@@ -466,73 +468,81 @@ function admin_door(message){
 function webduino(message){
   var Result='';  
   if (message==='開門'){    
-    Result = door_LINE(line_id_t);     
+    if (!deviceIsConnected())
+      Result='裝置未連接！';
+    else{
+      Result = door_LINE(line_id_t);        
+    }     
   }
   else if (message==='開燈'){    
-    Result='電燈已開啟!';              			
+    if (!deviceIsConnected2())
+      Result='裝置未連接！';
+    else{
+      Result='電燈已開啟!';
+      relay_2.on();                 
+    }                     
   }
   else if (message==='關燈'){    
-     Result='電燈已關閉!';
-  }
-  else if (message==='開啟抽風機'){    
-     Result='抽風機已開啟!';
-  }
-  else if (message==='開啟抽風機'){    
-     Result='抽風機已關閉!';
+    if (!deviceIsConnected2())
+      Result='裝置未連接！';
+    else{
+      Result='電燈已關閉!';
+      relay_2.off();                  
+    }     
   }    
   return Result;
 }
 //使用RFID開門
 function door_RFID(UID){ 
   if (card_add ===  '新增' ){   
-    var f = (card_uid.length);	  		  
+    var f = (card_uid.length);          
     for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者');
-        buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	
+        buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos ); 
         card_add = '' ;
         break;
-      }				 
+      }        
     }
-    if (card_add === '新增'){	
+    if (card_add === '新增'){ 
       card_uid[user_id_t] = UID;
       bot.push('U79964e56665caa1f44bb589160964c84', '門禁卡新增成功!\n此卡代表身分為:' + user_id[user_id_t] );
       buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
-      card_add = '';	
+      card_add = '';  
       add_date();
     }
-  }		
+  }   
   else{   
     var user_f = (user_id.length); 
-    var f = (card_uid.length);	  		  
+    var f = (card_uid.length);          
     for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         if (door[j] === '在家中'){
-        people = people -1 ;		 
-        door[j] = '不在家';			 
+        people = people -1 ;     
+        door[j] = '不在家';       
           for (var t = 0 ; t<= user_f-1 ; t++){
             bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );   
           }   
         }
         else if (door[j] === '不在家'){
-          people = people + 1;  		 
-          door[j] = '在家中';	           	
+          people = people + 1;       
+          door[j] = '在家中';              
           for (var t = 0 ; t<= user_f-1 ; t++){
             bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );   
-          }							
+          }             
         }
-        add_date(); 	
-        //relay_1.on();
+        add_date();   
+        relay_1.on();
         setTimeout(function () {                   
-          //relay_1.off();
+          relay_1.off();
         }, 1000 * 3);
         UID  = '' ;
         break;
-      }		
+      }   
     }
     if (UID != ''){
       bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + UID);
-      buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	 
+      buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );   
     }
   } 
 }
@@ -557,9 +567,9 @@ function door_LINE(UID){
         }                
       }
       add_date();   
-      //relay_1.on();
+      relay_1.on();
       setTimeout(function () {                   
-        //relay_1.off();
+        relay_1.off();
       }, 1000 * 3);
       UID  = '' ;
       break;
