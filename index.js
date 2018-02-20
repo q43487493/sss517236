@@ -51,13 +51,13 @@ function Exhaust(){
       actions: [
           {
             type: 'postback',
-            label: '開啟',
-            data: '開啟抽風機'
+            label: '開啟抽風機',
+            text: '開啟抽風機'
           },
           {
             type: 'postback',
-            label: '關閉',
-            data: '關閉抽風機'
+            label: '關閉抽風機',
+            text: '關閉抽風機'
           }]
     }
   };
@@ -351,12 +351,6 @@ function botpostback(message){
     }
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
-    }
-    else if (message === '開啟抽風機'){
-      Result = webduino(message);
-    }
-    else if (message === '關閉抽風機'){
-     Result = webduino(message);
     }
   }
   return Result;
