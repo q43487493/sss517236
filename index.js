@@ -50,12 +50,12 @@ function Exhaust(){
       text: '抽風機控制選單',
       actions: [
           {
-            type: 'postback',
+            type: 'message',
             label: '開啟抽風機',
             text: '開啟抽風機'
           },
           {
-            type: 'postback',
+            type: 'message',
             label: '關閉抽風機',
             text: '關閉抽風機'
           }]
