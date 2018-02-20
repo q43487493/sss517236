@@ -40,6 +40,9 @@ var humid = '25' ;
 getdata(); 
 //bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
 //LineBot處理文字訊息
+
+bot.push('U79964e56665caa1f44bb589160964c84','"' + '媽媽'  +'" 出門，家裡人數:' + 1  + '人在家' );
+
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -76,7 +79,7 @@ boardReady(device_id_1, true, function (board) {
   });  
 });  
 
-bot.push('U79964e56665caa1f44bb589160964c84','目前家中pm2.5高於54' + '\n請留意下');
+
 
 
 boardReady(device_id_2, true, function (board) {
