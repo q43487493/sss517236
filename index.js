@@ -345,6 +345,8 @@ function botpostback(message){
 //處理管理功能
 function admin_door(message){
   var Result = '';
+  line_add = '';
+  card_add = '';
   var f = (user_id.length);  
   if (admin_1_2_3_4_5_6=== 1  ){
     for (var j = 0 ; j <=f-1 ; j++){
@@ -426,6 +428,9 @@ function admin_door(message){
         card_add = '新增' ;
         user_id_t = j ;
         message = '';
+        setTimeout(function () { 
+        bot.push('U79964e56665caa1f44bb589160964c84', '門禁卡新增成功!\n此卡代表身分為:' + '爸爸' );      
+      } , 1000 * 30);
         break;
       }           
     }
