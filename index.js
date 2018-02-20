@@ -165,7 +165,7 @@ bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴�
   }
 
   ]);
-//抽風機控制選單
+/*/抽風機控制選單
 function Exhaust(){
   {
   type: 'template',
@@ -186,7 +186,7 @@ function Exhaust(){
           }]
     }
   }
-}
+}*/
 //讀取試算表-資料庫
 function getdata() {
   var sheets = google.sheets('v4');
