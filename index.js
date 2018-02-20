@@ -353,10 +353,10 @@ function botpostback(message){
       admin_1_2_3_4_5_6= 6 ;
     }
     else if (message === '開啟抽風機'){
-      webduino(message);
+      Result = webduino(message);
     }
     else if (message === '關閉抽風機'){
-      webduino(message);
+     Result = webduino(message);
     }
   }
   return Result;
