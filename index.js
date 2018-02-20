@@ -496,14 +496,7 @@ function webduino(message){
       Result='電燈已關閉!';
       relay_2.off();                  
     }
-    else if (message==='關燈'){    
-    if (!deviceIsConnected2())
-      Result='裝置未連接！';
-    else{
-      Result='電燈已關閉!';
-      relay_2.off();                  
-    }         
-  }
+  } 
   else if (message==='開啟抽風機'){    
       Result='抽風機已開啟!';                  
   }    
