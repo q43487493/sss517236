@@ -430,7 +430,7 @@ function admin_door(message){
         message = '';
         setTimeout(function () { 
         bot.push('U79964e56665caa1f44bb589160964c84', '門禁卡新增成功!\n此卡代表身分為:' + '爸爸' );      
-      } , 1000 * 30);
+      } , 1000 * 60);
         break;
       }           
     }
