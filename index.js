@@ -78,10 +78,6 @@ boardReady(device_id_1, true, function (board) {
     door_RFID(_uid);
   });  
 });  
-
-
-
-
 boardReady(device_id_2, true, function (board) {
   Board_2=board;
   board.systemReset();
@@ -122,7 +118,6 @@ boardReady(device_id_3, true, function (board) {
   dht.read(function(evt){
     if (dht.humidity >= 75){
       if (m != 1){
-        //relay_3.on();
         m = 1 ;
         var f = user_id.length
         for (var t = 0 ; t<= user_f-1 ; t++){
@@ -136,7 +131,6 @@ boardReady(device_id_3, true, function (board) {
           bot.push(line_id[t],'濕度未達標準\n抽風機以關閉!');   
         }
       }
-      //relay_3.off();
       m = 0 ;
     }
   }, 1000 * 1);
@@ -149,7 +143,24 @@ var server = app.listen(process.env.PORT || 8080, function() {
   var port = server.address().port;
   console.log("App now running on port", port);
 });
-
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度超標，建議您開啟抽風機!'},Exhaust() ]);
+//抽風機控制選單
+function Exhaust(){
+  {{  type: 'template',
+      altText: 'this is a confirm template',
+      template: {
+        type: 'confirm',
+        text: '抽風機控制選單',
+        actions: [{
+          type: 'postback',
+          label: '開啟',
+          data: '開啟抽風機'
+        },{
+          type: 'postback',
+          label: '關閉',
+          data: '關閉抽風機'
+        }]}}}
+}
 //讀取試算表-資料庫
 function getdata() {
   var sheets = google.sheets('v4');
@@ -342,7 +353,12 @@ function botpostback(message){
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
     }
-  }
+    else if (message === '開啟抽風機'){
+      webduino(message);
+    }
+    else if (message === '關閉抽風機'){ 
+      webduino(message);
+    }
   return Result;
 } 
 //處理管理功能
@@ -469,6 +485,12 @@ function webduino(message){
   }
   else if (message==='關燈'){    
      Result='電燈已關閉!';
+  }
+  else if (message==='開啟抽風機'){    
+     Result='抽風機已開啟!';
+  }
+  else if (message==='開啟抽風機'){    
+     Result='抽風機已關閉!';
   }    
   return Result;
 }
