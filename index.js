@@ -40,8 +40,9 @@ var humid ;
 getdata(); 
 //bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
 //LineBot處理文字訊息
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度超標，建議您開啟抽風機!'},
-  {
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度超標，建議您開啟抽風機!'},Exhaust()]);
+function Exhaust(){
+ return {
   type: 'template',
   altText: 'this is a confirm template',
   template: {
@@ -59,8 +60,8 @@ bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴�
             data: '關閉抽風機'
           }]
     }
-  }]);
-
+  };
+}
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -351,6 +352,12 @@ function botpostback(message){
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
     }
+    else if (message === '開啟抽風機'){
+      webduino(message);
+    }
+    else if (message === '關閉抽風機'){
+      webduino(message);
+    }
   }
   return Result;
 } 
@@ -488,8 +495,21 @@ function webduino(message){
     else{
       Result='電燈已關閉!';
       relay_2.off();                  
-    }     
+    }
+    else if (message==='關燈'){    
+    if (!deviceIsConnected2())
+      Result='裝置未連接！';
+    else{
+      Result='電燈已關閉!';
+      relay_2.off();                  
+    }         
+  }
+  else if (message==='開啟抽風機'){    
+      Result='抽風機已開啟!';                  
   }    
+  else if (message==='關閉抽風機'){    
+      Result='抽風機已關閉!';                  
+  }
   return Result;
 }
 //使用RFID開門
