@@ -143,26 +143,8 @@ var server = app.listen(process.env.PORT || 8080, function() {
   var port = server.address().port;
   console.log("App now running on port", port);
 });
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度超標，建議您開啟抽風機!'},
-  {
-  type: 'template',
-  altText: 'this is a confirm template',
-  template: {
-      type: 'confirm',
-      text: '抽風機控制選單',
-      actions: [
-          {
-            type: 'postback',
-            label: '開啟',
-            data: '開啟抽風機'
-          },
-          {
-            type: 'postback',
-            label: '關閉',
-            data: '關閉抽風機'
-          }]
-    }
-  }])
+
+
 /*/抽風機控制選單
 function Exhaust(){
   {
