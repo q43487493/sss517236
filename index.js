@@ -24,6 +24,7 @@ var device_id_2={device: '10Q28gDy', transport: 'mqtt'};
 var device_id_3={device: 'a3GjV'};
 var Board_1 ;  
 var Board_2 ;
+var Board_3 ;
 var admin = 0 ;       //管理員
 var people =0 ;      //家庭總人數
 var line_id = [] ;  // LINE 身分列表 
@@ -38,81 +39,8 @@ var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
 getdata(); 
-bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' });//主動回應圖片
-//bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' });//主動回應圖片
-
+//bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
 //LineBot處理文字訊息
-//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);
-
-setTimeout(function () { 
-//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);
-      } , 1000 * 90);
-setTimeout(function () { 
-//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
-      } , 1000 * 120);
-function Exhaust(){
- return {
-  type: 'template',
-  altText: 'this is a confirm template',
-  template: {
-      type: 'confirm',
-      text: '抽風機控制選單',
-      actions: [
-          {
-            type: 'message',
-            label: '開啟抽風機',
-            text: '開啟抽風機'
-          },
-          {
-            type: 'message',
-            label: '關閉抽風機',
-            text: '關閉抽風機'
-          }]
-    }
-  };
-}
-function Watering(){
- return {
-  type: 'template',
-  altText: 'this is a confirm template',
-  template: {
-      type: 'confirm',
-      text: '請問是否澆花',
-      actions: [
-          {
-            type: 'postback',
-            label: 'yes',
-            data: 'yes',
-          },
-          {
-            type: 'postback',
-            label: 'no',
-            data: 'no'
-          }]
-    }
-  };
-}
-function Clean(){
- return {
-  type: 'template',
-  altText: 'this is a confirm template',
-  template: {
-      type: 'confirm',
-      text: '空氣清淨機控制選單',
-      actions: [
-          {
-            type: 'message',
-            label: '開啟清淨機',
-            text: '開啟清淨機'
-          },
-          {
-            type: 'message',
-            label: '關閉清淨機',
-            text: '關閉清淨機'
-          }]
-    }
-  };
-}
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -138,7 +66,7 @@ boardReady(device_id_1, true, function (board) {
   Board_1=board;
   board.systemReset();
   board.samplingInterval = 250;
-  relay_1 = getRelay(board, 5);
+  relay_1 = getRelay(board, 5);//控制門鎖
   relay_1.off();
   buzzer = getBuzzer(board, 2);  
   rfid = getRFID(board);
@@ -152,7 +80,7 @@ boardReady(device_id_2, true, function (board) {
   Board_2=board;
   board.systemReset();
   board.samplingInterval = 50;
-  relay_2 = getRelay(board, 5);
+  relay_2 = getRelay(board, 5);//控制燈
   relay_2.off();
   var m = 0 ;
   var f = user_id.length
@@ -163,19 +91,25 @@ boardReady(device_id_2, true, function (board) {
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],'目前家中pm2.5高於54' + '\n請留意下');   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
         }
       }
       else if (g3.pm25 <= 41){
+        if (m === 1){
+          for (var t = 0 ; t<= f-1 ; t++){
+            bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於41，建議您關閉空氣清淨機!'},Clean()]);   
+          }
+        }
         m = 0 ;
       }
     } 
   }, 1000 * 1);
 }); 
 boardReady(device_id_3, true, function (board) {
+  Board_3=board
   board.systemReset();
   board.samplingInterval = 50;
-  relay_3 = getRelay(board, 5);
+  relay_3 = getRelay(board, 5);//控制風扇
   relay_3.off();
   var m = 0 ; 
   var f = user_id.length
@@ -184,20 +118,18 @@ boardReady(device_id_3, true, function (board) {
     humid = dht.humidity
     if (dht.humidity >= 75){
       if (m != 1){
-        relay_3.on();
         m = 1 ;
         for (var t = 0 ; t<= user_f-1 ; t++){
-          bot.push(line_id[t],'目前浴室濕度高於75%' + '\n將自動開啟抽風機');   
+          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);   
         }
       }
     }
     else if (dht.humidity <= 60){
         if (m === 1){
           for (var t = 0 ; t<= f-1 ; t++){
-            bot.push(line_id[t],'濕度已低於60%\n抽風機以關閉!');   
+            bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於60%，建議您關閉抽風機!'},Exhaust()]);   
           }
         } 
-      relay_3.off();
       m = 0 ;
     }
   }, 1000 * 1);
@@ -247,7 +179,6 @@ function data_sort(data){
   }
   people = parseFloat(data[f_2][4]);
 }
-
 //上傳試算表-資料庫
 function add_date() {
   var request = {
@@ -359,7 +290,7 @@ function botText(message){
     }
     if (line_add === '新增'){
       line_id[user_id_t] = line_id_t ;
-      bot.push('U79964e56665caa1f44bb589160964c84', 'LINE UID新增成功!');
+      bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' });
       Result = '已被新增\n可以使用LINE來開門囉!\n您身分為:' + user_id[user_id_t] ;
       add_date();
       line_add = '';
@@ -376,7 +307,7 @@ function botText(message){
   } 
   return Result;
 }
-//處理選單訊息
+//處理選單回傳訊息
 function botpostback(message){
   var Result = '';
   if (message === '新增使用者' && admin === 1234 || message === '刪除使用者' && admin === 1234 || message === '新增LINE UID' && admin === 1234 || message === '刪除LINE UID' && admin === 1234 || message === '新增卡號' && admin === 1234 || message === '刪除卡號' && admin === 1234 ){
@@ -393,19 +324,84 @@ function botpostback(message){
     else if (message === '刪除LINE UID'){
       admin_1_2_3_4_5_6= 4 ;
     }
-    else if (message === '新增卡號'){
-      if (!deviceIsConnected())
-        Result='裝置未連接，無法新增卡號';
-      else{  
+    else if (message === '新增卡號'){  
         admin_1_2_3_4_5_6= 5 ;
-      }
     }
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
     }
   }
+  else if (message === yes){
+    Result = webduino('開啟水泵');
+  }
   return Result;
-} 
+}
+//處理抽風機控制選單訊息
+function Exhaust(){
+ return {
+  type: 'template',
+  altText: 'this is a confirm template',
+  template: {
+      type: 'confirm',
+      text: '抽風機控制選單',
+      actions: [
+          {
+            type: 'message',
+            label: '開啟抽風機',
+            text: '開啟抽風機'
+          },
+          {
+            type: 'message',
+            label: '關閉抽風機',
+            text: '關閉抽風機'
+          }]
+    }
+  };
+}
+//處理空氣清淨機機控制選單訊息
+function Clean(){
+ return {
+  type: 'template',
+  altText: 'this is a confirm template',
+  template: {
+      type: 'confirm',
+      text: '空氣清淨機控制選單',
+      actions: [
+          {
+            type: 'message',
+            label: '開啟清淨機',
+            text: '開啟清淨機'
+          },
+          {
+            type: 'message',
+            label: '關閉清淨機',
+            text: '關閉清淨機'
+          }]
+    }
+  };
+}
+//處理水泵控制選單訊息 
+function Watering(){
+ return {
+  type: 'template',
+  altText: 'this is a confirm template',
+  template: {
+      type: 'confirm',
+      text: '請問是否澆花',
+      actions: [
+          {
+            type: 'postback',
+            label: 'yes',
+            data: 'yes',
+          },
+          {
+            type: 'postback',
+            label: 'no',
+            data: 'no'
+          }]
+    }
+  };
+}
 //處理管理功能
 function admin_door(message){
   var Result = '';
@@ -426,7 +422,7 @@ function admin_door(message){
       card_uid.splice(0,0,"");
       line_id.splice(0,0,"");
       door.splice(0,0,'在家中');
-      Result = '"' + message + '"新增成功!';
+      Result = { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' };
       add_date();
     }
   }
@@ -520,37 +516,46 @@ function admin_door(message){
 function webduino(message){
   var Result='';  
   if (message==='開門'){    
-    if (!deviceIsConnected())
-      Result='裝置未連接！';
-    else{
+    
       Result = door_LINE(line_id_t);        
-    }     
+         
   }
   else if (message==='開燈'){    
-    if (!deviceIsConnected2())
-      Result='裝置未連接！';
-    else{
-      Result='電燈已開啟!';
-      relay_2.on();                 
-    }                     
+  
+    
+      Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/zOCTs9N.png', previewImageUrl: 'https://i.imgur.com/zOCTs9N.png' };
+                   
+                         
   }
   else if (message==='關燈'){    
-    if (!deviceIsConnected2())
-      Result='裝置未連接！';
-    else{
-      Result='電燈已關閉!';
-      relay_2.off();                  
-    }
-  } 
-  else if (message==='開啟抽風機'){    
-      Result='抽風機已開啟!';                  
-  }    
-  else if (message==='關閉抽風機'){    
-      Result='抽風機已關閉!';                  
+  
+      Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };                  
+        
   }
+  else if (message==='開啟抽風機'){
+      Result='抽風機已開啟!';                   
+  }    
+  else if (message==='關閉抽風機'){
+      Result='抽風機已關閉!';
+}
+  else if (message==='開啟清淨機'){
+   
+      Result='清淨機已開啟!';
+                         
+  }
+  else if (message==='關閉清淨機'){
+   
+      Result='清淨機已關閉!';
+                     
+  }
+  else if (message==='開啟水泵'){
+
+      Result='已幫您澆花囉~';
+                     
+  }    
   return Result;
 }
-//使用RFID開門
+//處理RFID開門
 function door_RFID(UID){ 
   if (card_add ===  '新增' ){   
     var f = (card_uid.length);          
@@ -564,7 +569,7 @@ function door_RFID(UID){
     }
     if (card_add === '新增'){ 
       card_uid[user_id_t] = UID;
-      bot.push('U79964e56665caa1f44bb589160964c84', '門禁卡新增成功!\n此卡代表身分為:' + user_id[user_id_t] );
+      bot.push('U79964e56665caa1f44bb589160964c84',{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' });
       buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
       card_add = '';  
       add_date();
@@ -604,7 +609,7 @@ function door_RFID(UID){
     }
   } 
 }
-//使用LINE開門
+//處理LINE開門
 function door_LINE(UID){  
   var text ;  
   var f = (line_id.length);         
@@ -681,4 +686,12 @@ function deviceIsConnected2(){
       return false;
    else
       return Board_2.isConnected;
+}
+function deviceIsConnected3(){
+   if (Board_3===undefined)
+      return false;
+   else if (Board_3.isConnected===undefined)
+      return false;
+   else
+      return Board_3.isConnected;
 }
