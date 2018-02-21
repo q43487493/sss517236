@@ -291,7 +291,7 @@ function botText(message){
     if (line_add === '新增'){
       line_id[user_id_t] = line_id_t ;
       bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' });
-      Result = '已被新增\n可以使用LINE來開門囉!\n您身分為:' + user_id[user_id_t] ;
+      Result = '可以使用LINE來開門囉!\n您身分為:' + user_id[user_id_t] ;
       add_date();
       line_add = '';
     }
