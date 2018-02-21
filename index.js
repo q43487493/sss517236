@@ -406,7 +406,7 @@ function Watering(){
 function admin_door(message){
   var Result = '';
   var f = (user_id.length);
-  if (admin_1_2_3_4_5_6=== 1 ||admin_1_2_3_4_5_6=== 2 ||admin_1_2_3_4_5_6=== 3 ||admin_1_2_3_4_5_6=== 4 ||admin_1_2_3_4_5_6=== 5 ||admin_1_2_3_4_5_6=== 6 || ){
+  if (admin_1_2_3_4_5_6=== 1 || admin_1_2_3_4_5_6=== 2 || admin_1_2_3_4_5_6 === 3 || admin_1_2_3_4_5_6 === 4 || admin_1_2_3_4_5_6 === 5 || admin_1_2_3_4_5_6 === 6  ){
     line_add = '';
     card_add = '';
   }  
