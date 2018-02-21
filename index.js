@@ -42,13 +42,13 @@ bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl
 bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://imgur.com/zOCTs9N', previewImageUrl: 'https://imgur.com/zOCTs9N' });//主動回應圖片
 
 //LineBot處理文字訊息
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);
+//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);
 
 setTimeout(function () { 
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);
+//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);
       } , 1000 * 90);
 setTimeout(function () { 
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
+//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
       } , 1000 * 120);
 function Exhaust(){
  return {
