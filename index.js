@@ -39,10 +39,12 @@ var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
 getdata(); 
-bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });//主動回應圖片
+//bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });//主動回應圖片
 //LineBot處理文字訊息
 
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:353CC52C'}]);
+bot.push('U79964e56665caa1f44bb589160964c84',{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' }); 
+bot.push('U79964e56665caa1f44bb589160964c84','"媽媽" 回家，家裡人數:1人在家' );   
 
 bot.on('message', function(event) {
   var bot_txt='';
