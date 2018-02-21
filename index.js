@@ -405,9 +405,11 @@ function Watering(){
 //處理管理功能
 function admin_door(message){
   var Result = '';
-  line_add = '';
-  card_add = '';
-  var f = (user_id.length);  
+  var f = (user_id.length);
+  if (admin_1_2_3_4_5_6=== 1 ||admin_1_2_3_4_5_6=== 2 ||admin_1_2_3_4_5_6=== 3 ||admin_1_2_3_4_5_6=== 4 ||admin_1_2_3_4_5_6=== 5 ||admin_1_2_3_4_5_6=== 6 || ){
+    line_add = '';
+    card_add = '';
+  }  
   if (admin_1_2_3_4_5_6=== 1  ){
     for (var j = 0 ; j <=f-1 ; j++){
       if (user_id[j] === message){
