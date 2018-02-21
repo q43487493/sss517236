@@ -38,7 +38,7 @@ var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
 getdata(); 
-bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/zOCTs9N.png' });//主動回應圖片
+bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' });//主動回應圖片
 //bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' });//主動回應圖片
 
 //LineBot處理文字訊息
