@@ -38,7 +38,7 @@ var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
 getdata(); 
-//bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
+bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://imgur.com/a/GFvGs', previewImageUrl: 'https://imgur.com/a/GFvGs' });主動回應圖片
 //LineBot處理文字訊息
 bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);
 
