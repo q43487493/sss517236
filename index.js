@@ -447,7 +447,7 @@ function admin_door(message){
           card_uid.splice(j, 1);
           user_id.splice(j, 1);
           door.splice(j, 1);         
-          Result= '"' + message + '"刪除成功!';                                    
+          Result= { type: 'image',originalContentUrl: 'https://i.imgur.com/8c3YYGi.png', previewImageUrl: 'https://i.imgur.com/8c3YYGi.png' };                                    
         }
         message ='';
         add_date();
