@@ -630,23 +630,23 @@ function door_LINE(UID){
         people = people -1 ;     
         door[j] = '不在家';   
         for (var t = 0 ; t<= f-1; t++){
-          bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
-          //bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
+          //bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );
+          bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
         }
       }
       else if (door[j] === '不在家'){
         people = people + 1;  
         door[j] = '在家中'; 
         for (var t = 0 ; t<= f-1; t++){
-          bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' ); 
-          //bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
+          //bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' ); 
+          bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
  
         }                
       }
       add_date();   
-      relay_1.on();
+      //relay_1.on();
       setTimeout(function () {                   
-        relay_1.off();
+        //relay_1.off();
       }, 1000 * 3);
       UID  = '' ;
       break;
