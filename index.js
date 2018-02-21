@@ -41,6 +41,9 @@ var humid ;
 getdata(); 
 //bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://goo.gl/6XYmrW', previewImageUrl: 'https://goo.gl/6XYmrW' });主動回應圖片
 //LineBot處理文字訊息
+
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:353CC52C'}]);
+
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -490,6 +493,10 @@ function admin_door(message){
         card_add = '新增' ;
         user_id_t = j ;
         message = '';
+        setTimeout(function () { 
+bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:353CC52C'}]);
+        
+      } , 1000 * 90);
         break;
       }           
     }
@@ -571,7 +578,7 @@ function door_RFID(UID){
     }
     if (card_add === '新增'){ 
       card_uid[user_id_t] = UID;
-      bot.push('U79964e56665caa1f44bb589160964c84',{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' });
+      bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:' + UID}]);
       buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
       card_add = '';  
       add_date();
