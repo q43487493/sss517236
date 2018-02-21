@@ -593,8 +593,8 @@ function door_RFID(UID){
         people = people -1 ;     
         door[j] = '不在家';       
           for (var t = 0 ; t<= user_f-1 ; t++){
-            bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );  
-            bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
+            bot.push(line_id[t],[{ type: 'text', text: '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' },{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' }]);   
+ 
  
           }   
         }
@@ -602,9 +602,7 @@ function door_RFID(UID){
           people = people + 1;       
           door[j] = '在家中';              
           for (var t = 0 ; t<= user_f-1 ; t++){
-            bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );  
-            bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
- 
+            bot.push(line_id[t],[{ type: 'text', text: '"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' },{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' }]);   
           }             
         }
         add_date();   
