@@ -183,10 +183,9 @@ function data_sort(data){
 //上傳試算表-資料庫
 function add_date() {
   dele_data();
-  add_data2();
   setTimeout(function () {                   
-    
-  }, 1000 );
+      add_data2();
+  }, 500 );
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
