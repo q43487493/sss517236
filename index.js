@@ -102,11 +102,11 @@ boardReady(device_id_3, true, function (board) {
   Board_3=board
   board.systemReset();
   board.samplingInterval = 50;
-  relay_3 = getRelay(board, 5);//風扇
+  relay_3 = getRelay(board, 6);//風扇
   relay_3.off();
   var m = 0 ; 
   var f = user_id.length
-  dht = getDht(board, 2); //溫溼度
+  dht = getDht(board, 9); //溫溼度
   dht.read(function(evt){
     humid = dht.humidity
     if (dht.humidity >= 75){
