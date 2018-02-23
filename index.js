@@ -344,7 +344,7 @@ function botText(message){
   else if (message==='目前家中人數')	   
     Result='目前家中有' + people +'人';
   else if (message==='目前家中pm2.5'){   
-      if (!deviceIsConnected3())
+      if (!deviceIsConnected2())
       Result='裝置未連接！';
     else{
       Result = 'pm2.5:' + pm_25 ;               
