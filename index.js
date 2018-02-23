@@ -34,6 +34,7 @@ var line_id_t = '' ;    //暫存line id
 var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
+var soil ;
 getdata(); 
 bot.on('message', function(event) {
   var bot_txt='';
@@ -71,6 +72,8 @@ boardReady(device_id_1, true, function (board) {
   });  
 });   
 boardReady(device_id_2, true, function (board) {
+    var m = 0 ;
+    var f = user_id.length
   Board_2=board;
   board.systemReset();
   board.samplingInterval = 50;
@@ -78,8 +81,11 @@ boardReady(device_id_2, true, function (board) {
   relay_4 = getRelay(board, 16);//水泵
   relay_2.off();
   relay_4.off();
-  var m = 0 ;
-  var f = user_id.length
+  soil = getSoil(board, 8);//土壤濕度
+  soil.measure(function(val){
+    soil.detectedVal = val;
+    soil = soil.detectedVal;
+  });
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
@@ -90,14 +96,17 @@ boardReady(device_id_2, true, function (board) {
           bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
         }
       }
-      else if (g3.pm25 <= 41){
-        if (m === 1){
-          for (var t = 0 ; t<= f-1 ; t++){
-            bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於41，建議您關閉空氣清淨機!'},Clean()]);   
-          }
+    } 
+    else if (g3.pm25 <= 41){
+      if (m === 1){
+        for (var t = 0 ; t<= f-1 ; t++){
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於41，建議您關閉空氣清淨機!'},Clean()]);   
         }
-        m = 0 ;
-      }}}, 1000 * 1);}); 
+      }
+      m = 0 ;
+    }
+  }, 1000 * 1);
+}); 
 boardReady(device_id_3, true, function (board) {
   Board_3=board
   board.systemReset();
@@ -121,9 +130,12 @@ boardReady(device_id_3, true, function (board) {
         if (m === 1){
           for (var t = 0 ; t<= f-1 ; t++){
             bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於60%，建議您關閉抽風機!'},Exhaust()]);   
-          }} 
+          }
+        } 
       m = 0 ;
-    }}, 1000 * 1);});
+    }
+  }, 1000 * 1);
+});
 const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
@@ -401,7 +413,8 @@ function admin_door(message){
         Result = '此使用者已存在';
         message ='' ;  
         break;
-      }}
+      }
+    }
     if (message != ''){
       people = people + 1 ;
       user_id.splice(0,0,message);
@@ -410,7 +423,8 @@ function admin_door(message){
       door.splice(0,0,'在家中');
       Result = { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' };
       add_date();
-    }}
+    }
+  }
   else if (admin_1_2_3_4_5_6=== 2 ){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message ){           
@@ -435,7 +449,8 @@ function admin_door(message){
       }   }
     if (message != ''){
       Result= '沒有這位使用者! \n請檢查是否輸入錯誤';              
-    } }    
+    } 
+  }    
   else if (admin_1_2_3_4_5_6=== 3){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
@@ -447,7 +462,8 @@ function admin_door(message){
       }           }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    } }
+    } 
+  }
   else if (admin_1_2_3_4_5_6=== 4){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
@@ -459,7 +475,8 @@ function admin_door(message){
       }            }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    } }
+    } 
+  }
   else if (admin_1_2_3_4_5_6=== 5){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
@@ -471,7 +488,8 @@ function admin_door(message){
       }           }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }}
+    }
+  }
   else if (admin_1_2_3_4_5_6=== 6){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
@@ -483,7 +501,8 @@ function admin_door(message){
       }           }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }}
+    }
+  }
   admin_1_2_3_4_5_6= '' ;
   return Result ;
 }
