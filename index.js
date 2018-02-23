@@ -221,7 +221,7 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('簡易資料庫!A:B'),
+    range:encodeURI('簡易資料庫'),
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
@@ -767,3 +767,5 @@ function deviceIsConnected3(){
    else
       return Board_3.isConnected;
 }
+
+
