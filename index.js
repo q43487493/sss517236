@@ -89,7 +89,7 @@ boardReady(device_id_2, true, function (board) {
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
-    if (g3.pm25 >= 54){
+    if (g3.pm25 >= 30){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
@@ -97,7 +97,7 @@ boardReady(device_id_2, true, function (board) {
         }
       }
     } 
-    else if (g3.pm25 <= 41){
+    else if (g3.pm25 <= 19){
       if (m === 1){
         for (var t = 0 ; t<= f-1 ; t++){
           bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於41，建議您關閉空氣清淨機!'},Clean()]);   
