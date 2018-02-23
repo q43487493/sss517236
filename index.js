@@ -75,7 +75,7 @@ boardReady(device_id_2, true, function (board) {
   board.systemReset();
   board.samplingInterval = 50;
   relay_2 = getRelay(board, 5);//燈
-  relay_4 = getRelay(board, 7);//水泵
+  relay_4 = getRelay(board, 16);//水泵
   relay_2.off();
   relay_4.off();
   var m = 0 ;
