@@ -182,7 +182,7 @@ function data_sort(data){
 }
 //上傳試算表-資料庫
 function add_date() {
-  //dele_data();
+  dele_data();
   setTimeout(function () {                   
     add_data2();
   }, 1000 );
