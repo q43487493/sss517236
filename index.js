@@ -34,7 +34,7 @@ var line_id_t = '' ;    //暫存line id
 var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
-var soil ;
+var soill ;
 getdata(); 
 bot.on('message', function(event) {
   var bot_txt='';
@@ -84,7 +84,7 @@ boardReady(device_id_2, true, function (board) {
   soil = getSoil(board, 8);//土壤濕度
   soil.measure(function(val){
     soil.detectedVal = val;
-    soil = soil.detectedVal;
+    soill = soil.detectedVal;
   });
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
@@ -127,11 +127,11 @@ boardReady(device_id_3, true, function (board) {
       }
     }
     else if (dht.humidity <= 60){
-        if (m === 1){
-          for (var t = 0 ; t<= f-1 ; t++){
-            bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於60%，建議您關閉抽風機!'},Exhaust()]);   
-          }
-        } 
+      if (m === 1){
+        for (var t = 0 ; t<= f-1 ; t++){
+          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於60%，建議您關閉抽風機!'},Exhaust()]);   
+        }
+      } 
       m = 0 ;
     }
   }, 1000 * 1);
