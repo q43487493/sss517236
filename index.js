@@ -343,11 +343,19 @@ function botText(message){
   }   
   else if (message==='目前家中人數')	   
     Result='目前家中有' + people +'人';
-  else if (message==='目前家中pm2.5'){
-      Result = 'pm2.5:' + pm_25 ;        
+  else if (message==='目前家中pm2.5'){   
+      if (!deviceIsConnected3())
+      Result='裝置未連接！';
+    else{
+      Result = 'pm2.5:' + pm_25 ;               
+    }  
   }     
   else if (message==='目前浴室濕度'){
-      Result='濕度:' + humid ;        
+    if (!deviceIsConnected3())
+      Result='裝置未連接！';
+    else{
+      Result='濕度:' + humid ;              
+    }        
   }            
   else{
     Result = '謝謝回覆!' ;
@@ -562,8 +570,7 @@ function webduino(message){
       Result='裝置未連接！';
     else{
       Result = door_LINE(line_id_t);        
-    } 
-    Result = door_LINE(line_id_t);    
+    }     
   }
   else if (message==='開燈'){    
     if (!deviceIsConnected2())
@@ -702,9 +709,9 @@ function door_LINE(UID){
         }                
       }
       add_date();   
-      //relay_1.on();
+      relay_1.on();
       setTimeout(function () {                   
-        //relay_1.off();
+        relay_1.off();
       }, 1000 * 3);
       UID  = '' ;
       break;
