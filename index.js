@@ -27,8 +27,8 @@ var line_id = [] ;  // LINE 身分列表
 var card_uid = [] ;//卡號列表
 var user_id =[] ; //門禁卡身分列表   
 var door = [] ;  //進or出門列表  
-var card_add = '' ;        //新增卡號
-var line_add = '' ;       //新增LINE使用者
+var card_add = '' ;           //新增卡號
+var line_add = '' ;          //新增LINE使用者
 var admin_1_2_3_4_5_6 = '' ;//暫存新增刪除總變數
 var line_id_t = '' ;    //暫存line id 
 var user_id_t = '' ;   //暫存身分位置
@@ -221,7 +221,7 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('簡易資料庫'),
+    range:encodeURI('資料庫!G2:H2'),
     insertDataOption: 'OVERWRITE',
     valueInputOption: 'RAW',
     resource: {
@@ -249,7 +249,7 @@ function dele_data(){
     auth:oauth2Client,
     spreadsheetId:SheetId,
     resource: {
-      ranges: ['A:B'],
+      ranges: ['G:H'],
     }};
   var sheets = google.sheets('v4')
   sheets.spreadsheets.values.batchClear(request, function(err, response) {
