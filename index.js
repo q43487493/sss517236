@@ -222,7 +222,7 @@ function add_data2() {
     auth: oauth2Client,
     spreadsheetId: SheetId,
     range:encodeURI('簡易資料庫'),
-    insertDataOption: 'INSERT_ROWS',
+    insertDataOption: 'OVERWRITE',
     valueInputOption: 'RAW',
     resource: {
       'values': add_data2_sort()                        
