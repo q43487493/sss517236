@@ -93,14 +93,14 @@ boardReady(device_id_2, true, function (board) {
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於28，建議您開啟空氣清淨機!'},Clean()]);   
         }
       }
     } 
     else if (g3.pm25 <= 19){
       if (m === 1){
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於41，建議您關閉空氣清淨機!'},Clean()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於19，建議您關閉空氣清淨機!'},Clean()]);   
         }
       }
       m = 0 ;
