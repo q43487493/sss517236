@@ -1,23 +1,19 @@
 require('webduino-js');
 require('webduino-blockly');
-
 var linebot = require('linebot');
 var express = require('express');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-
 var bot = linebot({
   channelId: '1552940206',
   channelSecret: '62e4fc6a62ef81aa559eb3a25ad43275',
   channelAccessToken: 'zI7eLUJ3FMOUVClhYjI8GoDhsyWrNLxB6r0NY7S97MpiWISC6e1RxIQybp0LbDnvCUt9uqU7Jj5gwqFgnJHbGY0bfYOrCMc9UX3eZVUEAhcdUuI66ai/i1I8p1fMyEO0yklI/6NupLaiUH8E+t5IbAdB04t89/1O/w1cDnyilFU='
 });
-
 //google與試算表權杖
 var clientsecret={"installed":{"client_id":"479898043718-lup8n5jqu4966evfttbaqi54u8g0rk4c.apps.googleusercontent.com","project_id":"praxis-granite-191610","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"Xw2vL6zIcBNxtKr8o381KQWo","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
 var auth = new googleAuth();
 var oauth2Client = new auth.OAuth2(clientsecret.installed.client_id,clientsecret.installed.client_secret, clientsecret.installed.redirect_uris[0]);
 oauth2Client.credentials ={"access_token":"ya29.Gls9BQU9XIxCcwKmh8x1DNBFw7KtZUtnz5yWIzzdNkGlLIuVSHwavOwF1brXAauVGCY5CLB6_bI_hi6ceK7vGrLuHsUxU5AHjMCUcNS6U42xvMxMmHHOct6nV23A","refresh_token":"1/ClJ-30WGZ8vjXlkHGKxkDw6yzVnowbf2pseYf2iMrk8","token_type":"Bearer","expiry_date":1515497815494}
-
 var SheetId='1knco-UIs-D8iX10zBba9sO0q0c-2uv5RdLIeFK-tBD0';//試算表id
 var device_id_1={device: '8QwwV'}; //Webduino的device id
 var device_id_2={device: '10Q28gDy', transport: 'mqtt'};
@@ -39,13 +35,6 @@ var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
 getdata(); 
-//bot.push('U79964e56665caa1f44bb589160964c84', { type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });//主動回應圖片
-//LineBot處理文字訊息
-
-//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:353CC52C'}]);
-bot.push('U79964e56665caa1f44bb589160964c84',{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' }); 
-bot.push('U79964e56665caa1f44bb589160964c84','"媽媽" 回家，家裡人數:1人在家' );   
-
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -71,7 +60,7 @@ boardReady(device_id_1, true, function (board) {
   Board_1=board;
   board.systemReset();
   board.samplingInterval = 250;
-  relay_1 = getRelay(board, 5);//控制門鎖
+  relay_1 = getRelay(board, 5);//門鎖
   relay_1.off();
   buzzer = getBuzzer(board, 2);  
   rfid = getRFID(board);
@@ -85,8 +74,10 @@ boardReady(device_id_2, true, function (board) {
   Board_2=board;
   board.systemReset();
   board.samplingInterval = 50;
-  relay_2 = getRelay(board, 5);//控制燈
+  relay_2 = getRelay(board, 5);//燈
+  relay_4 = getRelay(board, 7);//水泵
   relay_2.off();
+  relay_4.off();
   var m = 0 ;
   var f = user_id.length
   g3 = getG3(board, 2,3); //pm25
@@ -106,15 +97,12 @@ boardReady(device_id_2, true, function (board) {
           }
         }
         m = 0 ;
-      }
-    } 
-  }, 1000 * 1);
-}); 
+      }}}, 1000 * 1);}); 
 boardReady(device_id_3, true, function (board) {
   Board_3=board
   board.systemReset();
   board.samplingInterval = 50;
-  relay_3 = getRelay(board, 5);//控制風扇
+  relay_3 = getRelay(board, 5);//風扇
   relay_3.off();
   var m = 0 ; 
   var f = user_id.length
@@ -133,12 +121,9 @@ boardReady(device_id_3, true, function (board) {
         if (m === 1){
           for (var t = 0 ; t<= f-1 ; t++){
             bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於60%，建議您關閉抽風機!'},Exhaust()]);   
-          }
-        } 
+          }} 
       m = 0 ;
-    }
-  }, 1000 * 1);
-});
+    }}, 1000 * 1);});
 const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
@@ -163,8 +148,7 @@ function getdata() {
     else {
       data_sort(response.values);  // 讀取資料以二維陣列表示  [列][攔]
       console.log('資料庫已取得完畢！');
-    } 
-  });
+    } });
 }
 //將讀取的資料分類
 function data_sort(data){
@@ -194,15 +178,13 @@ function add_date() {
     valueInputOption: 'RAW',
     resource: {
       'values': add_sort()                        
-    }
-  };
+    }};
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.append(request, function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
       return;
-    }
-  });
+    }});
 } 
 //分類要上傳的資料
 function add_sort() {
@@ -301,7 +283,7 @@ function botText(message){
       line_add = '';
     }
   }   
-  else if (message==='目前家中人數')     
+  else if (message==='目前家中人數')	   
     Result='目前家中有' + people +'人' ;
   else if (message==='目前家中pm2.5')     
     Result='pm2.5:' + pm_25  ;
@@ -329,8 +311,12 @@ function botpostback(message){
     else if (message === '刪除LINE UID'){
       admin_1_2_3_4_5_6= 4 ;
     }
-    else if (message === '新增卡號'){  
+    else if (message === '新增卡號'){
+      if (!deviceIsConnected())
+        Result='裝置未連接，無法新增卡號';
+      else{  
         admin_1_2_3_4_5_6= 5 ;
+      }
     }
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
@@ -359,9 +345,7 @@ function Exhaust(){
             type: 'message',
             label: '關閉抽風機',
             text: '關閉抽風機'
-          }]
-    }
-  };
+          }]}};
 }
 //處理空氣清淨機機控制選單訊息
 function Clean(){
@@ -381,9 +365,7 @@ function Clean(){
             type: 'message',
             label: '關閉清淨機',
             text: '關閉清淨機'
-          }]
-    }
-  };
+          }]}};
 }
 //處理水泵控制選單訊息 
 function Watering(){
@@ -403,26 +385,23 @@ function Watering(){
             type: 'postback',
             label: 'no',
             data: 'no'
-          }]
-    }
-  };
+          }]}};
 }
 //處理管理功能
 function admin_door(message){
   var Result = '';
-  var f = (user_id.length);
+  var f = (user_id.length);  
   if (admin_1_2_3_4_5_6=== 1 || admin_1_2_3_4_5_6=== 2 || admin_1_2_3_4_5_6 === 3 || admin_1_2_3_4_5_6 === 4 || admin_1_2_3_4_5_6 === 5 || admin_1_2_3_4_5_6 === 6  ){
     line_add = '';
     card_add = '';
-  }  
+  } 
   if (admin_1_2_3_4_5_6=== 1  ){
     for (var j = 0 ; j <=f-1 ; j++){
       if (user_id[j] === message){
         Result = '此使用者已存在';
         message ='' ;  
         break;
-      }
-    }
+      }}
     if (message != ''){
       people = people + 1 ;
       user_id.splice(0,0,message);
@@ -431,8 +410,7 @@ function admin_door(message){
       door.splice(0,0,'在家中');
       Result = { type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' };
       add_date();
-    }
-  }
+    }}
   else if (admin_1_2_3_4_5_6=== 2 ){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message ){           
@@ -454,12 +432,10 @@ function admin_door(message){
         message ='';
         add_date();
         break;
-      }   
-    }
+      }   }
     if (message != ''){
       Result= '沒有這位使用者! \n請檢查是否輸入錯誤';              
-    }
-  }    
+    } }    
   else if (admin_1_2_3_4_5_6=== 3){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
@@ -468,26 +444,22 @@ function admin_door(message){
         user_id_t = j ;
         message = '';
         break;
-      }           
-    }
+      }           }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }   
-  }
+    } }
   else if (admin_1_2_3_4_5_6=== 4){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
-        Result = 'LINE UID刪除成功!';
+        Result = { type: 'image',originalContentUrl: 'https://i.imgur.com/8c3YYGi.png', previewImageUrl: 'https://i.imgur.com/8c3YYGi.png' };
         line_id[j] = '' ;
         message = '';
         add_date();
         break;
-      }           
-    }
+      }            }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }
-  }
+    } }
   else if (admin_1_2_3_4_5_6=== 5){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
@@ -495,31 +467,23 @@ function admin_door(message){
         card_add = '新增' ;
         user_id_t = j ;
         message = '';
-        setTimeout(function () { 
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:353CC52C'}]);
-        
-      } , 1000 * 90);
         break;
-      }           
-    }
+      }           }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }
-  }
+    }}
   else if (admin_1_2_3_4_5_6=== 6){
     for (var j = 0; j <= f-1; j++) {
       if (user_id[j] === message  ){
-        Result = '卡號刪除成功!';
+        Result = { type: 'image',originalContentUrl: 'https://i.imgur.com/8c3YYGi.png', previewImageUrl: 'https://i.imgur.com/8c3YYGi.png' };
         card_uid[j] = '' ;
         message = '';
         add_date();
         break;
-      }           
-    }
+      }           }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
-    }
-  }
+    }}
   admin_1_2_3_4_5_6= '' ;
   return Result ;
 }
@@ -527,98 +491,123 @@ bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl
 function webduino(message){
   var Result='';  
   if (message==='開門'){    
-    
+    if (!deviceIsConnected())
+      Result='裝置未連接！';
+    else{
       Result = door_LINE(line_id_t);        
-         
+    }     
   }
   else if (message==='開燈'){    
-  
-    
+    if (!deviceIsConnected2())
+      Result='裝置未連接！';
+    else{
       Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/zOCTs9N.png', previewImageUrl: 'https://i.imgur.com/zOCTs9N.png' };
-                   
-                         
+      relay_2.on();		 	            
+    }               			
   }
   else if (message==='關燈'){    
-  
-      Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };                  
-        
+    if (!deviceIsConnected2())
+      Result='裝置未連接！';
+    else{
+      Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };
+      relay_2.off();		 	            
+    }     
   }
   else if (message==='開啟抽風機'){
-      Result='抽風機已開啟!';                   
+    if (!deviceIsConnected3())
+      Result='裝置未連接！';
+    else{
+      Result='抽風機已開啟!';
+      relay_3.on();                  
+    }                    
   }    
   else if (message==='關閉抽風機'){
+    if (!deviceIsConnected3())
+      Result='裝置未連接！';
+    else{
       Result='抽風機已關閉!';
-}
+      relay_3.off();                  
+    }                      
+  }
   else if (message==='開啟清淨機'){
-   
+    if (!deviceIsConnected3())//
+      Result='裝置未連接！';
+    else{
       Result='清淨機已開啟!';
-                         
+      relay_3.on();                  
+    }                      
   }
   else if (message==='關閉清淨機'){
-   
+    if (!deviceIsConnected3())//
+      Result='裝置未連接！';
+    else{
       Result='清淨機已關閉!';
-                     
+      relay_3.off();                 
+    }                      
   }
   else if (message==='開啟水泵'){
-
+    if (!deviceIsConnected3())
+      Result='裝置未連接！';
+    else{
       Result='已幫您澆花囉~';
-                     
+      relay_4.off();                  
+    }                      
   }    
   return Result;
 }
 //處理RFID開門
 function door_RFID(UID){ 
   if (card_add ===  '新增' ){   
-    var f = (card_uid.length);          
+    var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         bot.push('U79964e56665caa1f44bb589160964c84', '新增失敗，該卡以代表一位使用者');
-        buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos ); 
+        buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	
         card_add = '' ;
         break;
-      }        
+      }				 
     }
-    if (card_add === '新增'){ 
+    if (card_add === '新增'){	
       card_uid[user_id_t] = UID;
       bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'image',originalContentUrl: 'https://i.imgur.com/j3jSYIb.png', previewImageUrl: 'https://i.imgur.com/j3jSYIb.png' },{ type: 'text', text: '此卡號為:' + UID}]);
       buzzer.play(buzzer_music([ {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );
-      card_add = '';  
+      card_add = '';	
       add_date();
     }
-  }   
+  }		
   else{   
     var user_f = (user_id.length); 
-    var f = (card_uid.length);          
+    var f = (card_uid.length);	  		  
     for (var j = 0; j <= f-1; j++) {
       if (card_uid[j] === UID  ){
         if (door[j] === '在家中'){
-        people = people -1 ;     
-        door[j] = '不在家';       
-          for (var t = 0 ; t<= user_f-1 ; t++){
-            bot.push(line_id[t],[{ type: 'text', text: '"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' },{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' }]);   
- 
- 
+        people = people -1 ;		 
+        door[j] = '不在家';			 
+          for (var t = 0 ; t<= user_f-1 ; t++){   
+            bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });  
+            bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' ); 
           }   
         }
         else if (door[j] === '不在家'){
-          people = people + 1;       
-          door[j] = '在家中';              
-          for (var t = 0 ; t<= user_f-1 ; t++){
-            bot.push(line_id[t],[{ type: 'text', text: '"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' },{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' }]);   
-          }             
+          people = people + 1;  		 
+          door[j] = '在家中';	           	
+          for (var t = 0 ; t<= user_f-1 ; t++){ 
+            bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });  
+            bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );   
+          }							
         }
-        add_date();   
+        add_date(); 	
         relay_1.on();
         setTimeout(function () {                   
           relay_1.off();
         }, 1000 * 3);
         UID  = '' ;
         break;
-      }   
+      }		
     }
     if (UID != ''){
       bot.push('U79964e56665caa1f44bb589160964c84','有外來人士感應\n卡號:' + UID);
-      buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );   
+      buzzer.play(buzzer_music([  {notes:"C7",tempos:"1"}]).notes ,buzzer_music([  {notes:"C7",tempos:"1"}]).tempos );	 
     }
   } 
 }
@@ -632,22 +621,22 @@ function door_LINE(UID){
         people = people -1 ;     
         door[j] = '不在家';   
         for (var t = 0 ; t<= f-1; t++){
-          bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );   
-          bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
+          bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });
+          bot.push(line_id[t],'"' + user_id[j]  +'" 出門，家裡人數:' + people  + '人在家' );                         
         }
       }
       else if (door[j] === '不在家'){
         people = people + 1;  
         door[j] = '在家中'; 
         for (var t = 0 ; t<= f-1; t++){
-          bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );   
-            bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });   
+          bot.push(line_id[t],{ type: 'image',originalContentUrl: 'https://i.imgur.com/u1UxDLY.png?1', previewImageUrl: 'https://i.imgur.com/u1UxDLY.png?1' });
+          bot.push(line_id[t],'"' + user_id[j]  +'" 回家，家裡人數:' + people  + '人在家' );             
         }                
       }
       add_date();   
-      //relay_1.on();
+      relay_1.on();
       setTimeout(function () {                   
-        //relay_1.off();
+        relay_1.off();
       }, 1000 * 3);
       UID  = '' ;
       break;
