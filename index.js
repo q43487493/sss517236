@@ -220,7 +220,7 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('簡易資料庫!'),
+    range:encodeURI('簡易資料庫'),
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
@@ -230,7 +230,7 @@ function add_data2() {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.append(request, function(err, response) {
     if (err) {
-      console.log( err);
+      console.log(err);
       return;
     }});
 }
