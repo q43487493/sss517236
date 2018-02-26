@@ -233,7 +233,7 @@ function add_data2() {
     }});
 }
 //分類要上傳的簡易資料
-function add_data2_sort{
+function add_data2_sort(){
   var form = [];
   var f = user_id.length;
   for (var j = 0 ; j<= f-1 ;j++ ){
