@@ -191,6 +191,7 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
+      valueInputOption: 'RAW',
       'values': add_data_sort()                        
     }};
   var sheets = google.sheets('v4');
@@ -219,11 +220,9 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('資料庫!G:H'),
-    insertDataOption: 'INSERT_ROWS',
-    valueInputOption: 'RAW',
     resource: {
-      'values': add_data2_sort()                        
+      valueInputOption: 'RAW',
+      data: ['values': add_data2_sort()],                        
     }};
 sheets.spreadsheets.values.update(request, function(err, response) {
     if (err) {
