@@ -238,11 +238,10 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('資料庫'),
+    range:encodeURI('工作表16'),
     valueInputOption: 'RAW',
     resource: {
-      'values': add_data2_sort()  
- }],                        
+      'values': add_data2_sort()                         
     }};
  sheets.spreadsheets.values.update(request, function(err, response) {
     if (err) {
