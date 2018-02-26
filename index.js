@@ -223,11 +223,8 @@ function add_data2() {
     resource: {
       valueInputOption: 'RAW',
       data: [{
-  "range": string,
-  "majorDimension": enum(Dimension),
-  "values": [
-    array
-  ],
+  "range":encodeURI('資料庫!H:G'), ,
+  "values":add_data2_sort(),
 }],                        
     }};
  sheets.spreadsheets.values.update(request, function(err, response) {
