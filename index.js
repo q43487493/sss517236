@@ -219,16 +219,15 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('資料庫!G2:H'),
+    range:encodeURI('資料庫!G:H'),
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
       'values': add_data2_sort()                        
     }};
-  var sheets = google.sheets('v4');
-  sheets.spreadsheets.values.append(request, function(err, response) {
+sheets.spreadsheets.values.update(request, function(err, response) {
     if (err) {
-      console.log('The API returned an error: ' + err);
+      console.error(err);
       return;
     }});
 }
