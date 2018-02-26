@@ -220,7 +220,7 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('簡易資料庫!A:B'),
+    range:encodeURI('簡易資料庫!'),
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
@@ -245,7 +245,7 @@ function add_data2_sort(){
 }
 //刪除部分資料
 function dele_data(){
-  var request = {
+  /*var request = {
     auth:oauth2Client,
     spreadsheetId:SheetId,
     resource: {
@@ -256,7 +256,7 @@ function dele_data(){
     if (err) {
       console.error(err);
       return;
-    }});
+    }});*/
 }
 //處理line訊息
 function botText(message){
@@ -342,20 +342,12 @@ function botText(message){
     }
   }   
   else if (message==='目前家中人數')	   
-    Result='目前家中有' + people +'人' ;
+    Result='目前家中有' + people +'人';
   else if (message==='目前家中pm2.5'){
-    if (!deviceIsConnecte2())
-      Result='裝置未連接！';
-    else{
       Result = 'pm2.5:' + pm_25 ;        
-    }
   }     
   else if (message==='目前浴室濕度'){
-    if (!deviceIsConnecte3())
-      Result='裝置未連接！';
-    else{
       Result='濕度:' + humid ;        
-    }
   }            
   else{
     Result = '謝謝回覆!' ;
