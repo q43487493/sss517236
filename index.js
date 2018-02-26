@@ -191,7 +191,6 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      valueInputOption: 'RAW',
       'values': add_data_sort()                        
     }};
   var sheets = google.sheets('v4');
@@ -224,7 +223,6 @@ function add_data2() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      valueInputOption: 'RAW',
       'values': add_data2_sort()                        
     }};
   var sheets = google.sheets('v4');
@@ -245,7 +243,7 @@ function add_data2_sort(){
 }
 //刪除部分資料
 function dele_data(){
-  /*var request = {
+  var request = {
     auth:oauth2Client,
     spreadsheetId:SheetId,
     resource: {
@@ -256,7 +254,7 @@ function dele_data(){
     if (err) {
       console.error(err);
       return;
-    }});*/
+    }});
 }
 //處理line訊息
 function botText(message){
