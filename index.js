@@ -216,6 +216,7 @@ function add_data_sort() {
   return form;
 }
 //上傳簡易資料至試算表
+/*
 function add_data2() {
   var request = {
     auth: oauth2Client,
@@ -225,9 +226,25 @@ function add_data2() {
       data: [{
   "range":encodeURI('資料庫!H:G'),
   "values":add_data2_sort(),
-}],                        
+ }],                        
     }};
  sheets.spreadsheets.values.batchUpdate(request, function(err, response) {
+    if (err) {
+      console.error(err);
+      return;
+    }});
+}*/
+function add_data2() {
+  var request = {
+    auth: oauth2Client,
+    spreadsheetId: SheetId,
+    range:encodeURI('資料庫'),
+    valueInputOption: 'RAW',
+    resource: {
+      'values': add_data2_sort()  
+ }],                        
+    }};
+ sheets.spreadsheets.values.update(request, function(err, response) {
     if (err) {
       console.error(err);
       return;
@@ -342,10 +359,20 @@ function botText(message){
   }   
   else if (message==='目前家中人數')	   
     Result='目前家中有' + people +'人' ;
-  else if (message==='目前家中pm2.5')     
-    Result='pm2.5:' + pm_25  ;
-  else if (message==='目前浴室濕度')     
-    Result='濕度:' + humid  ;       
+  else if (message==='目前家中pm2.5'){
+    if (!deviceIsConnecte2())
+      Result='裝置未連接！';
+    else{
+      Result = 'pm2.5:' + pm_25;        
+    }
+  }     
+  else if (message==='目前浴室濕度'){
+    if (!deviceIsConnecte3())
+      Result='裝置未連接！';
+    else{
+      Result='濕度:' + humid ;        
+    }
+  }            
   else{
     Result = '謝謝回覆!' ;
   } 
