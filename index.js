@@ -227,7 +227,7 @@ function add_data2() {
   "values":add_data2_sort(),
 }],                        
     }};
- sheets.spreadsheets.values.update(request, function(err, response) {
+ sheets.spreadsheets.values.batchUpdate(request, function(err, response) {
     if (err) {
       console.error(err);
       return;
