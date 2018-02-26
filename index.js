@@ -184,9 +184,6 @@ function data_sort(data){
 function add_date() {
   dele_data();
   add_data2();
-  setTimeout(function () {                   
-    //add_data2();
-        }, 1000);
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
@@ -222,7 +219,7 @@ function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    range:encodeURI('資料庫!G:H'),
+    range:encodeURI('資料庫!G2:H'),
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
