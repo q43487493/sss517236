@@ -239,7 +239,6 @@ function add_data2_sort{
   for (var j = 0 ; j<= f-1 ;j++ ){
       form[j] = user_id[j],door[j];
     }
-  }
   return form;
 }
 //刪除部分資料
