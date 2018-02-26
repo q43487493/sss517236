@@ -222,9 +222,15 @@ function add_data2() {
     spreadsheetId: SheetId,
     resource: {
       valueInputOption: 'RAW',
-      data: ['values': add_data2_sort()],                        
+      data: [{
+  "range": string,
+  "majorDimension": enum(Dimension),
+  "values": [
+    array
+  ],
+}],                        
     }};
-sheets.spreadsheets.values.update(request, function(err, response) {
+ sheets.spreadsheets.values.update(request, function(err, response) {
     if (err) {
       console.error(err);
       return;
