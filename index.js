@@ -183,8 +183,9 @@ function data_sort(data){
 //上傳試算表-資料庫
 function add_date() {
   dele_data();
+  add_data2();
   setTimeout(function () {                   
-    add_data2();
+    //add_data2();
         }, 1000);
   var request = {
     auth: oauth2Client,
@@ -222,7 +223,7 @@ function add_data2() {
     auth: oauth2Client,
     spreadsheetId: SheetId,
     range:encodeURI('資料庫!G:H'),
-    insertDataOption: 'OVERWRITE',
+    insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
       'values': add_data2_sort()                        
@@ -239,7 +240,7 @@ function add_data2_sort(){
   var form = [];
   var f = user_id.length;
   for (var j = 0 ; j<= f-1 ;j++ ){
-      form[j] = user_id[j],door[j];
+      form[j] = [user_id[j],door[j]];
     }
   return form;
 }
