@@ -216,36 +216,21 @@ function add_data_sort() {
   return form;
 }
 //上傳簡易資料至試算表
-/*
 function add_data2() {
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
-    resource: {
-      valueInputOption: 'RAW',
-      data: [{
-  "range":encodeURI('資料庫!H:G'),
-  "values":add_data2_sort(),
- }],                        
-    }};
- sheets.spreadsheets.values.batchUpdate(request, function(err, response) {
-    if (err) {
-      console.error(err);
-      return;
-    }});
-}*/
-function add_data2() {
-  var request = {
-    auth: oauth2Client,
-    spreadsheetId: SheetId,
-    range:encodeURI('工作表16'),
+    range:encodeURI('簡易資料庫!A:B'),
+    insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      'values': add_data2_sort()                         
+      valueInputOption: 'RAW',
+      'values': add_data2_sort()                        
     }};
- sheets.spreadsheets.values.update(request, function(err, response) {
+  var sheets = google.sheets('v4');
+  sheets.spreadsheets.values.append(request, function(err, response) {
     if (err) {
-      console.error(err);
+      console.log( err);
       return;
     }});
 }
@@ -264,7 +249,7 @@ function dele_data(){
     auth:oauth2Client,
     spreadsheetId:SheetId,
     resource: {
-      ranges: ['G:H'],
+      ranges: ['A:B'],
     }};
   var sheets = google.sheets('v4')
   sheets.spreadsheets.values.batchClear(request, function(err, response) {
@@ -362,7 +347,7 @@ function botText(message){
     if (!deviceIsConnecte2())
       Result='裝置未連接！';
     else{
-      Result = 'pm2.5:' + pm_25;        
+      Result = 'pm2.5:' + pm_25 ;        
     }
   }     
   else if (message==='目前浴室濕度'){
