@@ -72,8 +72,8 @@ boardReady(device_id_1, true, function (board) {
   });  
 });   
 boardReady(device_id_2, true, function (board) {
-    var m = 0 ;
-    var f = user_id.length
+  var m = 0 ;
+  var f = user_id.length
   Board_2=board;
   board.systemReset();
   board.samplingInterval = 50;
@@ -89,7 +89,7 @@ boardReady(device_id_2, true, function (board) {
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
-    if (g3.pm25 >= 30){
+    if (g3.pm25 >= 28){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
@@ -182,6 +182,8 @@ function data_sort(data){
 }
 //上傳試算表-資料庫
 function add_date() {
+  dele_data();
+  add_data2();
   var request = {
     auth: oauth2Client,
     spreadsheetId: SheetId,
@@ -189,7 +191,7 @@ function add_date() {
     insertDataOption: 'INSERT_ROWS',
     valueInputOption: 'RAW',
     resource: {
-      'values': add_sort()                        
+      'values': add_data_sort()                        
     }};
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.append(request, function(err, response) {
@@ -199,7 +201,7 @@ function add_date() {
     }});
 } 
 //分類要上傳的資料
-function add_sort() {
+function add_data_sort() {
   var form = [];
   var f = user_id.length;
   for (var j = 0 ; j<= f-1 ;j++ ){
@@ -211,6 +213,49 @@ function add_sort() {
     form[f] = ['----------------------------'];
   }
   return form;
+}
+//上傳簡易資料至試算表
+function add_data2() {
+  var request = {
+    auth: oauth2Client,
+    spreadsheetId: SheetId,
+    range:encodeURI('資料庫!G:H'),
+    insertDataOption: 'OVERWRITE',
+    valueInputOption: 'RAW',
+    resource: {
+      'values': add_data2_sort()                        
+    }};
+  var sheets = google.sheets('v4');
+  sheets.spreadsheets.values.append(request, function(err, response) {
+    if (err) {
+      console.log('The API returned an error: ' + err);
+      return;
+    }});
+}
+//分類要上傳的簡易資料
+function add_data2_sort{
+  var form = [];
+  var f = user_id.length;
+  for (var j = 0 ; j<= f-1 ;j++ ){
+      form[j] = user_id[j],door[j];
+    }
+  }
+  return form;
+}
+//刪除部分資料
+function dele_data(){
+  var request = {
+    auth:oauth2Client,
+    spreadsheetId:SheetId,
+    resource: {
+      ranges: ['G:H'],
+    }};
+  var sheets = google.sheets('v4')
+  sheets.spreadsheets.values.batchClear(request, function(err, response) {
+    if (err) {
+      console.error(err);
+      return;
+    }});
 }
 //處理line訊息
 function botText(message){
