@@ -576,7 +576,7 @@ function webduino(message){
   else if (message==='開燈'){    
     if (!deviceIsConnected2())
       Result='裝置未連接！';
-    else{
+    else{                                   
       Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/zOCTs9N.png', previewImageUrl: 'https://i.imgur.com/zOCTs9N.png' };
       relay_2.on();		 	            
     }               			
@@ -584,10 +584,11 @@ function webduino(message){
   else if (message==='關燈'){    
     if (!deviceIsConnected2())
       Result='裝置未連接！';
-    else{
+    else{ 
       Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };
       relay_2.off();		 	            
-    }     
+    }
+    Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };     
   }
   else if (message==='開啟抽風機'){
     if (!deviceIsConnected3())
