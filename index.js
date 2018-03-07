@@ -85,6 +85,11 @@ boardReady(device_id_2, true, function (board) {
   soil.measure(function(val){
     soil.detectedVal = val;
     soill = soil.detectedVal;
+    if (soil.detectedVal >= 25){
+      for (var t = 0 ; t<= f-1 ; t++){
+        bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
+      }
+    } 
   });
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
