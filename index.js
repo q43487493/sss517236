@@ -625,17 +625,18 @@ function webduino(message){
       Result='清淨機已關閉!';
       relay_3.off();                 
     } 
+  } 
   else if (message==='開啟澆花器'){
     if (!deviceIsConnected2())
       Result='裝置未連接！';
     else{
       Result='已經幫您澆花囉~';
+      relay_4.on();
       setTimeout(function () {                   
-        relay_4.on();
+        relay_4.off();
       }, 1000 * 3);                
     }                      
-  }                       
-  }    
+  }                           
   return Result;
 }
 //處理RFID開門
