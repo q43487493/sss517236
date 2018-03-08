@@ -611,7 +611,7 @@ function webduino(message){
     }                      
   }
   else if (message==='開啟清淨機'){
-    if (!deviceIsConnected3())//
+    if (!deviceIsConnected3())
       Result='裝置未連接！';
     else{
       Result='清淨機已開啟!';
@@ -619,7 +619,7 @@ function webduino(message){
     }                      
   }
   else if (message==='關閉清淨機'){
-    if (!deviceIsConnected3())//
+    if (!deviceIsConnected3())
       Result='裝置未連接！';
     else{
       Result='清淨機已關閉!';
