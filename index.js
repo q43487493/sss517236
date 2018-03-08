@@ -631,7 +631,7 @@ function webduino(message){
     }                      
   }
   else if (message==='開啟水泵'){
-    if (!deviceIsConnected3())
+    if (!deviceIsConnected2())
       Result='裝置未連接！';
     else{
       Result='已幫您澆花囉~';
