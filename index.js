@@ -80,8 +80,8 @@ boardReady(device_id_2, true, function (board) {
   relay_2 = getRelay(board, 5);//燈
   relay_4 = getRelay(board, 16);//水泵
   relay_2.off();
-  relay_4.off();
-  soil = getSoil(board, 8);//土壤濕度
+  relay_4.off();/*
+  soil = getSoil(board, 12);//土壤濕度
   soil.measure(function(val){
     soil.detectedVal = val;
     soill = soil.detectedVal;
@@ -90,7 +90,7 @@ boardReady(device_id_2, true, function (board) {
         bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
       }
     } 
-  });
+  });*/
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
@@ -361,7 +361,10 @@ function botText(message){
     else{
       Result='濕度:' + humid ;              
     }        
-  }            
+  } 
+  else if (message==='1'){
+    Result = [Watering(),Clean(),Exhaust()] ;
+  }           
   else{
     Result = '謝謝回覆!' ;
   } 
