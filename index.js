@@ -503,7 +503,8 @@ function admin_door(message){
         message ='';
         add_date();
         break;
-      }   }
+      }   
+    }
     if (message != ''){
       Result= '沒有這位使用者! \n請檢查是否輸入錯誤';              
     } 
@@ -516,7 +517,8 @@ function admin_door(message){
         user_id_t = j ;
         message = '';
         break;
-      }           }
+      }           
+    }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
     } 
@@ -529,7 +531,8 @@ function admin_door(message){
         message = '';
         add_date();
         break;
-      }            }
+      }            
+    }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
     } 
@@ -542,7 +545,8 @@ function admin_door(message){
         user_id_t = j ;
         message = '';
         break;
-      }           }
+      }           
+    }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
     }
@@ -555,7 +559,8 @@ function admin_door(message){
         message = '';
         add_date();
         break;
-      }           }
+      }           
+    }
     if (message != ''){
       Result = '沒有這位使用者! \n請檢查是否輸入錯誤';    
     }
