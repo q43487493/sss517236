@@ -387,12 +387,8 @@ function botpostback(message){
     else if (message === '刪除LINE UID'){
       admin_1_2_3_4_5_6= 4 ;
     }
-    else if (message === '新增卡號'){
-      if (!deviceIsConnected())
-        Result='裝置未連接，無法新增卡號';
-      else{  
+    else if (message === '新增卡號'){ 
         admin_1_2_3_4_5_6= 5 ;
-      }
     }
     else if (message === '刪除卡號'){
       admin_1_2_3_4_5_6= 6 ;
