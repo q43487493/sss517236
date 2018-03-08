@@ -398,9 +398,6 @@ function botpostback(message){
       admin_1_2_3_4_5_6= 6 ;
     }
   }
-  else if (message === yes){
-    Result = webduino('開啟水泵');
-  }
   return Result;
 }
 //處理抽風機控制選單訊息
@@ -629,11 +626,13 @@ function webduino(message){
       relay_3.off();                 
     } 
   else if (message==='開啟澆花器'){
-    if (!deviceIsConnected3())//
+    if (!deviceIsConnected2())
       Result='裝置未連接！';
     else{
       Result='已經幫您澆花囉~';
-      relay_4.on();                  
+      setTimeout(function () {                   
+        relay_4.on();
+      }, 1000 * 3);                
     }                      
   }                       
   }    
