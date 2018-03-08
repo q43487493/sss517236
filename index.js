@@ -453,14 +453,14 @@ function Watering(){
       text: '請問是否澆花',
       actions: [
           {
-            type: 'postback',
+            type: 'message',
             label: 'yes',
-            data: 'yes',
+            text: '開啟澆花器',
           },
           {
-            type: 'postback',
+            type: 'message',
             label: 'no',
-            data: 'no'
+            text: 'no'
           }]}};
 }
 //處理管理功能
@@ -578,8 +578,7 @@ function webduino(message){
       Result='裝置未連接！';
     else{
       Result = door_LINE(line_id_t);        
-    }
-    Result = door_LINE(line_id_t);     
+    }    
   }
   else if (message==='開燈'){    
     if (!deviceIsConnected2())
@@ -628,18 +627,15 @@ function webduino(message){
     else{
       Result='清淨機已關閉!';
       relay_3.off();                 
-    }                      
-  }
-  else if (message==='開啟水泵'){
-    if (!deviceIsConnected2())
+    } 
+  else if (message==='開啟澆花器'){
+    if (!deviceIsConnected3())//
       Result='裝置未連接！';
     else{
-      Result='已幫您澆花囉~';
-      relay_4.on();       
-      setTimeout(function () {                   
-        relay_4.off();
-      }, 1000 * 2);           
+      Result='已經幫您澆花囉~';
+      relay_4.on();                  
     }                      
+  }                       
   }    
   return Result;
 }
