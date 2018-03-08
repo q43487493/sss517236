@@ -722,9 +722,9 @@ function door_LINE(UID){
         }                
       }
       add_date();   
-      //relay_1.on();
+      relay_1.on();
       setTimeout(function () {                   
-        //relay_1.off();
+        relay_1.off();
       }, 1000 * 3);
       UID  = '' ;
       break;
