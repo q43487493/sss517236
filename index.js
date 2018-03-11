@@ -80,32 +80,32 @@ boardReady(device_id_2, true, function (board) {
   relay_2 = getRelay(board, 5);//燈
   relay_4 = getRelay(board, 16);//水泵
   relay_2.off();
-  relay_4.off();/*
+  relay_4.off();
   soil = getSoil(board, 12);//土壤濕度
   soil.measure(function(val){
     soil.detectedVal = val;
     soill = soil.detectedVal;
-    if (soil.detectedVal >= 25){
+    if (soil.detectedVal <= 20){
       for (var t = 0 ; t<= f-1 ; t++){
         bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
       }
     } 
-  });*/
+  });
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
-    if (g3.pm25 >= 28){
+    if (g3.pm25 >= 20){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於54，建議您開啟空氣清淨機!'},Clean()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於20，建議您開啟空氣清淨機!'},Clean()]);   
         }
       }
     } 
-    else if (g3.pm25 <= 19){
+    else if (g3.pm25 <= 10){
       if (m === 1){
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於30，建議您關閉空氣清淨機!'},Clean()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5已低於10，建議您關閉空氣清淨機!'},Clean()]);   
         }
       }
       m = 0 ;
@@ -123,18 +123,18 @@ boardReady(device_id_3, true, function (board) {
   dht = getDht(board, 9); //溫溼度
   dht.read(function(evt){
     humid = dht.humidity
-    if (dht.humidity >= 30){
+    if (dht.humidity >= 20){
       if (m != 1){
         m = 1 ;
-        for (var t = 0 ; t<= user_f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於75%，建議您開啟抽風機!'},Exhaust()]);   
+        for (var t = 0 ; t<= f-1 ; t++){
+          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);   
         }
       }
     }
-    else if (dht.humidity <= 20){
+    else if (dht.humidity <= 10){
       if (m === 1){
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於60%，建議您關閉抽風機!'},Exhaust()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度以低於10%，建議您關閉抽風機!'},Exhaust()]);   
         }
       } 
       m = 0 ;
@@ -364,7 +364,10 @@ function botText(message){
   } 
   else if (message==='開啟所有控制選單'){
     Result = [Watering(),Clean(),Exhaust()] ;
-  }           
+  }        
+  else if (message==='1'){
+    Result = soill ;
+  }  
   else{
     Result = '謝謝回覆!' ;
   } 
