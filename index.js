@@ -592,8 +592,7 @@ function webduino(message){
     else{ 
       Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };
       relay_2.off();		 	            
-    }
-    Result={ type: 'image',originalContentUrl: 'https://i.imgur.com/bAZPahb.png', previewImageUrl: 'https://i.imgur.com/bAZPahb.png' };     
+    }  
   }
   else if (message==='開啟抽風機'){
     if (!deviceIsConnected3())
