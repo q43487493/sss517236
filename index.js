@@ -89,7 +89,7 @@ boardReady(device_id_1, true, function (board) {
         }
       }
     } 
-    else if (g3.pm25 >= 60){
+    else if (soil.detectedVal >= 60){
       m = 0 ;
     }
   });
@@ -653,7 +653,7 @@ function webduino(message){
       relay_4.on();
       setTimeout(function () {                   
         relay_4.off();
-      }, 1000 * 3);                
+      }, 1000 * 10);                
     }                      
   }                           
   return Result;
