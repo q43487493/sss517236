@@ -59,6 +59,7 @@ bot.on('postback', function (event) {
 //處理webduino開發版
 boardReady(device_id_1, true, function (board) {
   var f = user_id.length
+  var m = 0 ;
   Board_1=board;
   board.systemReset();
   board.samplingInterval = 250;
@@ -70,17 +71,28 @@ boardReady(device_id_1, true, function (board) {
   rfid.on("enter",function(_uid){
     rfid._uid = _uid;
     door_RFID(_uid);
-  });  /*
+  });  
   soil = getSoil(board, 3);//土壤濕度A3
   soil.measure(function(val){
     soil.detectedVal = val;
-    soill = soil.detectedVal;
+    soill = soil.detectedVal;/*
     if (soil.detectedVal <= 20){
       for (var t = 0 ; t<= f-1 ; t++){
         bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
       }
+    } */
+    if (soil.detectedVal <= 20){
+      if (m != 1){
+        m = 1 ;
+        for (var t = 0 ; t<= f-1 ; t++){
+          bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
+        }
+      }
     } 
-  });*/
+    else if (g3.pm25 >= 60){
+      m = 0 ;
+    }
+  });
 });   
 boardReady(device_id_2, true, function (board) {
   var m = 0 ;
