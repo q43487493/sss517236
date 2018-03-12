@@ -653,7 +653,7 @@ function webduino(message){
       relay_4.on();
       setTimeout(function () {                   
         relay_4.off();
-      }, 1000 * 10);                
+      }, 1000 * 7);                
     }                      
   }                           
   return Result;
