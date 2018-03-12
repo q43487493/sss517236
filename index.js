@@ -70,7 +70,7 @@ boardReady(device_id_1, true, function (board) {
   rfid.on("enter",function(_uid){
     rfid._uid = _uid;
     door_RFID(_uid);
-  });  /*
+  });  
   soil = getSoil(board, 3);//土壤濕度A3
   soil.measure(function(val){
     soil.detectedVal = val;
@@ -80,7 +80,7 @@ boardReady(device_id_1, true, function (board) {
         bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
       }
     } 
-  });/*/
+  });
 });   
 boardReady(device_id_2, true, function (board) {
   var m = 0 ;
