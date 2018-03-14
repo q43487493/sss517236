@@ -595,7 +595,8 @@ function webduino(message){
       Result='裝置未連接！';
     else{
       Result = door_LINE(line_id_t);        
-    }    
+    }  
+    Result = door_LINE(line_id_t);  
   }
   else if (message==='開燈'){    
     if (!deviceIsConnected2())
