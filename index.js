@@ -85,7 +85,7 @@ boardReady(device_id_1, true, function (board) {
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
+          //bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
         }
       }
     } 
