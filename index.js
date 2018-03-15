@@ -140,7 +140,7 @@ boardReady(device_id_3, true, function (board) {
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於25%，建議您開啟抽風機!'},Exhaust()]);   
+          //bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於25%，建議您開啟抽風機!'},Exhaust()]);   
         }
       }
     }
