@@ -81,11 +81,11 @@ boardReady(device_id_1, true, function (board) {
         bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
       }
     } */
-    if (soil.detectedVal <= 20){
+    if (soil.detectedVal <= 25){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          //bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於20%，建議您啟動澆水裝置!'},Watering()]);   
+          //bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
         }
       }
     } 
@@ -107,11 +107,11 @@ boardReady(device_id_2, true, function (board) {
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
-    if (g3.pm25 >= 20){
+    if (g3.pm25 >= 25){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於20，建議您開啟空氣清淨機!'},Clean()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
         }
       }
     } 
@@ -136,11 +136,11 @@ boardReady(device_id_3, true, function (board) {
   dht = getDht(board, 9); //溫溼度
   dht.read(function(evt){
     humid = dht.humidity
-    if (dht.humidity >= 20){
+    if (dht.humidity >= 25){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於25%，建議您開啟抽風機!'},Exhaust()]);   
         }
       }
     }
