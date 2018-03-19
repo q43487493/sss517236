@@ -40,7 +40,8 @@ var data_1 = [] ; //區
 var data_2 = [] ; //市
 var data_3 = [] ; //pm
 var g = '' ;      //暫存'區''
-
+var open_1 ;
+var open_2 ;
 getdata(); 
 bot.on('message', function(event) {
   var bot_txt='';
@@ -853,7 +854,7 @@ function opendata() {
       auth: oauth2Client,
       spreadsheetId: SheetId,
       range:encodeURI('外面空氣品質!A1:BX1'),
-      insertDataOption: 'OVERWRITE',
+      insertDataOption: 'INSERT_ROWS',
       valueInputOption: 'RAW',
       resource: {
         "values": [      
@@ -869,7 +870,7 @@ function opendata() {
          console.log('The API returned an error: ' + err);
          return;
       }
-      else{console.log('ok~');}
+      else{console.log('pm ok~');}
    });
 }
 //讀取pm資料
@@ -891,23 +892,14 @@ function getdata_2() {
 }
 //將讀取的pm資料分類
 function data_sort_2(data){
-  var f_1 = data.length;  
-  var text = [];
-  for (j = 0 ; j <= f_1-2 ; j++){
-    text[j] =  data[j][0]  ;
-  }
-  var f_2 = text.lastIndexOf('----------------------------')+1; 
-  var k = 0 ;
-  for (j = f_2 ; j <= f_1-2 ; j++){
-    line_id[k] = data[j][0]; 
-    card_uid[k] = data[j][1]; 
-    user_id[k] = data[j][2]; 
-    door[k] = data[j][3];  
-    k = k + 1 ;
-  }
-  people = parseFloat(data[f_2][4]);
+  var f = data.length;  
+  var text_1 = data[f-2].join(',');//抓區
+  var text_2 = data[f-1].join(',');//抓pm253
+  open_1 = text_1.splig(',');
+  open_2 = text_2.splig(',');
+  console.log(open_1);
 }
-
+getdata_2();
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
