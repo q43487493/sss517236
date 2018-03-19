@@ -852,7 +852,7 @@ function opendata() {
    var request = {
       auth: oauth2Client,
       spreadsheetId: SheetId,
-      range:encodeURI('外面空氣品質'),
+      range:encodeURI('外面空氣品質!A1:BX1'),
       insertDataOption: 'OVERWRITE',
       valueInputOption: 'RAW',
       resource: {
@@ -869,6 +869,7 @@ function opendata() {
          console.log('The API returned an error: ' + err);
          return;
       }
+      else{console.log('ok~');}
    });
 }
 
