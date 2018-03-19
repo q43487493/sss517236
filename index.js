@@ -872,6 +872,41 @@ function opendata() {
       else{console.log('ok~');}
    });
 }
+//讀取pm資料
+function getdata_2() {
+  var sheets = google.sheets('v4');
+  sheets.spreadsheets.values.get({
+    auth: oauth2Client,
+    spreadsheetId: SheetId,
+    range:encodeURI('外面空氣品質'),  
+  }, function(err, response) {  
+    if (err) {            
+      console.log('讀取資料庫發生問題：' + err);
+      return;
+    }      
+    else {
+      data_sort_2(response.values); 
+      console.log('資料庫已取得完畢！');
+    } });
+}
+//將讀取的pm資料分類
+function data_sort_2(data){
+  var f_1 = data.length;  
+  var text = [];
+  for (j = 0 ; j <= f_1-2 ; j++){
+    text[j] =  data[j][0]  ;
+  }
+  var f_2 = text.lastIndexOf('----------------------------')+1; 
+  var k = 0 ;
+  for (j = f_2 ; j <= f_1-2 ; j++){
+    line_id[k] = data[j][0]; 
+    card_uid[k] = data[j][1]; 
+    user_id[k] = data[j][2]; 
+    door[k] = data[j][3];  
+    k = k + 1 ;
+  }
+  people = parseFloat(data[f_2][4]);
+}
 
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
