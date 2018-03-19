@@ -39,6 +39,8 @@ var soill ;
 var data_1 = [] ; //區
 var data_2 = [] ; //市
 var data_3 = [] ; //pm
+var g = '' ;      //暫存'區''
+
 getdata(); 
 bot.on('message', function(event) {
   var bot_txt='';
@@ -283,7 +285,6 @@ function dele_data(){
 //處理line訊息
 function botText(message){
   var Result='';
-  var g = '' ;
   if (admin === 1234 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){ Result = admin_door(message) }
   else { Result = webduino(message) } 
   if (Result!=''){}
@@ -852,12 +853,12 @@ function opendata() {
       auth: oauth2Client,
       spreadsheetId: SheetId,
       range:encodeURI('外面空氣品質'),
-      insertDataOption: 'INSERT_ROWS',
+      insertDataOption: 'OVERWRITE',
       valueInputOption: 'RAW',
       resource: {
         "values": [      
-        data_1,
         data_2,
+        data_1,
         data_3
      ]                         
      }
@@ -870,6 +871,7 @@ function opendata() {
       }
    });
 }
+
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
