@@ -385,7 +385,7 @@ function botText(message){
   }  
   else if (message==='目前外面空氣品質'){
     Result = '請輸入您所在的地區' ;
-    g = '9999' ;
+    g = '區' ;
     request({
       url: "https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?",
       method: "GET"
@@ -394,7 +394,7 @@ function botText(message){
       else {database(b);} 
     });
   }
-  else if ( g === '9999' && message ==='1'){
+  else if ( g === '區' && message ==='我'){
     Result = '1' ;
     g = '' ;
   }       
