@@ -385,16 +385,16 @@ function botText(message){
   }  
   else if (message==='目前外面空氣品質'){
     Result = '請輸入您所在的地區' ;
-    g = '區' ;
-      request({
-        url: "https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?",
-        method: "GET"
-      }, function(e,r,b) {  
-        if (e || !b) {database(b); return;}
-        else {database(b);} 
-      });
-    }
-  else if ( g === '區' && message==='1'){
+    g = '9999' ;
+    request({
+      url: "https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?",
+      method: "GET"
+    }, function(e,r,b) {  
+      if (e || !b) {database(b); return;}
+      else {database(b);} 
+    });
+  }
+  else if ( g === '9999' && message ==='1'){
     Result = '1' ;
     g = '' ;
   }       
