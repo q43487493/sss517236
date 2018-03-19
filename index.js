@@ -1,5 +1,6 @@
 require('webduino-js');
 require('webduino-blockly');
+var request = require("request");
 var linebot = require('linebot');
 var express = require('express');
 var google = require('googleapis');
@@ -35,6 +36,9 @@ var user_id_t = '' ;   //暫存身分位置
 var pm_25 ; 
 var humid ; 
 var soill ;
+var data_1 = [] ; //區
+var data_2 = [] ; //市
+var data_3 = [] ; //pm
 getdata(); 
 bot.on('message', function(event) {
   var bot_txt='';
@@ -85,7 +89,7 @@ boardReady(device_id_1, true, function (board) {
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          //bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
         }
       }
     } 
@@ -107,11 +111,11 @@ boardReady(device_id_2, true, function (board) {
   g3 = getG3(board, 2,3); //pm25
   g3.read(function(evt){
     pm_25 = g3.pm25 ;
-    if (g3.pm25 >= 25){
+    if (g3.pm25 >= 30){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          //bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前家中pm2.5高於30，建議您開啟空氣清淨機!'},Clean()]);   
         }
       }
     } 
@@ -136,11 +140,11 @@ boardReady(device_id_3, true, function (board) {
   dht = getDht(board, 9); //溫溼度
   dht.read(function(evt){
     humid = dht.humidity
-    if (dht.humidity >= 25){
+    if (dht.humidity >= 30){
       if (m != 1){
         m = 1 ;
         for (var t = 0 ; t<= f-1 ; t++){
-          //bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於25%，建議您開啟抽風機!'},Exhaust()]);   
+          bot.push(line_id[t],[{ type: 'text', text: '目前浴室濕度高於30%，建議您開啟抽風機!'},Exhaust()]);   
         }
       }
     }
@@ -279,6 +283,7 @@ function dele_data(){
 //處理line訊息
 function botText(message){
   var Result='';
+  var g = '' ;
   if (admin === 1234 && line_id_t === 'U79964e56665caa1f44bb589160964c84'){ Result = admin_door(message) }
   else { Result = webduino(message) } 
   if (Result!=''){}
@@ -377,13 +382,22 @@ function botText(message){
   } 
   else if (message==='開啟所有控制選單'){
     Result = [Watering(),Clean(),Exhaust()] ;
-  } 
-  else if (message==='22'){
-    Result = [Clean(),Exhaust()] ;
-  }       
-  else if (message==='11'){
-    Result = soill ;
   }  
+  else if (message==='目前外面空氣品質'){
+    Result = '請輸入您所在的地區' ;
+    g = '區' ;
+      request({
+        url: "https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?",
+        method: "GET"
+      }, function(e,r,b) {  
+        if (e || !b) {database(b); return;}
+        else {database(b);} 
+      });
+    }
+  else if ( g === '區' && message==='1'){
+    Result = '1' ;
+    g = '' ;
+  }       
   else{
     Result = '謝謝回覆!' ;
   } 
@@ -802,7 +816,60 @@ function deviceIsConnected3(){
    else
       return Board_3.isConnected;
 }
-
+//分類抓到的公開資料
+function database(d){
+ var txt = '';
+ var txt_t = '' ;
+ for (j = 0 ; j <= d.length ; j++ ){
+   txt =  txt + d[j]; 
+  }
+ txt = txt.split('}');
+ for (j = 0 ; j <= txt.length-1 ; j++){
+   txt[j] = txt[j].split(',');
+   for (t = 0 ; t <= txt[j].length-1 ; t++){
+     txt[j][t] = txt[j][t].split(':');
+     for(k = 0 ; k <=txt[j][t].length-1 ; k++){
+       txt[j][t][k] = txt[j][t][k].split('"');
+      }
+    }
+  }
+ data_1[0]=txt[0][0][1][1] ;
+ data_2[0]=txt[0][1][1][1] ;
+ data_3[0]=txt[0][2][1][1] ;
+ txt_t =  '地區:' +txt[0][0][1][1] + '\n縣市:'+ txt[0][1][1][1]  +'\n目前pm2.5:' + txt[0][2][1][1];
+ for (j = 1 ; j <= txt.length-2 ; j++ ){
+   txt_t = txt_t + "\n\n" +  '地區:' +txt[j][1][1][1] + '\n縣市:'+ txt[j][2][1][1]  +'\n目前pm2.5:' + txt[j][3][1][1];
+  data_1[j]=txt[j][1][1][1] ;
+  data_2[j]=txt[j][2][1][1] ;
+  data_3[j]=txt[j][3][1][1] ;
+  }
+ opendata();
+ console.log('ok~');
+}
+//上傳分類好的公開資料
+function opendata() {
+   var request = {
+      auth: oauth2Client,
+      spreadsheetId: SheetId,
+      range:encodeURI('外面空氣品質'),
+      insertDataOption: 'INSERT_ROWS',
+      valueInputOption: 'RAW',
+      resource: {
+        "values": [      
+        data_1,
+        data_2,
+        data_3
+     ]                         
+     }
+   };
+   var sheets = google.sheets('v4');
+   sheets.spreadsheets.values.append(request, function(err, response) {
+      if (err) {
+         console.log('The API returned an error: ' + err);
+         return;
+      }
+   });
+}
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
-bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
+//bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
