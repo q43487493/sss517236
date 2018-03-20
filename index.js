@@ -401,8 +401,8 @@ function botText(message){
     for (var j = 0 ; j <= f-1 ; j++){
       if (message === open_1[j]){Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];}
       else {Result = '謝謝回復!'}
-      console.log(f);
     }
+  console.log(open_1);
       g = '' ;
   }       
   else{
