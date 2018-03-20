@@ -407,6 +407,7 @@ function botText(message){
       }
     }
       g = '' ;
+      Result = '目前' + open_1[7] +'的pm2.5為'+ open_2[7];
   }       
   else{
     Result = '謝謝回覆!' ;
