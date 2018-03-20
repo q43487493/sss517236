@@ -401,7 +401,7 @@ function botText(message){
     for (var j = 0 ; j <= f-1 ; j++){
       if (message === open_1[j]){Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];}
       else {Result = '謝謝回復!'}
-      //console.log(j + open_1[j]);
+      console.log(j + open_1[j]);
     }
       g = '' ;
   }       
@@ -891,8 +891,7 @@ function getdata_2() {
       return;
     }      
     else {
-      data_sort_2(response.values); 
-      console.log('ok pm25');
+      data_sort_2(response.values);
     } });
 }
 //將讀取的pm資料分類
@@ -902,6 +901,7 @@ function data_sort_2(data){
   var text_2 = data[f-1].join(',');//抓pm253
   open_1 = text_1.split(',');
   open_2 = text_2.split(',');
+  console.log('ok pm25');
 }
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
