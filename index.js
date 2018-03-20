@@ -407,7 +407,7 @@ function botText(message){
       }
     }
       g = '' ;
-      console.log(open_2[0]);
+      //console.log(open_2[0]);
   }       
   else{
     Result = '謝謝回覆!' ;
