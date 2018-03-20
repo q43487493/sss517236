@@ -399,12 +399,12 @@ function botText(message){
   else if ( g === '區'){
     var f = open_1.length;
     for (var j = 0 ; j <= f-1 ; j++){
-      if (message == open_1[j]){
+      if (message === open_1[j]){
         Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];
         break;
       }
       else {
-        Result = '謝謝回復!';
+        Result = '請檢查是否輸入錯誤~';
       }
     }
       g = '' ;
