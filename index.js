@@ -387,8 +387,8 @@ function botText(message){
     Result = [Watering(),Clean(),Exhaust()] ;
   }  
   else if (message==='目前外面空氣品質'){
-    Result = '請輸入您所在的地區\n' +
-    '可查詢的區域:\n' +
+    Result = '請輸入您所在的地區!\n\n\n' +
+    '可查詢的地區:\n' +
     '麥寮、關山、馬公、金門、馬祖、\n' +
     '埔里、復興、永和、竹山、中壢、\n' +
     '三重、冬山、宜蘭、陽明、花蓮、\n' +
