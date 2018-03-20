@@ -399,10 +399,13 @@ function botText(message){
   else if ( g === '區'){
     var f = open_1.length;
     for (var j = 0 ; j <= f-1 ; j++){
-      if (message === open_1[j]){Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];}
-      else {Result = '謝謝回復!'}
+      if (message == open_1[j]){
+        Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];
+      }
+      else {
+        Result = '謝謝回復!';
+      }
     }
-  console.log(open_1[0]);
       g = '' ;
   }       
   else{
