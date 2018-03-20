@@ -43,6 +43,7 @@ var g = '' ;      //暫存'區''
 var open_1 ;
 var open_2 ;
 getdata(); 
+getdata_2();
 bot.on('message', function(event) {
   var bot_txt='';
   line_id_t = event.source.userId;
@@ -179,12 +180,12 @@ function getdata() {
     range:encodeURI('資料庫'),  //試算表-工作表名稱
   }, function(err, response) {  
     if (err) {            
-      console.log('讀取資料庫發生問題：' + err);
+      console.log('讀取門禁資料庫發生問題：' + err);
       return;
     }      
     else {
       data_sort(response.values);  // 讀取資料以二維陣列表示  [列][攔]
-      console.log('資料庫已取得完畢！');
+      console.log('門禁資料庫已取得完畢！');
     } });
 }
 //將讀取的資料分類
@@ -389,7 +390,7 @@ function botText(message){
     Result = '請輸入您所在的地區' ;
     g = '區' ;
     request({
-      url: "https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?",
+      url: 'https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?',
       method: "GET"
     }, function(e,r,b) {  
       if (e || !b) { return;}
@@ -408,7 +409,6 @@ function botText(message){
       }
     }
       g = '' ;
-      //console.log(open_2[0]);
   }       
   else{
     Result = '謝謝回覆!' ;
@@ -856,7 +856,7 @@ function database(d){
   data_3[j]=txt[j][3][1][1] ;
   }
  opendata();
- console.log('ok~ 公開資料處理完畢');
+ console.log('公開資料處理完畢');
 }
 //上傳分類好的公開資料
 function opendata() {
@@ -880,7 +880,7 @@ function opendata() {
          console.log('The API returned an error: ' + err);
          return;
       }
-      else{console.log('pm上傳 ok~');getdata_2();}
+      else{console.log('pm2.5上傳成功');getdata_2();}
    });
 }
 //讀取pm資料
@@ -892,7 +892,7 @@ function getdata_2() {
     range:encodeURI('外面空氣品質'),  
   }, function(err, response) {  
     if (err) {            
-      console.log('讀取資料庫發生問題：' + err);
+      console.log('讀"取外面空氣品質"資料庫發生問題：' + err);
       return;
     }      
     else {
@@ -906,9 +906,9 @@ function data_sort_2(data){
   var text_2 = data[f-1].join(',');//抓pm253
   open_1 = text_1.split(',');
   open_2 = text_2.split(',');
-  console.log('ok 讀取pm25');
+  console.log('讀取pm25成功');
 }
-getdata_2();
+
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前土壤濕度低於25%，建議您啟動澆水裝置!'},Watering()]);   
