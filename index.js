@@ -401,6 +401,7 @@ function botText(message){
     for (var j = 0 ; j <= f-1 ; j++){
       if (message == open_1[j]){
         Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];
+        break;
       }
       else {
         Result = '謝謝回復!';
@@ -855,7 +856,7 @@ function database(d){
   data_3[j]=txt[j][3][1][1] ;
   }
  opendata();
- console.log('ok~');
+ console.log('ok~ 公開資料處理完畢');
 }
 //上傳分類好的公開資料
 function opendata() {
@@ -879,7 +880,7 @@ function opendata() {
          console.log('The API returned an error: ' + err);
          return;
       }
-      else{console.log('pm ok~');getdata_2();}
+      else{console.log('pm上傳 ok~');getdata_2();}
    });
 }
 //讀取pm資料
@@ -905,7 +906,7 @@ function data_sort_2(data){
   var text_2 = data[f-1].join(',');//抓pm253
   open_1 = text_1.split(',');
   open_2 = text_2.split(',');
-  console.log('ok pm25');
+  console.log('ok 讀取pm25');
 }
 getdata_2();
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
