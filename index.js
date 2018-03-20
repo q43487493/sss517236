@@ -392,13 +392,18 @@ function botText(message){
       url: "https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json&callback=?",
       method: "GET"
     }, function(e,r,b) {  
-      if (e || !b) {database(b); return;}
+      if (e || !b) { return;}
       else {database(b);} 
     });
   }
-  else if ( g === '區' && message ==='我'){
-    Result = '1' ;
-    g = '' ;
+  else if ( g === '區'){
+    var f = open_1.length
+    for (var j = 0 ; j <= f-1 ; j++){
+      if (message === open_1[j]){Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];}
+      else {Result = '謝謝回復!'}
+      console.log(j + open_1[j]);
+    }
+      g = '' ;
   }       
   else{
     Result = '謝謝回覆!' ;
@@ -870,7 +875,7 @@ function opendata() {
          console.log('The API returned an error: ' + err);
          return;
       }
-      else{console.log('pm ok~');}
+      else{console.log('pm ok~');getdata_2();}
    });
 }
 //讀取pm資料
@@ -887,7 +892,7 @@ function getdata_2() {
     }      
     else {
       data_sort_2(response.values); 
-      console.log('資料庫已取得完畢！');
+      console.log('ok pm25');
     } });
 }
 //將讀取的pm資料分類
@@ -895,9 +900,8 @@ function data_sort_2(data){
   var f = data.length;  
   var text_1 = data[f-2].join(',');//抓區
   var text_2 = data[f-1].join(',');//抓pm253
-  open_1 = text_1.splig(',');
-  open_2 = text_2.splig(',');
-  console.log(open_1);
+  open_1 = text_1.split(',');
+  open_2 = text_2.split(',');
 }
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前家中pm2.5高於25，建議您開啟空氣清淨機!'},Clean()]);   
 //bot.push('U79964e56665caa1f44bb589160964c84',[{ type: 'text', text: '目前浴室濕度高於20%，建議您開啟抽風機!'},Exhaust()]);
