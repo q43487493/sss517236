@@ -402,7 +402,7 @@ function botText(message){
       if (message === open_1[j]){Result = '目前' + open_1[j] +'的pm2.5為'+ open_2[j];}
       else {Result = '謝謝回復!'}
     }
-  console.log(open_1);
+  console.log(open_1[0]);
       g = '' ;
   }       
   else{
